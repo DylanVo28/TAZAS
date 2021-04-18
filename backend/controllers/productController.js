@@ -1,5 +1,5 @@
 const Product =require('../models/product')
-
+const ErrorHandler=require('../utils/errorHandler')
 //add new product
 exports.newProduct=async (req,res,next)=>{
     const product= await Product.create(req.body)
@@ -20,13 +20,10 @@ exports.getProducts=async (req,res,next)=>{
 
 //get single product
 exports.getSingleProduct=async (req,res,next)=>{
-    const product=await Product.findById(req.params.id)
-    console.log(product)
+    const product=await Product.findById(req.params.id).catch(error=>console.error())
+
     if(!product){
-        return res.status(404).json({
-            success:false,
-            message: "Product not found"
-        })
+        return next(new ErrorHandler('Product not found',404));
     }
     res.status(200).json({
         success:true,
@@ -36,7 +33,7 @@ exports.getSingleProduct=async (req,res,next)=>{
 
 //update product
 exports.updateProduct=async (req,res,next)=>{
-    const product=await Product.findById(req.params.id)
+    const product=await Product.findById(req.params.id).catch(error=>console.error())
     if(!product){
         return res.status(404).json({
             success:false,
@@ -56,7 +53,7 @@ exports.updateProduct=async (req,res,next)=>{
 
 //delete product
 exports.deleteProduct=async(req,res,next)=>{
-    const product=await Product.findById(req.params.id)
+    const product=await Product.findById(req.params.id).catch(error=>console.error())
     if(!product){
         return res.status(404).json({
             success:false,
