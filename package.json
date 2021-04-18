@@ -1,0 +1,23 @@
+{
+  "name": "ecommerce-mern-stack",
+  "version": "1.0.0",
+  "description": "project ecommerce using mern",
+  "main": "index.js",
+  "scripts": {
+    "start": "node backend/sever.js",
+    "dev": "SET NODE_ENV=DEVELOPMENT& nodemon backend/sever",
+    "stag": "SET NODE_ENV=STAGING& nodemon backend/sever",
+    "prod": "SET NODE_ENV=PRODUCTION& nodemon backend/sever",
+    "seeder":"node backend/ultils/seeder.js"
+  },
+  "author": "Dinh Vo",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "mongoose": "^5.12.4"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.7"
+  }
+}
