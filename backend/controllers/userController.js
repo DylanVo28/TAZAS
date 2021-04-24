@@ -4,6 +4,7 @@ const catchAsyncErrors=require('../middlewares/catchAsyncError')
 const sendToken=require('../utils/jwtToken')
 const sendEmail=require('../utils/sendEmail')
 const crypto=require('crypto')
+const { send } = require('process')
 exports.registerUser=catchAsyncErrors(async(req,res,next)=>{
     const {name,email,password}=req.body
     const user=await User.create({
@@ -96,4 +97,24 @@ exports.resetPassword=catchAsyncErrors(async(req,res,next)=>{
     user.resetPasswordExpire=undefined
     await user.save()
     sendToken(user,200,res)
+})
+
+exports.userProfile=catchAsyncErrors(async(req,res,next)=>{
+    const user=await User.findById(req.user._id)
+    res.status(200).json({
+        success:true,
+        user
+    })
+})
+
+exports.userUpdatePassword=catchAsyncErrors(async(req,res,next)=>{
+    const user=await User.findById(req.user._id).select('+password');
+    const isMatched=await user.comparePassword(req.body.oldPassword)
+    if(!isMatched){
+        return next(new ErrorHandler('Old password is incorrect',404))
+    }
+    user.password=req.body.password;
+    await user.save();
+    sendToken(user,200,res);
+
 })
