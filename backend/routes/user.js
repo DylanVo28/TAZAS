@@ -1,6 +1,6 @@
 const express=require('express')
 const router=express.Router()
-const {registerUser,loginUser, logoutUser, forgotPassword, resetPassword, userProfile, userUpdatePassword}=require('../controllers/userController')
+const {registerUser,loginUser, logoutUser, forgotPassword, resetPassword, userProfile, userUpdatePassword, updateProfile}=require('../controllers/userController')
 const { isAuthenticatedUser } = require('../middlewares/user')
 router.route('/user/create').post(registerUser)
 router.route('/user/login').post(loginUser)
@@ -9,4 +9,5 @@ router.route('/user/password/forgot').post(forgotPassword)
 router.route('/user/password/reset/:token').put(resetPassword)
 router.route('/me').get(isAuthenticatedUser,userProfile)
 router.route('/user/update-password').put(isAuthenticatedUser,userUpdatePassword)
+router.route('/user/update-profile').put(isAuthenticatedUser,updateProfile)
 module.exports=router;
