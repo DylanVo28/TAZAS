@@ -3,6 +3,7 @@ import Routes from "./components";
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 // import { LayoutContext, layoutState, layoutReducer } from "./components/shop";
 import Dashboard from './components/admin/Dashboard'
+import Sidebar from './components/admin/Sidebar';
 const ProtectedRoute = ({ component: Component, ...rest }) => {
   return (
     <Route {...rest} render={
@@ -18,7 +19,13 @@ function App() {
         <Routes />
       </LayoutContext.Provider> */}
       <Router>
+      <Fragment>
+            <div>
+                <Sidebar/>
         <ProtectedRoute exact path='/dashboard' component={Dashboard} />
+        
+        </div>
+        </Fragment>
       </Router>
     </Fragment>
   );

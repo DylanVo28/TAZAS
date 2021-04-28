@@ -1,31 +1,33 @@
-import { Fragment, useEffect } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { React } from 'react';
 import CardItem from './CardItem';
 import Menu from './Menu';
 import Sidebar from './Sidebar';
 const axios = require('axios');
 const Dashboard=()=>{
+    const [stProducts,setStProducts]=useState([]);
+    const [stOrders,setStOrders]=useState([])
+    const [stUsers,setStUsers]=useState([])
     useEffect(()=>{
-        axios.get('localhost:4000/api/v1/products').then(res=>console.log(res))
+        axios.get('http://localhost:4000/api/v1/products')
+        .then(res=>setStProducts(res.data.products))
+        axios.get('http://localhost:4000/api/v1/admin/orders').then(res=>setStOrders(res.data.orders))
+        axios.get('http://localhost:4000/api/v1/admin/all-user').then(res=>setStUsers(res.data.user))
     },[])
     return (
-        <Fragment>
-            <div>
-                <Sidebar/>
+        
                 <main className='main-content mt-1 border-radius-lg'>
                 <Menu/>
                 <div className='container-fluid py-4'>
                     <div className='row'>
-                    <CardItem/>
-                    <CardItem/>
-                    <CardItem/>
+                    <CardItem title="Products" total={stProducts.length} icon="fas fa-archive"/>
+                    <CardItem title="Orders" total={stOrders.length} icon="fas fa-shipping-fast"/>
+                    <CardItem title="User" total={stUsers.length} icon="fas fa-user"/>
 
                     </div>
                 </div>
                 </main>
 
-            </div>
-        </Fragment>
     )
 }
 export default Dashboard

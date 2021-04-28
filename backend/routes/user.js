@@ -22,7 +22,9 @@ router.route('/user/password/reset/:token').put(resetPassword)
 router.route('/me').get(isAuthenticatedUser,userProfile)
 router.route('/user/update-password').put(isAuthenticatedUser,userUpdatePassword)
 router.route('/user/update-profile').put(isAuthenticatedUser,updateProfile)
-router.route('/admin/all-user').get(isAuthenticatedUser,authorizeRoles('admin'),allUsers)
+router.route('/admin/all-user').get(
+    // isAuthenticatedUser,authorizeRoles('admin'),
+    allUsers)
 router.route('/admin/user/:id')
 .get(isAuthenticatedUser,authorizeRoles('admin'),getUserDetail)
 .put(isAuthenticatedUser,authorizeRoles('admin'),updateUser)

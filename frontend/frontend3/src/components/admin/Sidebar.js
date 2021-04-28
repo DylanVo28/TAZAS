@@ -14,7 +14,7 @@ const Sidebar=()=>{
   <div className="collapse navbar-collapse  w-auto" id="sidenav-collapse-main">
     <ul className="navbar-nav">
       <li className="nav-item">
-        <a className="nav-link  active" href="../pages/dashboard.html">
+        <Link className="nav-link  active" to="/dashboard">
           <div className="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
             <svg width="12px" height="12px" viewBox="0 0 45 40" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
               <title>shop </title>
@@ -31,10 +31,10 @@ const Sidebar=()=>{
             </svg>
           </div>
           <span className="nav-link-text ms-1">Dashboard</span>
-        </a>
+        </Link>
       </li>
       <li className="nav-item">
-        <a className="nav-link  " href="../pages/tables.html">
+        <Link className="nav-link  " to="/products">
           <div className="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
             <svg width="12px" height="12px" viewBox="0 0 42 42" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
               <title>office</title>
@@ -51,7 +51,7 @@ const Sidebar=()=>{
             </svg>
           </div>
           <span className="nav-link-text ms-1">Products</span>
-        </a>
+        </Link>
       </li>
       <li className="nav-item">
         <a className="nav-link  " href="../pages/billing.html">

@@ -14,6 +14,8 @@ exports.newProduct=catchAsyncError (async (req,res,next)=>{
 
 //get all product {{DOMAIN}}/api/v1/products?keyword=?
 exports.getProducts=catchAsyncError(async (req,res,next)=>{
+
+  
     const resPerPage=4
     const apiFeatures=new APIFeatures(Product.find(),req.query)
     .search()
