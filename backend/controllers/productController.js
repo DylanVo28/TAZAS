@@ -12,11 +12,19 @@ exports.newProduct=catchAsyncError (async (req,res,next)=>{
     })
 })
 
+exports.getAllProduct=catchAsyncError(async (req,res,next)=>{
+    const products= await Product.find()
+    res.status(201).json({
+        success:true,
+        products
+    })
+})
+
 //get all product {{DOMAIN}}/api/v1/products?keyword=?
 exports.getProducts=catchAsyncError(async (req,res,next)=>{
 
   
-    const resPerPage=4
+    const resPerPage=10
     const apiFeatures=new APIFeatures(Product.find(),req.query)
     .search()
     .pagination(resPerPage)

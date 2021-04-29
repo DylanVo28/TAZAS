@@ -4,6 +4,8 @@ import { BrowserRouter as Router, Route } from 'react-router-dom';
 // import { LayoutContext, layoutState, layoutReducer } from "./components/shop";
 import Dashboard from './components/admin/Dashboard'
 import Sidebar from './components/admin/Sidebar';
+import ProductsList from "./components/admin/ProductsList";
+import Menu from './components/admin/Menu';
 const ProtectedRoute = ({ component: Component, ...rest }) => {
   return (
     <Route {...rest} render={
@@ -20,11 +22,17 @@ function App() {
       </LayoutContext.Provider> */}
       <Router>
       <Fragment>
-            <div>
-                <Sidebar/>
-        <ProtectedRoute exact path='/dashboard' component={Dashboard} />
         
-        </div>
+        <ProtectedRoute exact  component={Sidebar}/>
+       
+        <main className='main-content mt-1 border-radius-lg'>
+         
+          <Menu/>
+          <ProtectedRoute exact path='/admin/dashboard' component={Dashboard} />
+        <ProtectedRoute exact path='/admin/products' component={ProductsList}/>
+        </main>
+        
+        
         </Fragment>
       </Router>
     </Fragment>

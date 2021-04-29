@@ -16,8 +16,7 @@ const Dashboard=()=>{
     },[])
     return (
         
-                <main className='main-content mt-1 border-radius-lg'>
-                <Menu/>
+                
                 <div className='container-fluid py-4'>
                     <div className='row'>
                     <CardItem title="Products" total={stProducts.length} icon="fas fa-archive"/>
@@ -26,7 +25,6 @@ const Dashboard=()=>{
 
                     </div>
                 </div>
-                </main>
 
     )
 }
