@@ -8,6 +8,8 @@ import ProductsList from "./components/admin/ProductsList";
 import Menu from './components/admin/Menu';
 import Login from './components/LoginDashboard/Login'
 import SignUp from "./components/SignUpDashboard/SignUp";
+import 'react-notifications/lib/notifications.css';
+import Home from './components/shop/home/Home';
 const ProtectedRoute = ({ component: Component, ...rest }) => {
   return (
     <Route {...rest} render={
@@ -23,6 +25,9 @@ function App() {
         <Routes />
       </LayoutContext.Provider> */}
       <Router>
+        <Fragment>
+          <ProtectedRoute exact path='/home' component={Home}/>
+        </Fragment>
       <Fragment>
         <ProtectedRoute exact  path='/admin/*' component={Sidebar}/>
        

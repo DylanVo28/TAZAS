@@ -1,5 +1,8 @@
-import { React } from 'react';
+import { React, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import {register,clearErrors} from '../../actions/userActions'
+import {NotificationContainer, NotificationManager} from 'react-notifications';
 const MenuSignUp=()=>{
     return (<nav className="navbar navbar-expand-lg position-absolute top-0 z-index-3 w-100 shadow-none my-3  navbar-transparent mt-4">
     <div className="container">
@@ -16,10 +19,10 @@ const MenuSignUp=()=>{
       <div className="collapse navbar-collapse" id="navigation">
         <ul className="navbar-nav mx-auto">
           <li className="nav-item">
-            <a className="nav-link d-flex align-items-center me-2 active" aria-current="page" href="../pages/dashboard.html">
+            <Link className="nav-link d-flex align-items-center me-2 active" aria-current="page" to="/admin/dashboard">
               <i className="fa fa-chart-pie opacity-6  me-1" aria-hidden="true" />
               Dashboard
-            </a>
+            </Link>
           </li>
           <li className="nav-item">
             <a className="nav-link me-2" href="../pages/profile.html">
@@ -28,16 +31,16 @@ const MenuSignUp=()=>{
             </a>
           </li>
           <li className="nav-item">
-            <a className="nav-link me-2" href="../pages/sign-up.html">
+            <Link className="nav-link me-2" to="/create-account">
               <i className="fas fa-user-circle opacity-6  me-1" aria-hidden="true" />
               Sign Up
-            </a>
+            </Link>
           </li>
           <li className="nav-item">
-            <a className="nav-link me-2" href="../pages/sign-in.html">
+            <Link className="nav-link me-2" to="/login">
               <i className="fas fa-key opacity-6  me-1" aria-hidden="true" />
               Sign In
-            </a>
+            </Link>
           </li>
         </ul>
         <ul className="navbar-nav d-lg-block d-none">
@@ -65,6 +68,21 @@ const BackgroundSignUp=()=>{
   )
 }
 const Form=()=>{
+    const [name,setName]=useState('')
+    const [email,setEmail]=useState('')
+    const [password,setPassword]=useState('')
+    const dispatch=useDispatch()
+    const submitRegister=(e)=>{
+        e.preventDefault();
+        
+        const userData={
+            "name":name,
+            "email":email,
+            "password":password
+        }
+        dispatch(register(userData))
+        
+    }
     return (<div className="card z-index-0">
     <div className="card-header text-center pt-4">
       <h5>Register with</h5>
@@ -114,15 +132,15 @@ const Form=()=>{
       </div>
     </div>
     <div className="card-body">
-      <form role="form text-left">
+      <form role="form text-left" onSubmit={submitRegister}>
         <div className="mb-3">
-          <input type="text" className="form-control" placeholder="Name" aria-label="Name" aria-describedby="email-addon" />
+          <input onChange={(e)=>setName(e.currentTarget.value)} type="text" className="form-control" placeholder="Name" aria-label="Name" aria-describedby="email-addon" />
         </div>
         <div className="mb-3">
-          <input type="email" className="form-control" placeholder="Email" aria-label="Email" aria-describedby="email-addon" />
+          <input onChange={(e)=>setEmail(e.currentTarget.value)} type="email" className="form-control" placeholder="Email" aria-label="Email" aria-describedby="email-addon" />
         </div>
         <div className="mb-3">
-          <input type="password" className="form-control" placeholder="Password" aria-label="Password" aria-describedby="password-addon" />
+          <input onChange={(e)=>setPassword(e.currentTarget.value)} type="password" className="form-control" placeholder="Password" aria-label="Password" aria-describedby="password-addon" />
         </div>
         <div className="form-check form-check-info text-left">
           <input className="form-check-input" type="checkbox" defaultValue id="flexCheckDefault" defaultChecked />
@@ -131,7 +149,7 @@ const Form=()=>{
           </label>
         </div>
         <div className="text-center">
-          <button type="button" className="btn bg-gradient-dark w-100 my-4 mb-2">Sign up</button>
+          <button type="submit" className="btn bg-gradient-dark w-100 my-4 mb-2">Sign up</button>
         </div>
         <p className="text-sm mt-3 mb-0">Already have an account? <Link to="/login" className="text-dark font-weight-bolder">Sign in</Link></p>
       </form>
@@ -153,6 +171,7 @@ const SignUp=()=>{
                 </div>
             </div>
             </section>
+            <NotificationContainer/>
         </div>
     )
 }

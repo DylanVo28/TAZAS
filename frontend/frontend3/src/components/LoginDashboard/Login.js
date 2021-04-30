@@ -4,6 +4,8 @@ import { Link, Redirect } from 'react-router-dom';
 import {useDispatch,useSelector} from 'react-redux'
 import {useAlert} from 'react-alert'
 import {login,clearErrors} from '../../actions/userActions'
+import { NotificationContainer } from 'react-notifications';
+
 const Menu =()=>{
     return (<nav className="navbar navbar-expand-lg  blur blur-rounded top-0  z-index-3 shadow position-absolute my-3 py-2 start-0 end-0 mx-4">
     <div className="container-fluid">
@@ -70,19 +72,7 @@ const Form=({history})=>{
     },[dispatch,
       alert,
       isAuthenticated,error,history])
-    const acceptLogin=()=>{
-        axios.post('http://localhost:4000/api/v1/user/login', {
-            email: stEmail,
-            password: stPassword
-          })
-          .then(function (response) {
-
-          })
-          .catch(function (error) {
-            console.log(error);
-            alert.show('Email in valid')
-          });
-    }
+    
     const submitHandler=(e)=>{
       e.preventDefault();
       dispatch(login(stEmail,stPassword))
@@ -151,6 +141,8 @@ const Login =()=>{
                 </div>
             </div>
         </section>
+        <NotificationContainer/>
+
         </div>
     )
 }
