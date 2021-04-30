@@ -1,4 +1,5 @@
 import { React } from 'react';
+import { Link } from 'react-router-dom';
 const Menu =()=>{
     return (
         <nav className="navbar navbar-main navbar-expand-lg px-0 mx-4 border-radius-xl shadow-none" id="navbarBlur" navbar-scroll="true">
@@ -19,10 +20,10 @@ const Menu =()=>{
       </div>
       <ul className="navbar-nav  justify-content-end">
         <li className="nav-item d-flex align-items-center">
-          <a href="javascript:;" className="nav-link font-weight-bold px-0 text-body">
+          <Link to="/login" className="nav-link font-weight-bold px-0 text-body">
             <i className="fa fa-user me-sm-1" aria-hidden="true" />
             <span className="d-sm-inline d-none">Sign In</span>
-          </a>
+          </Link>
         </li>
         <li className="nav-item d-xl-none ps-3 d-flex align-items-center">
           <a href="javascript:;" className="nav-link p-0 text-body" id="iconNavbarSidenav">

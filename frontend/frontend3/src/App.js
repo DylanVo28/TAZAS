@@ -1,11 +1,13 @@
 import React, { Fragment, useReducer } from "react";
 import Routes from "./components";
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 // import { LayoutContext, layoutState, layoutReducer } from "./components/shop";
 import Dashboard from './components/admin/Dashboard'
 import Sidebar from './components/admin/Sidebar';
 import ProductsList from "./components/admin/ProductsList";
 import Menu from './components/admin/Menu';
+import Login from './components/LoginDashboard/Login'
+import SignUp from "./components/SignUpDashboard/SignUp";
 const ProtectedRoute = ({ component: Component, ...rest }) => {
   return (
     <Route {...rest} render={
@@ -22,17 +24,19 @@ function App() {
       </LayoutContext.Provider> */}
       <Router>
       <Fragment>
-        
-        <ProtectedRoute exact  component={Sidebar}/>
+        <ProtectedRoute exact  path='/admin/*' component={Sidebar}/>
        
         <main className='main-content mt-1 border-radius-lg'>
-         
-          <Menu/>
+        <ProtectedRoute exact  path='/admin/*' component={Menu}/>
+          {/* <Menu/> */}
           <ProtectedRoute exact path='/admin/dashboard' component={Dashboard} />
         <ProtectedRoute exact path='/admin/products' component={ProductsList}/>
         </main>
         
-        
+        </Fragment>
+        <Fragment>
+          <ProtectedRoute exact path='/login' component={Login}/>
+          <ProtectedRoute exact path='/create-account' component={SignUp}/>
         </Fragment>
       </Router>
     </Fragment>

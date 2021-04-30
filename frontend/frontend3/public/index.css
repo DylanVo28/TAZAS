@@ -46,7 +46,7 @@
   
   body {
     margin: 0;
-    font-family: var(--bs-font-sans-serif);
+    font-family: 'Varela Round', sans-serif;
     font-size: 1rem;
     font-weight: 400;
     line-height: 1.5;
@@ -13761,7 +13761,7 @@
   .oblique {
     transform: skewX(-10deg);
     overflow: hidden;
-    width: 60%;
+    width: 120%;
     right: -10rem;
     border-bottom-left-radius: 0.75rem;
   }
