@@ -9,15 +9,16 @@ exports.registerUser=catchAsyncErrors(async(req,res,next)=>{
     const result=await cloudinary.v2.uploader.upload(req.body.avatar,{
         folder:'tazas',
         width:150,
-        crop:'scale'
+        crop:'scale',
+        limit: '52428800'
     })
-    const {name,email,password}=req.body
+    const {name,email,password,avatar}=req.body
     const user=await User.create({
         name,
         email,
         password,
         avatar:{
-            public_id:result.public_id,
+            public_id:result.asset_id,
             url:result.secure_url
         }
     })

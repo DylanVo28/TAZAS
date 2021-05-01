@@ -1,4 +1,4 @@
-import React, { Fragment, useReducer } from "react";
+import React, { Fragment, useReducer,useEffect } from "react";
 import Routes from "./components";
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 // import { LayoutContext, layoutState, layoutReducer } from "./components/shop";
@@ -10,6 +10,9 @@ import Login from './components/LoginDashboard/Login'
 import SignUp from "./components/SignUpDashboard/SignUp";
 // import 'react-notifications/lib/notifications.css';
 import Home from './components/shop/home/Home';
+import {loadUser} from './actions/userActions'
+import store from './store'
+
 const ProtectedRoute = ({ component: Component, ...rest }) => {
   return (
     <Route {...rest} render={
@@ -17,7 +20,35 @@ const ProtectedRoute = ({ component: Component, ...rest }) => {
     } />
   )
 }
+function getToken() {
+  const tokenString = sessionStorage.getItem('token');
+  
+  return tokenString?true:false
+}
+function getTheCookie() {
+  var cookie_name = "userid_form";
+  var return_value = null;
+
+  var pos_start = document.cookie.indexOf(" " + cookie_name + "=");
+  if (pos_start == -1) document.cookie.indexOf(cookie_name + "=");
+
+  if (pos_start != -1) { // Cookie already set, read it
+      pos_start++; // Start reading 1 character after
+      var pos_end = document.cookie.indexOf(";", pos_start); // Find ";" after the start position
+
+      if (pos_end == -1) pos_end = document.cookie.length;
+      return_value = unescape( document.cookie.substring(pos_start, pos_end) );
+  }
+
+  return return_value; // null if cookie doesn't exist, string otherwise
+}
 function App() {
+  useEffect(()=>{
+    getToken()
+    // console.log(getTheCookie())
+      store.dispatch(loadUser())
+    
+  },[])
   // const [data, dispatch] = useReducer(layoutReducer, layoutState);
   return (
     <Fragment>

@@ -34,16 +34,16 @@ const Menu =()=>{
             </a>
           </li>
           <li className="nav-item">
-            <a className="nav-link me-2" href="../pages/sign-up.html">
+            <Link className="nav-link me-2" to="/create-account">
               <i className="fas fa-user-circle opacity-6 text-dark me-1" aria-hidden="true" />
               Sign Up
-            </a>
+            </Link>
           </li>
           <li className="nav-item">
-            <a className="nav-link me-2" href="../pages/sign-in.html">
+            <Link className="nav-link me-2" to="/login">
               <i className="fas fa-key opacity-6 text-dark me-1" aria-hidden="true" />
               Sign In
-            </a>
+            </Link>
           </li>
         </ul>
         <ul className="navbar-nav d-lg-block d-none">
@@ -65,9 +65,8 @@ const Form=({history})=>{
     useEffect(()=>{
       
       if(error){
-        console.log(error)
         alert.show(error)
-        // dispatch(clearErrors())
+        dispatch(clearErrors())
       }
     },[dispatch,
       alert,
