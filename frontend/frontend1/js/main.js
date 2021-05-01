@@ -1,7 +1,7 @@
 let productIndex =0 
 
 let productInfos = document.querySelectorAll(".product-info")
-console.log(productInfos)
+
 setTimeout(() => {
     productInfos[productIndex].classList.add('active')
 }, 200);
@@ -18,7 +18,7 @@ slide = () => {
     let currProduct = document.querySelector('.product-info.active')
     currProduct.classList.remove('active')
 
-    productIndex = productIndex + 1 > productInfos.length ? 0:productIndex + 1
+    productIndex = productIndex + 1 > productInfos.length - 1 ? 0 : productIndex + 1
     productInfos[productIndex].classList.add('active')
 
     // IMAGE SLIDE
@@ -44,7 +44,7 @@ slide = () => {
         }
 
         if(index === listItems.length - 1){
-            el.style.transform = 'scale(1.5'
+            el.style.transform = 'scale(1.5)'
             el.style.opacity ='0'
 
             let cin = el.cloneNode(true)
@@ -57,6 +57,7 @@ slide = () => {
                 cin.style.height= height
                 cin.style.witdh = witdh
                 cin.style.opacity = '0'
+                cin.style.zIndex ='0'
                 cin.style.animation = 'unset'
 
                 slider.appendChild(cin)
