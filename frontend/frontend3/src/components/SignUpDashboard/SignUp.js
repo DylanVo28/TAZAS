@@ -71,6 +71,8 @@ const Form=()=>{
     const [name,setName]=useState('')
     const [email,setEmail]=useState('')
     const [password,setPassword]=useState('')
+    const [avatarPreview,setAvatarPreview]=useState('')
+    const [avatar,setAvatar]=useState('')
     const dispatch=useDispatch()
     const submitRegister=(e)=>{
         e.preventDefault();
@@ -78,10 +80,22 @@ const Form=()=>{
         const userData={
             "name":name,
             "email":email,
-            "password":password
+            "password":password,
+            "avatar":avatar
         }
         dispatch(register(userData))
         
+    }
+    const onChangeAvatar=(e)=>{
+      const reader=new FileReader()
+      reader.onload=()=>{
+        if(reader.readyState===2){
+          setAvatarPreview(reader.result)
+          setAvatar(reader.result)
+        }
+      }
+      
+      reader.readAsDataURL(e.target.files[0])
     }
     return (<div className="card z-index-0">
     <div className="card-header text-center pt-4">
@@ -141,6 +155,16 @@ const Form=()=>{
         </div>
         <div className="mb-3">
           <input onChange={(e)=>setPassword(e.currentTarget.value)} type="password" className="form-control" placeholder="Password" aria-label="Password" aria-describedby="password-addon" />
+        </div>
+        <div className="mb-3">
+          <input 
+          type='file'
+          name='avatar'
+          className='custom-file-input'
+          accept='images/*'
+          onChange={(e)=>onChangeAvatar(e)}
+          />
+          <img className={'avatar-preview'} src={avatar}/>
         </div>
         <div className="form-check form-check-info text-left">
           <input className="form-check-input" type="checkbox" defaultValue id="flexCheckDefault" defaultChecked />

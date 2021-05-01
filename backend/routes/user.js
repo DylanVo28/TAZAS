@@ -19,7 +19,9 @@ router.route('/user/login').post(loginUser)
 router.route('/user/logout').get(logoutUser)
 router.route('/user/password/forgot').post(forgotPassword)
 router.route('/user/password/reset/:token').put(resetPassword)
-router.route('/me').get(isAuthenticatedUser,userProfile)
+router.route('/me').get(
+    isAuthenticatedUser,
+    userProfile)
 router.route('/user/update-password').put(isAuthenticatedUser,userUpdatePassword)
 router.route('/user/update-profile').put(isAuthenticatedUser,updateProfile)
 router.route('/admin/all-user').get(

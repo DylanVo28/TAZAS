@@ -21176,3 +21176,9 @@
   }
   
   /*# sourceMappingURL=dashboard-free.css.map */
+  .custom-file-input{
+    opacity: 1;
+  }
+  .avatar-preview{
+    width: 40px;
+  }
