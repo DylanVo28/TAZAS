@@ -1,0 +1,17 @@
+.home .sticky-header{
+    align-items: center;
+}
+.home .header-left {
+    display: flex;
+    align-items: center;
+}
+.home .mobile-menu-toggler{
+    border: none;
+    background: none;
+}
+.home input#q {
+    border-radius: 0;
+    border: none;
+    background: none;
+    border-bottom: 1px solid black;
+}
