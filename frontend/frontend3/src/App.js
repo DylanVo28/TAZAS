@@ -8,7 +8,7 @@ import ProductsList from "./components/admin/ProductsList";
 import Menu from './components/admin/Menu';
 import Login from './components/LoginDashboard/Login'
 import SignUp from "./components/SignUpDashboard/SignUp";
-import 'react-notifications/lib/notifications.css';
+// import 'react-notifications/lib/notifications.css';
 import Home from './components/shop/home/Home';
 const ProtectedRoute = ({ component: Component, ...rest }) => {
   return (
