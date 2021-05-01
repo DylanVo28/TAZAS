@@ -15,14 +15,14 @@ body,html{
     position: relative;
     overflow: hidden;
 }
-.container{
+#cont.container{
     height: 100vh;
     display: flex;
     background-position: center;
     background-size: cover;
     background-repeat: no-repeat;
 }
-.overlay{
+#cont .overlay{
     position: absolute;
     left: 0;
     right: 0;
@@ -31,7 +31,7 @@ body,html{
     background-color: rgba(0, 0, 0, .8);
     z-index: 1;
 }
-.nav{
+#cont .nav{
     z-index: 101;
     color: var(--white);
     display: flex;
@@ -43,59 +43,59 @@ body,html{
     align-items: center;
     padding: 0 80px;
 }
-.logo{
+#cont .logo{
     font-size: 30px;
     font-weight: 900;
     cursor: pointer;
     animation: top-down 1.5s forwards;
     
 }
-.chat{
+#cont .chat{
     font-size: 30px;
     cursor: pointer;
     animation: right-to-left 1.5s forwards;
 }
-.menu{
+#cont .menu{
     width: 30px;
     height: 30px;
     cursor: pointer;
     z-index: 101;
     animation: left-to-right 1.5s forwards;
 }
-.hamburger-line{
+#cont .hamburger-line{
     position: relative;
     cursor: pointer;
 }
-.hamburger-line,.hamburger-line::before,.hamburger-line::after{
+#cont .hamburger-line,#cont .hamburger-line::before,#cont .hamburger-line::after{
     width: 30px;
     height: 3px;
     border-radius: .5rem;
     background-color: var(--white);
 }
-.hamburger-line::before,.hamburger-line::after{
+#cont .hamburger-line::before,#cont .hamburger-line::after{
     content: '';
     position: absolute;
 }
-.hamburger-line::before{
+#cont .hamburger-line::before{
     top: -10px;
 }
-.hamburger-line::after{
+#cont .hamburger-line::after{
     top: 10px;
 }
-.hamburger-line.active {
+#cont .hamburger-line.active {
     background-color: transparent;
 }
-.hamburger-line.active::before{
+#cont .hamburger-line.active::before{
     transform-origin: top-left;
     transform: rotate(45deg);
     left: 6px;
 }
-.hamburger-line.active::after{
+#cont .hamburger-line.active::after{
     transform-origin: bottom-left;
     transform: rotate(-45deg);
     left: 6px;
 }
-.sci{
+#cont .sci{
     z-index: 2;
     color: var(--white);
     display: flex;
@@ -109,7 +109,7 @@ body,html{
     animation: right-to-left 1.5s;
 }
 
-#cont.sci i{
+#cont .sci i{
     font-size: 20px;
     margin-bottom: 10px;
     cursor: pointer;
@@ -161,11 +161,11 @@ body,html{
     text-transform: uppercase;
     text-align: left;
 }
-.info p{
+#cont .info p{
     margin: 50px 0;
     text-align: justify;
 }
-.info button{
+#cont .info button{
     font-size: 30px;
     padding: 10px 50px;
     border-radius: 30px;
@@ -177,11 +177,11 @@ body,html{
     cursor: pointer;
     transition: background-color .3s ease-in-out;
 }
-.info button:hover{
+#cont .info button:hover{
     background-color: var(--white);
     color: var(--black);
 }
-.product-info{
+#cont .product-info{
     position: absolute;
     width: 100%;
     height: fit-content;
@@ -189,53 +189,53 @@ body,html{
     padding: 0 80px;
     pointer-events: none;
 }
-.product-info.active{
+#cont .product-info.active{
     pointer-events: visible;
 }
 
-.product-info h1,.product-info>span,.product-info p,.product-info button{
+#cont .product-info h1,#cont .product-info>span,#cont .product-info p,#cont .product-info button{
     opacity: 0;
     transition: unset;
 }
 
-.product-info button{
+#cont .product-info button{
     transition-delay : .2s;
 }
 
-.product-info.active h1,.product-info.active>span,.product-info.active p,.product-info.active button{
+#cont .product-info.active h1,#cont .product-info.active>span,#cont .product-info.active p,#cont .product-info.active button{
     opacity: 1;
     transition: opacity 1s, transform 1.2s, letter-spacing 1.2s, right 1.2s;        
 }
 
-.product-info h1{
+#cont .product-info h1{
     letter-spacing: 20px;
 
 }
-.product-info.active h1{
+#cont .product-info.active h1{
     letter-spacing: unset;
 }
 
-.product-info>span{
+#cont .product-info>span{
     position: absolute;
     right: 200px;
 }
-.product-info.active>span{
+#cont .product-info.active>span{
     right: 80px;
 }
 
-.product-info p, .product-info button{
+#cont .product-info p, #cont .product-info button{
     transform: translateY(100px);
 }
 
-.product-info.active p,.product-info.active button{
+#cont .product-info.active p,#cont .product-info.active button{
     transform: translateY(0);
 }
-[class*="col-"]{
+#cont [class*="col-"]{
     display: flex;
     align-items: center;
 }
 
-.slider{
+#cont .slider{
     display: flex;
     align-items: center;
     position: relative;
@@ -244,34 +244,34 @@ body,html{
     overflow: visible;
 
 }
-.slide{
+#cont .slide{
     position: absolute;
     display: flex;
     width: 100%;
     height: 100%;
     align-items: center;
-    transition: 1s ease;
+    transition: 1s ease-in-out;
     animation: bottom-up 2s ;
 }
-.slide:nth-child(1)
+#cont .slide:nth-child(1)
 {
     z-index: 4;
 }
-.slide:nth-child(2)
+#cont .slide:nth-child(2)
 {
     z-index: 2;
     width: 80%;
     height: 80%;
     left: 70%;
 }
-.slide:nth-child(3)
+#cont .slide:nth-child(3)
 {
     z-index: 1;
     width: 60%;
     height: 60%;
     left: 120%;
 }
-.slide:nth-child(4)
+#cont .slide:nth-child(4)
 {
     z-index: 0;
     width: 60%;
@@ -279,7 +279,7 @@ body,html{
     left: 120%;
     transform: scale(0);
 }
-.img-holder{
+#cont .img-holder{
     width: 100%;
     height: 100%;
     border-radius: 10px;
@@ -287,7 +287,7 @@ body,html{
     background-size: cover;
     background-repeat: no-repeat;
 }
-.slide-control{
+#cont .slide-control{
     color: var(--white);
     position: absolute;
     bottom: 20px;
@@ -302,12 +302,12 @@ body,html{
     cursor: pointer;
     border: 2px solid var(--white);
 }
-.slide-control:hover{
+#cont .slide-control:hover{
     background-color: var(--white);
     color: var(--black);
 }
 
-.nav-overlay{
+#cont .nav-overlay{
     height: 100%;
     width: 0;
     position: fixed;
@@ -318,18 +318,18 @@ body,html{
     overflow: hidden;
     transition: .5s;
 }
-.nav-overlay.active{
+#cont .nav-overlay.active{
     width: 100%;
 }
 
-.nav-overlay-content{
+#cont .nav-overlay-content{
     position: relative;
     top: 25%;
     width: 100%;
     text-align: center;
     margin-top: 30px;
 }
-.nav-overlay a{
+#cont .nav-overlay a{
     padding: 8px;
     text-decoration: none;
     font-size: 36px;
@@ -337,7 +337,7 @@ body,html{
     display: block;
     transition: .3s;
 }
-.nav-overlay a:hover{
+#cont .nav-overlay a:hover{
     color: #f1f1f1;
 }
 /* animation */
