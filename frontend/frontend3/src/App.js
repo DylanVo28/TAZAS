@@ -8,12 +8,13 @@ import ProductsList from "./components/admin/ProductsList";
 import Menu from './components/admin/Menu';
 import Login from './components/LoginDashboard/Login'
 import SignUp from "./components/SignUpDashboard/SignUp";
-// import 'react-notifications/lib/notifications.css';
+import 'react-notifications/lib/notifications.css';
 import Home from './components/shop/home/Home';
 import {loadUser} from './actions/userActions'
 import store from './store'
 import Ads from "./components/shop/ads/Ads";
 import Admin from "./components/admin/Admin";
+import axios from "axios";
 
 const ProtectedRoute = ({ component: Component, ...rest }) => {
   return (
@@ -46,11 +47,19 @@ function getTheCookie() {
 }
 function App() {
   useEffect(()=>{
-    getToken()
+    // getToken()
     // console.log(getTheCookie())
       store.dispatch(loadUser())
     
   },[])
+  // useEffect(() => {
+  //   const loggedInUser = localStorage.getItem("user");
+  //   console.log(loggedInUser)
+
+  //   if (loggedInUser) {
+  //    axios.get(`http://localhost:4000/api/v1/admin/user/${loggedInUser}`).then(res=>console.log(res.data.user))
+  //   }
+  // }, []);
   // const [data, dispatch] = useReducer(layoutReducer, layoutState);
   return (
     <Fragment>

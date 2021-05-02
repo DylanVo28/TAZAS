@@ -19,9 +19,9 @@ const Sidebar=()=>{
     return (
         <aside className="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-left ms-3" id="sidenav-main">
   <div className="sidenav-header">
-    <a className="navbar-brand m-0" href="../pages/dashboard.html">
+    <Link className="navbar-brand m-0" to="/admin/dashboard">
       <img src={logo} className="navbar-brand-img" alt="..." />
-    </a>
+    </Link>
   </div>
   <hr className="horizontal dark mt-0" />
   <div className="collapse navbar-collapse  w-auto" id="sidenav-collapse-main">

@@ -2,9 +2,16 @@ const Product =require('../models/product')
 const ErrorHandler=require('../utils/errorHandler')
 const catchAsyncError=require('../middlewares/catchAsyncError')
 const APIFeatures = require('../utils/apiFeatures')
+const cloudinary=require('cloudinary')
 //add new product
 exports.newProduct=catchAsyncError (async (req,res,next)=>{
     req.body.user=req.user.id
+    // const result=await cloudinary.v2.uploader.upload(req.body.images,{
+    //     folder:'tazas',
+    //     width:150,
+    //     crop:'scale',
+    //     limit: '52428800'
+    // })
     const product= await Product.create(req.body)
     res.status(201).json({
         success:true,

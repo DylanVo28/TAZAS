@@ -12,10 +12,11 @@ var corsOptions = {
     origin: 'http://localhost:4000',
     credentials:true,
     optionsSuccessStatus: 200, // For legacy browser support
+    withCredentials:true
 }
+app.use(cookieParser())
 app.use(cors());
 app.use(express.json())
-app.use(cookieParser())
 app.use(fileUpload());
 cloudinary.config({
     cloud_name:process.env.CLOUNDINARY_CLOUD_NAME,

@@ -1,6 +1,7 @@
 import { LOGIN_REQUEST, LOGIN_FAIL, LOGIN_SUCCESS, CLEAR_ERRORS, REGISTER_USER_REQUEST, REGISTER_USER_SUCCESS, REGISTER_USER_FAIL, LOAD_USER_REQUEST, LOAD_USER_SUCCESS, LOAD_USER_FAIL } from './../constants/userConstants';
 import axios from 'axios'
 import {NotificationContainer, NotificationManager} from 'react-notifications';
+import { Redirect } from 'react-router-dom';
 function saveTheCookie(value) {
     var today = new Date(); // Actual date
     var expire = new Date(); // Expiration of the cookie
@@ -22,12 +23,15 @@ export const login=(email,password)=>async(dispatch)=>{
         }
         const {data}=await axios.post('http://localhost:4000/api/v1/user/login',{email,password},config)
         // saveTheCookie('user',data.user._id)
-        sessionStorage.setItem('token', data.token);
-        sessionStorage.setItem('user', data.user._id);
+        localStorage.setItem('user', data.user._id)
+        // sessionStorage.setItem('token', data.token);
+        // sessionStorage.setItem('user', data.user._id);
         dispatch({
             type:LOGIN_SUCCESS,
             payload:data.user
         })
+        NotificationManager.success('Success', 'Login success');
+        
         // window.location.href = '/admin/dashboard';
 
     }
@@ -60,7 +64,6 @@ export const register=(userData)=>async(dispatch)=>{
             payload:data.user
         })
         NotificationManager.success('Success message', 'Account successfully created');
-        // window.location.href = '/login';
 
     }
     catch(error){

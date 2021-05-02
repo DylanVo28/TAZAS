@@ -28,7 +28,9 @@ router.route('/admin/all-user').get(
     // isAuthenticatedUser,authorizeRoles('admin'),
     allUsers)
 router.route('/admin/user/:id')
-.get(isAuthenticatedUser,authorizeRoles('admin'),getUserDetail)
+.get(
+    // isAuthenticatedUser,authorizeRoles('admin'),
+getUserDetail)
 .put(isAuthenticatedUser,authorizeRoles('admin'),updateUser)
 .delete(isAuthenticatedUser,authorizeRoles('admin'),deleteUser)
 module.exports=router;

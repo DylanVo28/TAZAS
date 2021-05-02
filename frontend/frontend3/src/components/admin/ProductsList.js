@@ -71,7 +71,10 @@ const ProductsList=()=>{
       <div className="card mb-4">
         <div className="card-header pb-0">
           <h6>Product List</h6>
+          <div style={{display:'flex',justifyContent:'space-between'}}>
           <input className='search-product' onChange={e=>onChangeSearchProduct(e)} placeholder="Search product"/>
+          <Link name="" id="" class="btn create-button" to="/admin/create-product" role="button">Create Product</Link>
+          </div>
           <br/>
 
         </div>

@@ -3,7 +3,7 @@ import { React, useState, useEffect } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import {useDispatch,useSelector} from 'react-redux'
 import {useAlert} from 'react-alert'
-import {login,clearErrors} from '../../actions/userActions'
+import {login,clearErrors, loadUser} from '../../actions/userActions'
 import { NotificationContainer } from 'react-notifications';
 
 const Menu =()=>{
@@ -75,6 +75,11 @@ const Form=({history})=>{
     const submitHandler=(e)=>{
       e.preventDefault();
       dispatch(login(stEmail,stPassword))
+
+    }
+    const testApi=()=>{
+      dispatch(loadUser())
+
     }
     return(<div className="card card-plain mt-8">
     <div className="card-header pb-0 text-left bg-transparent">
@@ -107,6 +112,7 @@ const Form=({history})=>{
         <Link to="/create-account" className="text-info text-gradient font-weight-bold">Sign up</Link>
       </p>
     </div>
+    <button onClick={()=>testApi()}>Test api</button>
   </div>
   )
 }
@@ -140,6 +146,7 @@ const Login =()=>{
                 </div>
             </div>
         </section>
+        
         <NotificationContainer/>
 
         </div>

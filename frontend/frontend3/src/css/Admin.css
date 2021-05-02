@@ -3093,14 +3093,14 @@
   
   .btn-primary {
     color: #fff;
-    background-color: #cb0c9f;
-    border-color: #cb0c9f;
+    background-color: #007bff;
+    border-color: #007bff;
   }
   
   .btn-primary:hover {
     color: #fff;
-    background-color: #ad0a87;
-    border-color: #a20a7f;
+    background-color: #007bff;
+    border-color: #007bff;
   }
   
   .btn-check:focus+.btn-primary,
@@ -5262,8 +5262,7 @@
   .page-link {
     position: relative;
     display: block;
-    color: #cb0c9f;
-    background-color: #fff;
+    color: black;
     border: 1px solid #dee2e6;
     transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
   }
@@ -5295,9 +5294,9 @@
   
   .page-item.active .page-link {
     z-index: 3;
-    color: #fff;
-    background-color: #cb0c9f;
-    border-color: #cb0c9f;
+    color: black;
+    background: none;
+    border-color: #000000;
   }
   
   .page-item.disabled .page-link {
@@ -12991,8 +12990,8 @@
   
   .btn-primary:hover,
   .btn.bg-gradient-primary:hover {
-    background-color: #cb0c9f;
-    border-color: #cb0c9f;
+    background-color: #007bff;
+    border-color:#007bff;
   }
   
   .btn-primary .btn.bg-outline-primary,
@@ -13000,15 +12999,7 @@
     border: 1px solid #cb0c9f;
   }
   
-  .btn-primary:not(:disabled):not(.disabled).active,
-  .btn-primary:not(:disabled):not(.disabled):active,
-  .show>.btn-primary.dropdown-toggle,
-  .btn.bg-gradient-primary:not(:disabled):not(.disabled).active,
-  .btn.bg-gradient-primary:not(:disabled):not(.disabled):active,
-  .show>.btn.bg-gradient-primary.dropdown-toggle {
-    color: color-yiq(#cb0c9f);
-    background-color: #cb0c9f;
-  }
+
   
   .btn-primary.focus,
   .btn-primary:focus,
@@ -13460,6 +13451,15 @@
   .card .card-header .search-product{
     border: none;
     border-bottom: 1px solid black;
+  }
+
+  .card .card-header .create-button{
+    margin: 0px;
+    background: none;
+    color: black;
+    border: 1px solid black;
+    box-shadow: none;
+    border-radius: 0;
   }
   .card .card-body {
     font-family: "Open Sans";
@@ -20836,6 +20836,17 @@
     transition: all 0.2s ease-in-out;
   }
   
+  .main-content .form{
+    background: #ffffff;
+    border-radius: 15px;
+    box-shadow: 1px 0px 9px #ababab0f;
+  }
+  .form-control{
+    border: none;
+    border-bottom: 1px solid black;
+    border-radius: 0;
+  }
+
   .sidenav {
     z-index: 1050;
   }
