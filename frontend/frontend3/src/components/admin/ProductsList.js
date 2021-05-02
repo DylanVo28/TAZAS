@@ -1,12 +1,33 @@
 import axios from 'axios';
 import { React, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import Pagination from "react-js-pagination";
+// require("bootstrap/less/bootstrap.less");
+
 const ProductsList=()=>{
     const [listProduct,setListProduct]=useState([])
+    const [searchName,setSearchName]=useState('')
+    const [sizePage,setSizePage]=useState({
+      current:1,
+      total:0,
+      count:10,
+
+    })
     useEffect(()=>{
         axios.get('http://localhost:4000/api/v1/products')
         .then(res=>setListProduct(res.data.products))
+        axios.get('http://localhost:4000/api/v1/length-product')
+        .then(res=>setSizePage(sizePage=>({
+          ...sizePage,
+          total:res.data.lengthProducts
+        })))
     },[])
+    useEffect(()=>{
+      axios.get(`http://localhost:4000/api/v1/products?keyword=${searchName}&page=${sizePage.current}`).then(res=>setListProduct(res.data.products))
+    },[sizePage.current])
+    const handlePageChange=(pageNumber)=> {
+      setSizePage(sizePage=>({...sizePage,current:pageNumber}))
+    }
     const ProductRow=(product)=>{
         return <tr>
             
@@ -39,6 +60,10 @@ const ProductsList=()=>{
                   
                 </tr>
     }
+    const onChangeSearchProduct=(e)=>{
+      setSearchName(e.currentTarget.value)
+      axios.get(`http://localhost:4000/api/v1/products?keyword=${e.currentTarget.value}`).then(res=>setListProduct(res.data.products))
+    }
     return (
         <div className="container-fluid py-4">
   <div className="row">
@@ -46,6 +71,9 @@ const ProductsList=()=>{
       <div className="card mb-4">
         <div className="card-header pb-0">
           <h6>Product List</h6>
+          <input className='search-product' onChange={e=>onChangeSearchProduct(e)} placeholder="Search product"/>
+          <br/>
+
         </div>
         <div className="card-body px-0 pt-0 pb-2">
           <div className="table-responsive p-0">
@@ -63,7 +91,19 @@ const ProductsList=()=>{
                   {listProduct.map(item=>{return ProductRow(item)})}
                
               </tbody>
+
             </table>
+            <div>
+            <Pagination
+          activePage={sizePage.current}
+          itemsCountPerPage={sizePage.count}
+          totalItemsCount={sizePage.total}
+          itemClass="page-item"
+          linkClass="page-link"
+          onChange={(e)=>handlePageChange(e)}
+        />
+            </div>
+            
           </div>
         </div>
       </div>

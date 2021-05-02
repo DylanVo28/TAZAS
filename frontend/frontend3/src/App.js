@@ -12,6 +12,8 @@ import SignUp from "./components/SignUpDashboard/SignUp";
 import Home from './components/shop/home/Home';
 import {loadUser} from './actions/userActions'
 import store from './store'
+import Ads from "./components/shop/ads/Ads";
+import Admin from "./components/admin/Admin";
 
 const ProtectedRoute = ({ component: Component, ...rest }) => {
   return (
@@ -57,19 +59,22 @@ function App() {
       </LayoutContext.Provider> */}
       <Router>
         <Fragment>
+          <ProtectedRoute exact path='/' component={Ads}/>
+        </Fragment>
+        <Fragment>
           <ProtectedRoute exact path='/home' component={Home}/>
         </Fragment>
-      <Fragment>
+      {/* <Fragment>
         <ProtectedRoute exact  path='/admin/*' component={Sidebar}/>
        
         <main className='main-content mt-1 border-radius-lg'>
         <ProtectedRoute exact  path='/admin/*' component={Menu}/>
-          {/* <Menu/> */}
           <ProtectedRoute exact path='/admin/dashboard' component={Dashboard} />
         <ProtectedRoute exact path='/admin/products' component={ProductsList}/>
         </main>
         
-        </Fragment>
+        </Fragment> */}
+        <Admin/>
         <Fragment>
           <ProtectedRoute exact path='/login' component={Login}/>
           <ProtectedRoute exact path='/create-account' component={SignUp}/>
