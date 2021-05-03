@@ -3,6 +3,9 @@ import axios from 'axios';
 import { useState } from 'react';
 import { useEffect } from 'react';
 import { NotificationContainer, NotificationManager } from 'react-notifications';
+import { Redirect, Switch } from 'react-router-dom';
+import imageDefault from '../../images/default.jpg'
+
 const ProductDetail=(props)=>{
   
   const [avatar,setAvatar]=useState('')
@@ -34,21 +37,51 @@ const ProductDetail=(props)=>{
   },[])
   const submitHandler=(e)=>{
     e.preventDefault();
-    const dataProduct={
-      name: document.getElementsByName('name')[0].value,
-      price:document.getElementsByName('price')[0].value,
+    if(props.match.path=='/admin/create-product'){
+      const dataProduct={
+        name: document.getElementsByName('name')[0].value,
+        price:document.getElementsByName('price')[0].value,
+        description:document.getElementsByName('descriptionInput')[0].value,
+        classify:document.getElementsByName('classify')[0].value,
+        category:document.getElementsByName('category')[0].value,
+        stock:document.getElementsByName('stock')[0].value
+      }
+    }
+    else{
+      
+      setStProduct({...stProduct,
+      name:document.getElementsByName('name')[0].value,
+      price:Number(document.getElementsByName('price')[0].value),
       description:document.getElementsByName('descriptionInput')[0].value,
       classify:document.getElementsByName('classify')[0].value,
       category:document.getElementsByName('category')[0].value,
-      stock:document.getElementsByName('stock')[0].value
+      stock:Number(document.getElementsByName('stock')[0].value)
+
+      })
+      const data={
+        name:document.getElementsByName('name')[0].value,
+        price:Number(document.getElementsByName('price')[0].value),
+        description:document.getElementsByName('descriptionInput')[0].value,
+        classify:document.getElementsByName('classify')[0].value,
+        category:document.getElementsByName('category')[0].value,
+        stock:Number(document.getElementsByName('stock')[0].value),
+        image:avatar
+      }
+      axios.put(`http://localhost:4000/api/v1/admin/product/${stProduct._id}`,data)
+      NotificationManager.success('Success', 'Success')
     }
+    
 
   }
   const deleteItem=(id)=>{
         
-        axios.delete(`http://localhost:4000/api/v1/admin/product/${id}`).then(res=>NotificationManager.success('Success', 'Success')).catch(
+        axios.delete(`http://localhost:4000/api/v1/admin/product/${id}`).then(res=>
+        {NotificationManager.success('Success', 'Success')
+        window.history.go(-1)
+      }).catch(err=>
           NotificationManager.error('Error', 'Error')
         )
+      
   }
   const Form =()=>{
     return(<form style={{padding:'30px 0'}} onSubmit={submitHandler}>
@@ -110,20 +143,18 @@ const ProductDetail=(props)=>{
         </div>
         
         <button type="submit" className="btn btn-primary">Save</button>
-        {props.match.path=='/admin/product/:id' && <button  type="submit" className="btn btn-danger" onClick={()=>deleteItem(stProduct._id)}>Delete</button>}
+        {props.match.path=='/admin/product/:id' && <button style={{marginLeft:'15px'}} type="submit" className="btn btn-danger" onClick={()=>deleteItem(stProduct._id)}>Delete</button>}
       </form>
       )
 }
 const onChangeAvatar=(e)=>{
   const reader=new FileReader()
-  const imagesLocal=[]
   reader.onload=()=>{
     if(reader.readyState===2){
       setAvatarPreview(reader.result)
       setAvatar(reader.result)
     }
   }
-  
   reader.readAsDataURL(e.target.files[0])
 }
 const InputImage=()=>{
@@ -137,13 +168,13 @@ const InputImage=()=>{
      onChange={(e)=>onChangeAvatar(e)}
     required />
     <div className="invalid-feedback">Example invalid custom file feedback</div>
-    <img src={(avatar)?(avatar):('https://www.w3schools.com/w3css/img_lights.jpg')} style={{width:'100%'}}/>
+    <img src={(avatar)?(avatar):(imageDefault)} style={{width:'100%'}}/>
   </div>
   )
 }
     return(
         <div style={{paddingTop:'30px'}}>
-            <h3>Create Product</h3>
+            <h3>{props.match.path=='/admin/create-product'?('Create Product'):('Product Detail')}</h3>
         
        <div className="row">
            <div className="col-md-7 form">

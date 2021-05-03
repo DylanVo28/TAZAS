@@ -64,10 +64,19 @@ exports.getSingleProduct=catchAsyncError(async (req,res,next)=>{
 
 //update product
 exports.updateProduct=catchAsyncError(async (req,res,next)=>{
+    const result=await cloudinary.v2.uploader.upload(req.body.image,{
+        folder:'tazas',
+        width:150,
+        crop:'scale',
+        limit: '52428800'
+    })
     const product=await Product.findById(req.params.id).catch(error=>console.error())
     if(!product){
         return next(new ErrorHandler('Product not found',404));
     }
+    product.images[0].url=result.secure_url
+    product.images[0].public_id=result.asset_id
+    product.save()
     product=await Product.findByIdAndUpdate(req.params.id,req.body,{
         new:true,
         runValidators:true,

@@ -6,6 +6,7 @@ import Sidebar from './Sidebar';
 import Dashboard from './Dashboard';
 import ProductsList from "./ProductsList";
 import ProductDetail from "./ProductDetail";
+import OrdersList from "./OrdersList";
 const ProtectedRoute = ({ component: Component, ...rest }) => {
     return (
       <Route {...rest} render={
@@ -32,6 +33,7 @@ const Admin=()=>{
         <ProtectedRoute exact path='/admin/products' component={ProductsList}/>
         <PrivateRoute exact path='/admin/create-product' component={ProductDetail} isAuthenticated={true} />
         <PrivateRoute exact path='/admin/product/:id' component={ProductDetail} isAuthenticated={true}/>
+        <PrivateRoute exact path='/admin/orders' component={OrdersList} isAuthenticated={true}/>
         </main>
         
         </Fragment>

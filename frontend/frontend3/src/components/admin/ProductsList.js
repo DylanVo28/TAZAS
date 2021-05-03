@@ -28,6 +28,18 @@ const ProductsList=()=>{
     const handlePageChange=(pageNumber)=> {
       setSizePage(sizePage=>({...sizePage,current:pageNumber}))
     }
+    const getFormattedDate=(dateString) =>{
+      const date = new Date(dateString);  
+      var year = date.getFullYear();
+    
+      var month = (1 + date.getMonth()).toString();
+      month = month.length > 1 ? month : '0' + month;
+    
+      var day = date.getDate().toString();
+      day = day.length > 1 ? day : '0' + day;
+      
+      return day+'/'+month + '/'  + year;
+    }
     const ProductRow=(product)=>{
         return <tr>
             
@@ -50,7 +62,7 @@ const ProductsList=()=>{
 
                   </td>
                   <td className="align-middle text-center">
-                    <span className="text-secondary text-xs font-weight-bold">{product.createdAt}</span>
+                    <span className="text-secondary text-xs font-weight-bold">{getFormattedDate(product.createdAt)}</span>
                   </td>
                   <td className="align-middle">
                     <Link  to={"/admin/product/"+product._id} className="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">
@@ -85,7 +97,7 @@ const ProductsList=()=>{
                 <tr>
                   <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Name</th>
                   <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">User</th>
-                  <th className="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Status</th>
+                  <th className="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Stock</th>
                   <th className="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">CreatedAt</th>
                   <th className="text-secondary opacity-7" />
                 </tr>

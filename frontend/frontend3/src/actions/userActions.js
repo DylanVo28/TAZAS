@@ -81,13 +81,22 @@ export const loadUser=()=>async(dispatch)=>{
         dispatch({
             type: LOAD_USER_REQUEST
         })
-        const {data}=await axios.get('http://localhost:4000/api/v1/me')
+        const config = {
+            headers: {
+              "Access-Control-Allow-Origin": "*",
+              "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS"
+            }
+          };
+        const {data}=await axios.get('http://localhost:4000/api/v1/me'
+        // ,config
+        )
         dispatch({
             type:LOAD_USER_SUCCESS,
             payload:data.user
         })
     }
     catch(error){
+        console.log(error)
         dispatch({
             type:LOAD_USER_FAIL,
             payload:error.response.data.message

@@ -14,6 +14,7 @@ const {
     updateUser,
     deleteUser}=require('../controllers/userController')
 const { isAuthenticatedUser ,authorizeRoles} = require('../middlewares/user')
+
 router.route('/user/create').post(registerUser)
 router.route('/user/login').post(loginUser)
 router.route('/user/logout').get(logoutUser)

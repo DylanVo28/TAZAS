@@ -84,6 +84,7 @@ function App() {
         
         </Fragment> */}
         <Admin/>
+        
         <Fragment>
           <ProtectedRoute exact path='/login' component={Login}/>
           <ProtectedRoute exact path='/create-account' component={SignUp}/>

@@ -28,7 +28,7 @@ const Sidebar=()=>{
     <ul className="navbar-nav">
       <SidebarRow url={'/admin/dashboard'} icon={'fas fa-home'} title={'Dashboard'}/>
       <SidebarRow url={'/admin/products'} icon={'fas fa-archive'} title={'Products'}/>
-      {/* {SidebarRow('/admin/products','fas fa-archive','Products')} */}
+      <SidebarRow url={'/admin/orders'} icon={"fas fa-shipping-fast"} title={'Orders'}/>
      
       <li className="nav-item mt-3">
         <h6 className="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Account pages</h6>

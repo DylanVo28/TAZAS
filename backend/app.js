@@ -9,10 +9,11 @@ const cloudinary=require('cloudinary')
 const fileUpload=require('express-fileupload')
 var cors = require('cors')
 var corsOptions = {
-    origin: 'http://localhost:4000',
+    origin: 'http://localhost:3000',
     credentials:true,
-    optionsSuccessStatus: 200, // For legacy browser support
-    withCredentials:true
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+    preflightContinue: false,
+    optionsSuccessStatus: 204
 }
 app.use(cookieParser())
 app.use(cors());
