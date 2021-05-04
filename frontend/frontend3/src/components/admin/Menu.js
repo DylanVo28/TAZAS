@@ -1,6 +1,26 @@
-import { React } from 'react';
+import { React, useState } from 'react';
 import { Link } from 'react-router-dom';
-const Menu =()=>{
+import { useEffect } from 'react';
+import axios from 'axios';
+const Menu =(props)=>{
+  const [avatar,setAvatar]=useState('')
+  useEffect(()=>{
+    const config={
+      headers:{
+          'Content-Type':'application/json'
+      }
+  }
+  const userToken=localStorage.getItem("token")
+  axios.get('http://localhost:4000/api/v1/me',{
+      params:{
+          userToken
+      }
+  },config).then(res=>setAvatar(res.data.user.avatar.url))
+  },[])
+  const logoutUser=()=>{
+    localStorage.removeItem("token");
+    window.location.href='/login'
+  }
     return (
         <nav className="navbar navbar-main navbar-expand-lg px-0 mx-4 border-radius-xl shadow-none" id="navbarBlur" navbar-scroll="true">
   <div className="container-fluid py-1 px-3">
@@ -16,11 +36,16 @@ const Menu =()=>{
         
       </div>
       <ul className="navbar-nav  justify-content-end">
-        <li className="nav-item d-flex align-items-center">
-          <Link to="/login" className="nav-link font-weight-bold px-0 text-body">
-            <i className="fa fa-user me-sm-1" aria-hidden="true" />
-            <span className="d-sm-inline d-none">Sign In</span>
+        <li className="nav-item align-items-center">
+          <Link to="/login" className="nav-link font-weight-bold px-0 text-body avatar">
+           <img src={avatar}/>
           </Link>
+          <div className={'show-menu'}>
+            <ul>
+              <li>Profile</li>
+              <li onClick={()=>logoutUser()}>Log out</li>
+            </ul>
+          </div>
         </li>
         <li className="nav-item d-xl-none ps-3 d-flex align-items-center">
           <a href="javascript:;" className="nav-link p-0 text-body" id="iconNavbarSidenav">

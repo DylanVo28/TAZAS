@@ -14,9 +14,19 @@ const ProductsList=()=>{
 
     })
     useEffect(()=>{
-        axios.get('http://localhost:4000/api/v1/products')
+      const userToken=localStorage.getItem("token")
+
+        axios.get('http://localhost:4000/api/v1/products',{
+          params:{
+              userToken
+          }
+      })
         .then(res=>setListProduct(res.data.products))
-        axios.get('http://localhost:4000/api/v1/length-product')
+        axios.get('http://localhost:4000/api/v1/length-product',{
+          params:{
+              userToken
+          }
+      })
         .then(res=>setSizePage(sizePage=>({
           ...sizePage,
           total:res.data.lengthProducts

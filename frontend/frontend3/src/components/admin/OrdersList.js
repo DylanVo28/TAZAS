@@ -12,7 +12,13 @@ const OrdersList=()=>{
   
       })
     useEffect(()=>{
-        axios.get('http://localhost:4000/api/v1/admin/orders').then(res=>{
+      const userToken=localStorage.getItem("token")
+
+        axios.get('http://localhost:4000/api/v1/admin/orders',{
+          params:{
+            userToken
+        }
+        }).then(res=>{
             setStOrders(res.data.orders)
             setSizePage({...sizePage,total:res.data.orders.length})
         })
@@ -31,7 +37,7 @@ const OrdersList=()=>{
         
         return day+'/'+month + '/'  + year;
       }
-    const ProductRow=(order)=>{
+    const OrderRow=(order)=>{
         return <tr>
             
                   <td>
@@ -82,7 +88,7 @@ const OrdersList=()=>{
                   </tr>
                 </thead>
                 <tbody>
-                    {stOrders.map(item=>{return ProductRow(item)})}
+                    {stOrders.map(item=>{return OrderRow(item)})}
                  
                 </tbody>
   

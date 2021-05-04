@@ -50,7 +50,6 @@ function App() {
     // getToken()
     // console.log(getTheCookie())
       store.dispatch(loadUser())
-    
   },[])
   // useEffect(() => {
   //   const loggedInUser = localStorage.getItem("user");

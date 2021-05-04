@@ -26,11 +26,13 @@ router.route('/me').get(
 router.route('/user/update-password').put(isAuthenticatedUser,userUpdatePassword)
 router.route('/user/update-profile').put(isAuthenticatedUser,updateProfile)
 router.route('/admin/all-user').get(
-    // isAuthenticatedUser,authorizeRoles('admin'),
+    isAuthenticatedUser,
+    // authorizeRoles('admin'),
     allUsers)
 router.route('/admin/user/:id')
 .get(
-    // isAuthenticatedUser,authorizeRoles('admin'),
+    isAuthenticatedUser,
+    // authorizeRoles('admin'),
 getUserDetail)
 .put(isAuthenticatedUser,authorizeRoles('admin'),updateUser)
 .delete(isAuthenticatedUser,authorizeRoles('admin'),deleteUser)

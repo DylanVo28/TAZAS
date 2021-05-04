@@ -77,10 +77,7 @@ const Form=({history})=>{
       dispatch(login(stEmail,stPassword))
 
     }
-    const testApi=()=>{
-      dispatch(loadUser())
-
-    }
+   
     return(<div className="card card-plain mt-8">
     <div className="card-header pb-0 text-left bg-transparent">
       <h3 className="font-weight-bolder text-info text-gradient">Welcome back</h3>
@@ -112,7 +109,6 @@ const Form=({history})=>{
         <Link to="/create-account" className="text-info text-gradient font-weight-bold">Sign up</Link>
       </p>
     </div>
-    <button onClick={()=>testApi()}>Test api</button>
   </div>
   )
 }

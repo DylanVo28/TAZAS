@@ -23,16 +23,16 @@ export const login=(email,password)=>async(dispatch)=>{
         }
         const {data}=await axios.post('http://localhost:4000/api/v1/user/login',{email,password},config)
         // saveTheCookie('user',data.user._id)
-        localStorage.setItem('user', data.user._id)
         // sessionStorage.setItem('token', data.token);
         // sessionStorage.setItem('user', data.user._id);
+        localStorage.setItem('token',data.token)
         dispatch({
             type:LOGIN_SUCCESS,
             payload:data.user
         })
         NotificationManager.success('Success', 'Login success');
         
-        // window.location.href = '/admin/dashboard';
+        window.location.href = '/admin/dashboard';
 
     }
     catch(error){
@@ -81,23 +81,23 @@ export const loadUser=()=>async(dispatch)=>{
         dispatch({
             type: LOAD_USER_REQUEST
         })
-        // axios.defaults.withCredentials = true;
-        const config = {
-            headers: {
-              "Access-Control-Allow-Origin": "*",
-              "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS"
+        const config={
+            headers:{
+                'Content-Type':'application/json'
             }
-          };
-        const {data}=await axios.get('http://localhost:4000/api/v1/me'
-        // ,config
-        )
+        }
+        const userToken=localStorage.getItem("token")
+        const {data}=await axios.get('http://localhost:4000/api/v1/me',{
+            params:{
+                userToken
+            }
+        },config)
         dispatch({
             type:LOAD_USER_SUCCESS,
             payload:data.user
         })
     }
     catch(error){
-        console.log(error)
         dispatch({
             type:LOAD_USER_FAIL,
             payload:error.response.data.message

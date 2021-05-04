@@ -5,7 +5,6 @@ const APIFeatures = require('../utils/apiFeatures')
 const cloudinary=require('cloudinary')
 //add new product
 exports.newProduct=catchAsyncError (async (req,res,next)=>{
-    console.log(req.user)
     req.body.user=req.user.id
     // const result=await cloudinary.v2.uploader.upload(req.body.images,{
     //     folder:'tazas',
