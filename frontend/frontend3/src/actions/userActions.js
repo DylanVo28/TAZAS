@@ -81,6 +81,7 @@ export const loadUser=()=>async(dispatch)=>{
         dispatch({
             type: LOAD_USER_REQUEST
         })
+        // axios.defaults.withCredentials = true;
         const config = {
             headers: {
               "Access-Control-Allow-Origin": "*",

@@ -11,7 +11,7 @@ router.route('/length-product').get(
         getLengthProduct)
 router.route('/product/:id').get(getSingleProduct)
 router.route('/admin/product/new').post(
-    // isAuthenticatedUser,
+    isAuthenticatedUser,
     newProduct)
 router.route('/admin/product/:id').put(
     // isAuthenticatedUser,

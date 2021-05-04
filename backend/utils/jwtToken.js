@@ -6,7 +6,10 @@ const sendToken=(user,statusCode,res)=>{
         ),
         httpOnly:true
     }
-    res.status(statusCode).cookie('token',token,options).json({
+res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+res.header( 'Access-Control-Allow-Credentials',true);
+    res.cookie('token',token,options)
+    res.status(statusCode).json({
         success:true,
         token,
         user
