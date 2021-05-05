@@ -6,13 +6,23 @@ const cloudinary=require('cloudinary')
 //add new product
 exports.newProduct=catchAsyncError (async (req,res,next)=>{
     req.body.user=req.user.id
-    // const result=await cloudinary.v2.uploader.upload(req.body.images,{
-    //     folder:'tazas',
-    //     width:150,
-    //     crop:'scale',
-    //     limit: '52428800'
-    // })
-    const product= await Product.create(req.body)
+    const result=await cloudinary.v2.uploader.upload(req.body.data.image,{
+        folder:'tazas',
+        width:150,
+        crop:'scale',
+        limit: '52428800'
+    })
+    req.body.data.user=req.user._id
+    req.body.data.seller=req.user.name
+    req.body.data.images=[]
+    req.body.data.images.push({
+        url:result.secure_url,
+        public_id:result.asset_id
+    })
+    const product= await Product.create(req.body.data)
+  
+
+    product.save()
     res.status(201).json({
         success:true,
         product
@@ -64,7 +74,8 @@ exports.getSingleProduct=catchAsyncError(async (req,res,next)=>{
 
 //update product
 exports.updateProduct=catchAsyncError(async (req,res,next)=>{
-    const result=await cloudinary.v2.uploader.upload(req.body.image,{
+
+    const result=await cloudinary.v2.uploader.upload(req.body.data.image,{
         folder:'tazas',
         width:150,
         crop:'scale',
@@ -77,7 +88,7 @@ exports.updateProduct=catchAsyncError(async (req,res,next)=>{
     product.images[0].url=result.secure_url
     product.images[0].public_id=result.asset_id
     product.save()
-    product=await Product.findByIdAndUpdate(req.params.id,req.body,{
+    product=await Product.findByIdAndUpdate(req.params.id,req.body.data,{
         new:true,
         runValidators:true,
         useFindAndModify:false

@@ -113,9 +113,12 @@ const Form=({history})=>{
   )
 }
 const Thumbnail=()=>{
-    return (<div className="oblique position-absolute top-0 h-100 d-md-block d-none me-n8">
+    return (
+      <>
+    {/* <div className="oblique position-absolute top-0 h-100 d-md-block d-none me-n8">
     <div className="oblique-image bg-cover position-absolute fixed-top ms-auto h-100 z-index-0 ms-n6" style={{backgroundImage: 'url("https://static.zara.net/photos///contents/2021/V/L/L21012-V2021//w/1280/Look6_1.jpg?ts=1615979341884")'}} />
-  </div>
+  </div> */}
+  </>
   )
 }
 const Login =()=>{

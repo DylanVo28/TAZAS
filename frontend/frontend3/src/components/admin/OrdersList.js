@@ -2,6 +2,7 @@ import Pagination from 'react-js-pagination';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import clientRequest from '../../APIFeatures/clientRequest';
 
 const OrdersList=()=>{
     const [stOrders,setStOrders]=useState([])
@@ -12,18 +13,10 @@ const OrdersList=()=>{
   
       })
     useEffect(()=>{
-      const userToken=localStorage.getItem("token")
-
-        axios.get('http://localhost:4000/api/v1/admin/orders',{
-          params:{
-            userToken
-        }
-        }).then(res=>{
-            setStOrders(res.data.orders)
-            setSizePage({...sizePage,total:res.data.orders.length})
-        })
-        
-        
+      clientRequest.getOrders().then(res=>{
+        setStOrders(res.orders)
+        setSizePage({...sizePage,total:res.orders.length})
+      })
     },[])
     const getFormattedDate=(dateString) =>{
         const date = new Date(dateString);  
@@ -94,14 +87,14 @@ const OrdersList=()=>{
   
               </table>
               <div>
-              <Pagination
+              {/* <Pagination
           activePage={sizePage.current}
           itemsCountPerPage={sizePage.count}
           totalItemsCount={sizePage.total}
           itemClass="page-item"
           linkClass="page-link"
           onChange={(e)=>handlePageChange(e)}
-        />
+        /> */}
               </div>
               
             </div>

@@ -1,6 +1,8 @@
 import axios from 'axios';
 import { useEffect } from 'react';
 import { useState } from 'react';
+import { NotificationManager, NotificationContainer } from 'react-notifications';
+import clientRequest from '../../APIFeatures/clientRequest';
 
 const OrderDetail=(props)=>{
     const [order,setOrder]=useState({})
@@ -8,21 +10,10 @@ const OrderDetail=(props)=>{
     
     useEffect(() => {
         async function fetchMyAPI() {
-            const userToken=localStorage.getItem("token")
-            await axios.get(`http://localhost:4000/api/v1/order/${props.match.params.id}`,{
-                params:{
-                    userToken
-                }
-            }).then(res=>{setOrder(res.data.order)
-                axios.get(`http://localhost:4000/api/v1/admin/user/${res.data.order.user}`,{
-                    params:{
-                        userToken
-                    }
-                }
-                ).then(res=>setUser(res.data.user))
+            clientRequest.getOrder(props.match.params.id).then(res=>{
+                setOrder(res.order)
+                clientRequest.getUser(res.order.user).then(res=>setUser(res.user))
             })
-    
-            
         }
     
         fetchMyAPI()
@@ -49,7 +40,8 @@ const OrderDetail=(props)=>{
         return (<>
         <h4>Shipping Info</h4>{order.shippingInfo&&
                 <div className={'row'}>
-    <div className='col-3'>Address:</div>
+
+                    <div className='col-3'>Address:</div>
     <div className='col-9'>{order.shippingInfo.address}</div>
     <div className='col-3'>City:</div>
     <div className='col-9'>{order.shippingInfo.city}</div>
@@ -59,6 +51,7 @@ const OrderDetail=(props)=>{
     <div className='col-9'>{order.shippingInfo.postalCode}</div>
     <div className='col-3'>Country:</div>
     <div className='col-9'>{order.shippingInfo.country}</div>
+    
 
 </div>}</>)
     }
@@ -108,21 +101,37 @@ const OrderDetail=(props)=>{
 </div>
         </>
     }
-    return (        <div className="container-fluid py-4">
+    const deleteItem=()=>{
+        clientRequest.deleteOrder(order._id).then(res=>{
+            NotificationManager.success('Success', 'Login success');
+            window.location.href = '/admin/orders';
+        })
+        
+    }
+    return (        <div className="container-fluid py-4 order-detail">
         <div className="row">
-            <div className="col-md-6">
+            <div className="col-md-5 frame">
                 <FormShippingInfo/>
             </div>
-            <div className="col-md-6">
+            <div className="col-md-2"></div>
+            
+            <div className="col-md-5 frame">
                 <FormUser/>
             </div>
-            <div className="col-md-6">
+        </div>
+        <br></br>
+        <div className="row">
+            <div className="col-md-6 frame">
                 <FormItems/>
             </div>
-            <div className="col-md-6">
+            <div className="col-md-2"></div>
+            <div className="col-md-4 frame">
                 <FormTotal/>
             </div>
         </div>
+       <NotificationContainer/>
+        
+        <button className="btn btn-danger" onClick={()=>deleteItem()}>Delete</button>
     </div>
     )
 }

@@ -47,13 +47,10 @@ function getTheCookie() {
 }
 function App() {
   useEffect(()=>{
-    // getToken()
-    // console.log(getTheCookie())
       store.dispatch(loadUser())
   },[])
   // useEffect(() => {
   //   const loggedInUser = localStorage.getItem("user");
-  //   console.log(loggedInUser)
 
   //   if (loggedInUser) {
   //    axios.get(`http://localhost:4000/api/v1/admin/user/${loggedInUser}`).then(res=>console.log(res.data.user))

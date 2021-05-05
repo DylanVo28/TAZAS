@@ -2,6 +2,7 @@ import axios from 'axios';
 import { React, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Pagination from "react-js-pagination";
+import clientRequest from '../../APIFeatures/clientRequest';
 // require("bootstrap/less/bootstrap.less");
 
 const ProductsList=()=>{
@@ -14,27 +15,20 @@ const ProductsList=()=>{
 
     })
     useEffect(()=>{
-      const userToken=localStorage.getItem("token")
-
-        axios.get('http://localhost:4000/api/v1/products',{
-          params:{
-              userToken
-          }
-      })
-        .then(res=>setListProduct(res.data.products))
-        axios.get('http://localhost:4000/api/v1/length-product',{
-          params:{
-              userToken
-          }
-      })
-        .then(res=>setSizePage(sizePage=>({
-          ...sizePage,
-          total:res.data.lengthProducts
-        })))
+      clientRequest.getProducts()
+            .then((result) => {
+              setListProduct(result.products)
+            })
+            .catch(() => {})
+      
+      clientRequest.getLengthAllProducts()
+      .then(res=>{setSizePage(sizePage=>({...sizePage,total:res.lengthProducts}))})
+      .catch(error=>console.error()) 
+       
     },[])
     useEffect(()=>{
-      axios.get(`http://localhost:4000/api/v1/products?keyword=${searchName}&page=${sizePage.current}`).then(res=>setListProduct(res.data.products))
-    },[sizePage.current])
+      clientRequest.getSearchProducts(searchName,sizePage.current).then(res=>setListProduct(res.products))
+    },[sizePage.current,searchName])
     const handlePageChange=(pageNumber)=> {
       setSizePage(sizePage=>({...sizePage,current:pageNumber}))
     }
@@ -84,7 +78,17 @@ const ProductsList=()=>{
     }
     const onChangeSearchProduct=(e)=>{
       setSearchName(e.currentTarget.value)
-      axios.get(`http://localhost:4000/api/v1/products?keyword=${e.currentTarget.value}`).then(res=>setListProduct(res.data.products))
+      const config={
+        headers:{
+            'Content-Type':'application/json'
+        }
+    }
+    const userToken=localStorage.getItem("token")
+      axios.get(`http://localhost:4000/api/v1/products?keyword=${e.currentTarget.value}`,{
+        params:{
+          userToken
+        }
+      },config).then(res=>setListProduct(res.data.products))
     }
     return (
         <div className="container-fluid py-4">

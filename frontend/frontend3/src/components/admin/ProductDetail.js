@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useEffect } from 'react';
 import { NotificationContainer, NotificationManager } from 'react-notifications';
 import { Redirect, Switch } from 'react-router-dom';
+import clientRequest from '../../APIFeatures/clientRequest';
 import imageDefault from '../../images/default.jpg'
 
 const ProductDetail=(props)=>{
@@ -27,10 +28,10 @@ const ProductDetail=(props)=>{
       console.log('CREATE_PRODUCT')
     }
     else if(props.match.path=='/admin/product/:id'){
-      axios.get(`http://localhost:4000/api/v1/product/${props.match.params.id}`).then(res=>{
-        setStProduct(res.data.product)
-        setAvatarPreview(res.data.product.images[0].url)
-        setAvatar(res.data.product.images[0].url)
+      clientRequest.getProductDetail(props.match.params.id).then(res=>{
+        setStProduct(res.product)
+        setAvatarPreview(res.product.images[0].url)
+        setAvatar(res.product.images[0].url)
       })
       
     }
@@ -38,14 +39,22 @@ const ProductDetail=(props)=>{
   const submitHandler=(e)=>{
     e.preventDefault();
     if(props.match.path=='/admin/create-product'){
-      const dataProduct={
-        name: document.getElementsByName('name')[0].value,
-        price:document.getElementsByName('price')[0].value,
+      const data={
+        name:document.getElementsByName('name')[0].value,
+        price:Number(document.getElementsByName('price')[0].value),
         description:document.getElementsByName('descriptionInput')[0].value,
         classify:document.getElementsByName('classify')[0].value,
         category:document.getElementsByName('category')[0].value,
-        stock:document.getElementsByName('stock')[0].value
+        stock:Number(document.getElementsByName('stock')[0].value),
+        image:avatar
       }
+      const config={
+        headers:{
+            'Content-Type':'application/json'
+        }
+    }
+    clientRequest.newProduct(data).then(NotificationManager.success('Success', 'Success'))
+    
     }
     else{
       
@@ -67,20 +76,21 @@ const ProductDetail=(props)=>{
         stock:Number(document.getElementsByName('stock')[0].value),
         image:avatar
       }
-      axios.put(`http://localhost:4000/api/v1/admin/product/${stProduct._id}`,data)
-      NotificationManager.success('Success', 'Success')
+    
+
+    //update duoc nhung bao loi
+    clientRequest.updateProduct(stProduct._id,data).then(NotificationManager.success('Success', 'Success'))
+      
     }
     
 
   }
   const deleteItem=(id)=>{
-        
-        axios.delete(`http://localhost:4000/api/v1/admin/product/${id}`).then(res=>
-        {NotificationManager.success('Success', 'Success')
-        window.history.go(-1)
-      }).catch(err=>
-          NotificationManager.error('Error', 'Error')
-        )
+    
+  clientRequest.deleteProduct(id).then(res=>{NotificationManager.success('Success', 'Success')
+    window.history.go(-1)
+  }).catch(err=> NotificationManager.error('Error', 'Error'))
+     
       
   }
   const Form =()=>{

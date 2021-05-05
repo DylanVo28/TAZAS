@@ -3,7 +3,8 @@ const jwt=require('jsonwebtoken')
 const ErrorHandler=require('../utils/errorHandler')
 const catchAsyncErrors=require('../middlewares/catchAsyncError')
 exports.isAuthenticatedUser=catchAsyncErrors(async (req,res,next)=>{
-    const token=req.query.userToken
+    const token=(req.query.userToken)?(req.query.userToken):req.body.params.userToken
+
     if(!token){
         return next(new ErrorHandler('Login first to access this resource',401))
     }
