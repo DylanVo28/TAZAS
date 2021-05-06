@@ -4,7 +4,7 @@ const app=express();
 
 const errorMiddleware=require('./middlewares/error')
 const cookieParser=require('cookie-parser')
-const bodyparser=require('body-parser')
+const bodyParser=require('body-parser')
 const cloudinary=require('cloudinary')
 const fileUpload=require('express-fileupload')
 var cors = require('cors')
@@ -17,8 +17,11 @@ var corsOptions = {
 }
 app.use(cookieParser())
 app.use(cors());
-app.use(express.json())
+app.use(bodyParser.json({limit: '50mb'}));
+app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
+app.use(express.json());
 app.use(fileUpload());
+
 cloudinary.config({
     cloud_name:process.env.CLOUNDINARY_CLOUD_NAME,
     api_key:process.env.CLOUNDINARY_API_KEY,

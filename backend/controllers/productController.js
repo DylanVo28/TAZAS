@@ -7,10 +7,7 @@ const cloudinary=require('cloudinary')
 exports.newProduct=catchAsyncError (async (req,res,next)=>{
     req.body.user=req.user.id
     const result=await cloudinary.v2.uploader.upload(req.body.data.image,{
-        folder:'tazas',
-        width:150,
-        crop:'scale',
-        limit: '52428800'
+        folder:'tazas'
     })
     req.body.data.user=req.user._id
     req.body.data.seller=req.user.name
@@ -76,10 +73,8 @@ exports.getSingleProduct=catchAsyncError(async (req,res,next)=>{
 exports.updateProduct=catchAsyncError(async (req,res,next)=>{
 
     const result=await cloudinary.v2.uploader.upload(req.body.data.image,{
-        folder:'tazas',
-        width:150,
-        crop:'scale',
-        limit: '52428800'
+        folder:'tazas'
+      
     })
     const product=await Product.findById(req.params.id).catch(error=>console.error())
     if(!product){

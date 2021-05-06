@@ -8,9 +8,7 @@ const cloudinary=require('cloudinary')
 exports.registerUser=catchAsyncErrors(async(req,res,next)=>{
     const result=await cloudinary.v2.uploader.upload(req.body.avatar,{
         folder:'tazas',
-        width:150,
-        crop:'scale',
-        limit: '52428800'
+      
     })
     const {name,email,password,avatar}=req.body
     const user=await User.create({
@@ -125,12 +123,23 @@ exports.userUpdatePassword=catchAsyncErrors(async(req,res,next)=>{
 
 })
 exports.updateProfile=catchAsyncErrors(async(req,res,next)=>{
+   
+    
+    const result=await cloudinary.v2.uploader.upload(req.body.avatarPr,{
+        folder:'tazas',
+       
+    })
     const newUserData={
         
-        name:req.body.name,
-        email:req.body.email,
-
+        name:req.body.data.name,
+        email:req.body.data.email,
+        role:req.body.data.role,
+        avatar:{
+            public_id:result.asset_id,
+            url:result.url
+        }
     }
+    
     const user=await User.findByIdAndUpdate(req.user.id,newUserData,{
         new:true,
         runValidators:true,

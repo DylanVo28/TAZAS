@@ -3,6 +3,7 @@ import { React, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Pagination from "react-js-pagination";
 import clientRequest from '../../APIFeatures/clientRequest';
+import getFormattedDate from './../../HandlerCaculate/formatDate';
 // require("bootstrap/less/bootstrap.less");
 
 const ProductsList=()=>{
@@ -32,18 +33,7 @@ const ProductsList=()=>{
     const handlePageChange=(pageNumber)=> {
       setSizePage(sizePage=>({...sizePage,current:pageNumber}))
     }
-    const getFormattedDate=(dateString) =>{
-      const date = new Date(dateString);  
-      var year = date.getFullYear();
     
-      var month = (1 + date.getMonth()).toString();
-      month = month.length > 1 ? month : '0' + month;
-    
-      var day = date.getDate().toString();
-      day = day.length > 1 ? day : '0' + day;
-      
-      return day+'/'+month + '/'  + year;
-    }
     const ProductRow=(product)=>{
         return <tr>
             

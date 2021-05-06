@@ -53,7 +53,9 @@ const ProductDetail=(props)=>{
             'Content-Type':'application/json'
         }
     }
-    clientRequest.newProduct(data).then(NotificationManager.success('Success', 'Success'))
+    clientRequest.newProduct(data).then(res=>{NotificationManager.success('Success', 'Success')
+    window.location.href=`/admin/product/${res.product._id}`
+    })
     
     }
     else{

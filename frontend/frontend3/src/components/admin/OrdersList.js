@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import clientRequest from '../../APIFeatures/clientRequest';
+import getFormattedDate from './../../HandlerCaculate/formatDate';
 
 const OrdersList=()=>{
     const [stOrders,setStOrders]=useState([])
@@ -18,18 +19,7 @@ const OrdersList=()=>{
         setSizePage({...sizePage,total:res.orders.length})
       })
     },[])
-    const getFormattedDate=(dateString) =>{
-        const date = new Date(dateString);  
-        var year = date.getFullYear();
-      
-        var month = (1 + date.getMonth()).toString();
-        month = month.length > 1 ? month : '0' + month;
-      
-        var day = date.getDate().toString();
-        day = day.length > 1 ? day : '0' + day;
-        
-        return day+'/'+month + '/'  + year;
-      }
+   
     const OrderRow=(order)=>{
         return <tr>
             

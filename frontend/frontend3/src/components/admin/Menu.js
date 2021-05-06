@@ -2,6 +2,7 @@ import { React, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useEffect } from 'react';
 import axios from 'axios';
+import clientRequest from './../../APIFeatures/clientRequest';
 const Menu =(props)=>{
   const [avatar,setAvatar]=useState('')
   useEffect(()=>{
@@ -10,12 +11,8 @@ const Menu =(props)=>{
           'Content-Type':'application/json'
       }
   }
-  const userToken=localStorage.getItem("token")
-  axios.get('http://localhost:4000/api/v1/me',{
-      params:{
-          userToken
-      }
-  },config).then(res=>setAvatar(res.data.user.avatar.url))
+  clientRequest.getProfileMe().then(res=>setAvatar(res.user.avatar.url))
+  
   },[])
   const logoutUser=()=>{
     localStorage.removeItem("token");
@@ -37,7 +34,7 @@ const Menu =(props)=>{
       </div>
       <ul className="navbar-nav  justify-content-end">
         <li className="nav-item align-items-center">
-          <Link to="/login" className="nav-link font-weight-bold px-0 text-body avatar">
+          <Link to="/admin/profile" className="nav-link font-weight-bold px-0 text-body avatar">
            <img src={avatar}/>
           </Link>
           <div className={'show-menu'}>

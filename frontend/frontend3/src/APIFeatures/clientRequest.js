@@ -145,6 +145,44 @@ class ClientRequest{
             }, reject)
         }) 
     }
+
+    postLogin(email,password){
+        return new Promise((resolve,reject)=>{
+            axios.post(`${DOMAIN}/api/v1/user/login`,{email,password},config).then(result => {
+                resolve(result.data)
+            }, reject)
+        }) 
+    }
+
+    createUser(data){
+        return new Promise((resolve,reject)=>{
+            axios.post(`${DOMAIN}/api/v1/user/create`,data,config).then(result => {
+                resolve(result.data)
+            }, reject)
+        }) 
+    }
+
+    updateUser(data,avatarPr){
+        return new Promise((resolve,reject)=>{
+            axios.put(`${DOMAIN}/api/v1/user/update-profile`,{
+                params:{
+                  userToken
+              },data,avatarPr},config).then(result => {
+                resolve(result.data)
+            }, reject)
+        }) 
+    }
+
+    updatePassword(oldPassword,password){
+        return new Promise((resolve,reject)=>{
+            axios.put(`${DOMAIN}/api/v1/user/update-password`,{
+                params:{
+                  userToken
+              },oldPassword,password},config).then(result => {
+                resolve(result.data)
+            }, reject)
+        }) 
+    }
 }
 const clientRequest = new ClientRequest();
 export default clientRequest;

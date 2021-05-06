@@ -20,7 +20,7 @@ const OrderDetail=(props)=>{
       }, [])
    const FormUser=()=>{
                 return (<>
-                <h4>User</h4>
+                <h4>Customer</h4>
                 {user._id&&<div className='row form-user'>
                     <div className='col-12'>
                         <div className="avatar">
@@ -82,22 +82,22 @@ const OrderDetail=(props)=>{
         return <>
                 <h4>Total</h4>
                 <div className={'row'}>
-    <div className='col-3'>Status:</div>
-    <div className='col-9'>{(order.paymentInfo)?(order.paymentInfo.status):('')}</div>
-    <div className='col-3'>Paid At:</div>
-    <div className='col-9'>{order.paidAt}</div>
-    <div className='col-3'>Items Price:</div>
-    <div className='col-9'>{order.itemsPrice}</div>
-    <div className='col-3'>Tax Price:</div>
-    <div className='col-9'>{order.taxPrice}</div>
-    <div className='col-3'>Shipping Price:</div>
-    <div className='col-9'>{order.shippingPrice}</div>
-    <div className='col-3'>Total Price:</div>
-    <div className='col-9'>{order.totalPrice}</div>
-    <div className='col-3'>Order Status:</div>
-    <div className='col-9'>{order.orderStatus}</div>
-    <div className='col-3'>Created At:</div>
-    <div className='col-9'>{order.createAt}</div>
+    <div className='col-4'>Status:</div>
+    <div className='col-8'>{(order.paymentInfo)?(order.paymentInfo.status):('')}</div>
+    <div className='col-4'>Paid At:</div>
+    <div className='col-8'>{order.paidAt}</div>
+    <div className='col-4'>Items Price:</div>
+    <div className='col-8'>{order.itemsPrice}</div>
+    <div className='col-4'>Tax Price:</div>
+    <div className='col-8'>{order.taxPrice}</div>
+    <div className='col-4'>Shipping Price:</div>
+    <div className='col-8'>{order.shippingPrice}</div>
+    <div className='col-4'>Total Price:</div>
+    <div className='col-8'>{order.totalPrice}</div>
+    <div className='col-4'>Order Status:</div>
+    <div className='col-8'>{order.orderStatus}</div>
+    <div className='col-4'>Created At:</div>
+    <div className='col-8'>{order.createAt}</div>
 </div>
         </>
     }
