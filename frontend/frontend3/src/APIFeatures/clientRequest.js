@@ -183,6 +183,27 @@ class ClientRequest{
             }, reject)
         }) 
     }
+
+    getAllUsers(){
+        return new Promise((resolve,reject)=>{
+            axios.put(`${DOMAIN}/api/v1/admin/all-user`,{
+                params:{
+                  userToken
+              }},config).then(result => {
+                resolve(result.data)
+            }, reject)
+        })
+    }
+
+    getSearchUsers(searchName,currentPage){
+        return new Promise((resolve,reject)=>{
+            axios.get(`${DOMAIN}/api/v1/admin/users?keyword=${searchName}&page=${currentPage}`,{
+                params:{userToken}
+            }).then(result => {
+                    resolve(result.data)
+                }, reject)
+        })
+    }
 }
 const clientRequest = new ClientRequest();
 export default clientRequest;

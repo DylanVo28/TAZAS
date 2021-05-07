@@ -5,6 +5,7 @@ const sendToken=require('../utils/jwtToken')
 const sendEmail=require('../utils/sendEmail')
 const crypto=require('crypto')
 const cloudinary=require('cloudinary')
+const APIFeatures = require('../utils/apiFeatures')
 exports.registerUser=catchAsyncErrors(async(req,res,next)=>{
     const result=await cloudinary.v2.uploader.upload(req.body.avatar,{
         folder:'tazas',
@@ -155,6 +156,19 @@ exports.allUsers=catchAsyncErrors(async(req,res,next)=>{
     res.status(200).json({
         success:true,
         user
+    })
+})
+
+exports.getUsersSearch=catchAsyncErrors(async(req,res,next)=>{
+    const resPerPage=10
+    const apiFeatures=new APIFeatures(User.find(),req.query)
+    .search()
+    .pagination(resPerPage)
+    const users=await apiFeatures.query;
+    
+    res.status(200).json({
+        success:true,
+        users
     })
 })
 exports.getUserDetail=catchAsyncErrors(async(req,res,next)=>{

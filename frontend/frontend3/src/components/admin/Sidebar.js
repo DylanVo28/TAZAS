@@ -29,6 +29,7 @@ const Sidebar=()=>{
       <SidebarRow url={'/admin/dashboard'} icon={'fas fa-home'} title={'Dashboard'}/>
       <SidebarRow url={'/admin/products'} icon={'fas fa-archive'} title={'Products'}/>
       <SidebarRow url={'/admin/orders'} icon={"fas fa-shipping-fast"} title={'Orders'}/>
+      <SidebarRow url={'/admin/users'} icon={"fas fa-users"} title={'Users'}/>
       <SidebarRow url={'/admin/profile'} icon={"fas fa-user"} title={'Profile'}/>
      
       <li className="nav-item mt-3">

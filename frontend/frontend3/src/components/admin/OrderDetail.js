@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 import { useState } from 'react';
 import { NotificationManager, NotificationContainer } from 'react-notifications';
 import clientRequest from '../../APIFeatures/clientRequest';
+import getFormattedDate from './../../HandlerCaculate/formatDate';
 
 const OrderDetail=(props)=>{
     const [order,setOrder]=useState({})
@@ -85,7 +86,7 @@ const OrderDetail=(props)=>{
     <div className='col-4'>Status:</div>
     <div className='col-8'>{(order.paymentInfo)?(order.paymentInfo.status):('')}</div>
     <div className='col-4'>Paid At:</div>
-    <div className='col-8'>{order.paidAt}</div>
+    <div className='col-8'>{getFormattedDate(order.paidAt)}</div>
     <div className='col-4'>Items Price:</div>
     <div className='col-8'>{order.itemsPrice}</div>
     <div className='col-4'>Tax Price:</div>
@@ -97,7 +98,7 @@ const OrderDetail=(props)=>{
     <div className='col-4'>Order Status:</div>
     <div className='col-8'>{order.orderStatus}</div>
     <div className='col-4'>Created At:</div>
-    <div className='col-8'>{order.createAt}</div>
+    <div className='col-8'>{getFormattedDate(order.createAt)}</div>
 </div>
         </>
     }

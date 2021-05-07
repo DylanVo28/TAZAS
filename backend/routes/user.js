@@ -12,7 +12,8 @@ const {
     allUsers, 
     getUserDetail,
     updateUser,
-    deleteUser}=require('../controllers/userController')
+    deleteUser,
+    getUsersSearch}=require('../controllers/userController')
 const { isAuthenticatedUser ,authorizeRoles} = require('../middlewares/user')
 
 router.route('/user/create').post(registerUser)
@@ -24,11 +25,17 @@ router.route('/me').get(
     isAuthenticatedUser,
     userProfile)
 router.route('/user/update-password').put(isAuthenticatedUser,userUpdatePassword)
-router.route('/user/update-profile').put(isAuthenticatedUser,updateProfile)
+router.route('/user/update-profile').put(
+    isAuthenticatedUser,
+    updateProfile)
 router.route('/admin/all-user').get(
     isAuthenticatedUser,
-    // authorizeRoles('admin'),
+    authorizeRoles('admin'),
     allUsers)
+router.route('/admin/users').get(
+    isAuthenticatedUser,
+    authorizeRoles('admin'),
+    getUsersSearch)
 router.route('/admin/user/:id')
 .get(
     isAuthenticatedUser,

@@ -15,6 +15,7 @@ import store from './store'
 import Ads from "./components/shop/ads/Ads";
 import Admin from "./components/admin/Admin";
 import axios from "axios";
+import ProductHome from "./components/shop/product/ProductHome";
 
 const ProtectedRoute = ({ component: Component, ...rest }) => {
   return (
@@ -68,6 +69,8 @@ function App() {
         </Fragment>
         <Fragment>
           <ProtectedRoute exact path='/home' component={Home}/>
+          <ProtectedRoute exact path='/product/:id' component={Home}/>
+          <ProtectedRoute exact path="/product/:id" component={ProductHome}/>
         </Fragment>
       {/* <Fragment>
         <ProtectedRoute exact  path='/admin/*' component={Sidebar}/>
