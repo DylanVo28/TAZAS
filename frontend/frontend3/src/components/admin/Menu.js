@@ -39,7 +39,7 @@ const Menu =(props)=>{
           </Link>
           <div className={'show-menu'}>
             <ul>
-              <li>Profile</li>
+              <li><Link to='/admin/profile'>Profile</Link></li>
               <li onClick={()=>logoutUser()}>Log out</li>
             </ul>
           </div>

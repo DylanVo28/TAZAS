@@ -65,7 +65,7 @@ exports.forgotPassword=catchAsyncErrors(async(req,res,next)=>{
     }
     const resetToken=user.getResetPasswordToken()
     await user.save({validateBeforeSave:false})
-    const resetUrl=`${req.protocol}://${req.get('host')}/api/v1/password/reset/${resetToken}`
+    const resetUrl=`${process.env.FRONTEND_URL}/password/reset/${resetToken}`
     const message =`Your password reset token is a follow: \n\n${resetUrl}\n\nIf you have not requested this email, then ignore it`
     try {
         await sendEmail({
@@ -86,6 +86,7 @@ exports.forgotPassword=catchAsyncErrors(async(req,res,next)=>{
 })
 
 exports.resetPassword=catchAsyncErrors(async(req,res,next)=>{
+    console.log(req)
     const resetPasswordToken=crypto.createHash('sha256').update(req.params.token).digest('hex');
     const user=await User.findOne({
         resetPasswordToken,
@@ -182,10 +183,18 @@ exports.getUserDetail=catchAsyncErrors(async(req,res,next)=>{
     })
 })
 exports.updateUser=catchAsyncErrors(async(req,res,next)=>{
+    
+    const result=await cloudinary.v2.uploader.upload(req.body.avatarPr,{
+        folder:'tazas',
+    })
     const newUserData={
-        name:req.body.name,
-        email:req.body.email,
-        role:req.body.role
+        name:req.body.data.name,
+        email:req.body.data.email,
+        role:req.body.data.role,
+        avatar:{
+            public_id:result.asset_id,
+            url:result.secure_url
+        }
     }
     const user=await User.findByIdAndUpdate(req.params.id,newUserData,{
         new:true,

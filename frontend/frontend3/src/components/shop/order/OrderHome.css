@@ -1,0 +1,7 @@
+.order-home .avatar{
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    overflow: hidden;
+    box-shadow: 1px 1px 10px #9292929c;
+}

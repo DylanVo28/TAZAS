@@ -2102,5 +2102,30 @@
  .contact-area .contact-info .contact-address p:last-child a:hover {
 	 color: #0315ff;
 }
+
+.menu-home {
+	background: white;
+}
+.avatar-home{
+	position: relative;
+	overflow: hidden;
+}
+.avatar-home .avatar-home_thumbnail {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+	left: 0;
+}
+.avatar-home .avatar-home_thumbnail img{
+    width: 100px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+.product-list span{
+	color: gray;
+    font-weight: 100;
+    font-size: 16px;
+}
 /* ##### The End ##### */
  

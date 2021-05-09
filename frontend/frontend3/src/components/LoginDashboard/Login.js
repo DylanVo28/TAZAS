@@ -5,7 +5,9 @@ import {useDispatch,useSelector} from 'react-redux'
 import {useAlert} from 'react-alert'
 import {login,clearErrors, loadUser} from '../../actions/userActions'
 import { NotificationContainer } from 'react-notifications';
-
+import clientRequest from '../../APIFeatures/clientRequest';
+const Login =()=>{
+const  [checkForgot,setCheckForgot]=useState(false)
 const Menu =()=>{
     return (<nav className="navbar navbar-expand-lg  blur blur-rounded top-0  z-index-3 shadow position-absolute my-3 py-2 start-0 end-0 mx-4">
     <div className="container-fluid">
@@ -56,6 +58,36 @@ const Menu =()=>{
   </nav>
   )
 }
+const FormForgotPassword=()=>{
+  const sendEmail=(e)=>{
+    e.preventDefault()
+    clientRequest.forgotPassword({email:document.getElementsByName('email')[0].value}).then(res=>console.log(res))
+  }
+  return(<div className="card card-plain mt-8">
+  <div className="card-header pb-0 text-left bg-transparent">
+    <p className="mb-0">Enter your email</p>
+  </div>
+  <div className="card-body">
+    <form role="form text-left" onSubmit={sendEmail}>
+      <label>Email</label>
+      <div className="mb-3">
+        <input type="email" name='email' className="form-control" placeholder="Email" aria-label="Email" aria-describedby="email-addon"/>
+      </div>
+     <p onClick={()=>setCheckForgot(!checkForgot)}>Back to login</p>
+      <div className="text-center">
+        <button type="submit"  className="btn bg-gradient-info w-100 mt-4 mb-0">Send Email</button>
+
+      </div>
+    </form>
+  </div>
+  <div className="card-footer text-center pt-0 px-lg-2 px-1">
+    <p className="mb-4 text-sm mx-auto">
+      Don't have an account?
+      <Link to="/create-account" className="text-info text-gradient font-weight-bold">Sign up</Link>
+    </p>
+  </div>
+</div>)
+}
 const Form=({history})=>{
     const [stEmail,setStEmail]=useState('')
     const [stPassword,setStPassword]=useState('')
@@ -96,6 +128,7 @@ const Form=({history})=>{
         <div className="form-check form-switch">
           <input className="form-check-input" type="checkbox" id="rememberMe" defaultChecked />
           <label className="form-check-label" htmlFor="rememberMe">Remember me</label>
+          <span onClick={()=>setCheckForgot(!checkForgot)}>Forgot Password</span>
         </div>
         <div className="text-center">
           <button type="submit"  className="btn bg-gradient-info w-100 mt-4 mb-0">Sign in</button>
@@ -115,13 +148,13 @@ const Form=({history})=>{
 const Thumbnail=()=>{
     return (
       <>
-    {/* <div className="oblique position-absolute top-0 h-100 d-md-block d-none me-n8">
+    <div className="oblique position-absolute top-0 h-100 d-md-block d-none me-n8">
     <div className="oblique-image bg-cover position-absolute fixed-top ms-auto h-100 z-index-0 ms-n6" style={{backgroundImage: 'url("https://static.zara.net/photos///contents/2021/V/L/L21012-V2021//w/1280/Look6_1.jpg?ts=1615979341884")'}} />
-  </div> */}
+  </div>
   </>
   )
 }
-const Login =()=>{
+
     return(
         <div className={'g-sidenav-show  bg-white'}>
             <div className={'container position-sticky z-index-sticky top-0'}>
@@ -136,7 +169,9 @@ const Login =()=>{
                 <div className={'container'}>
                     <div className={'row'}>
                         <div className={'col-xl-4 col-lg-5 col-md-6 d-flex flex-column mx-auto'}>   
-                            <Form/>
+                            {!checkForgot&&<Form/>}
+                            {checkForgot&&<FormForgotPassword/>}
+                    
                         </div>
                         <div className={'col-md-6'}>
                             <Thumbnail/>    

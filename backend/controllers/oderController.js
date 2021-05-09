@@ -4,6 +4,7 @@ const APIFeatures = require("../utils/apiFeatures");
 const ErrorHandler = require("../utils/errorHandler");
 
 exports.newOrder=catchAsyncError(async (req,res,next)=>{
+
     const {
         orderItems,
         shippingInfo,
@@ -13,7 +14,7 @@ exports.newOrder=catchAsyncError(async (req,res,next)=>{
         totalPrice,
         orderStatus,
         shippingPrice
-    }=req.body;
+    }=req.body.data;
     const order=await Order.create({
         orderItems,
         shippingInfo,

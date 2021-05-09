@@ -55,6 +55,8 @@ const Admin=(props)=>{
         <PrivateRoute exact path='/admin/order/:id' component={OrderDetail} isAuthenticated={authenticated}/>
         <PrivateRoute exact path='/admin/profile' component={UserDetail} isAuthenticated={authenticated}/>
         <PrivateRoute exact path='/admin/users' component={UserList} isAuthenticated={authenticated}/>
+        <PrivateRoute exact path='/admin/user/:id' component={UserDetail} isAuthenticated={authenticated}/>
+
         </main>
         
         </Fragment>

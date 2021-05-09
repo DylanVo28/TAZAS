@@ -29,11 +29,27 @@ class ClientRequest{
         })
     }
 
+    getLengthAllProductsHome(){
+        return new Promise( (resolve, reject) => {
+            axios.get(`${DOMAIN}/api/v1/home-length-product`).then(result => {
+                    resolve(result.data)
+                }, reject)
+        })
+    }
+
     getSearchProducts(searchName,currentPage){
         return new Promise( (resolve, reject) => {
             axios.get(`${DOMAIN}/api/v1/products?keyword=${searchName}&page=${currentPage}`,{
                 params:{userToken}
             }).then(result => {
+                    resolve(result.data)
+                }, reject)
+        })
+    }
+
+    getSearchProductsHome(searchName,currentPage){
+        return new Promise( (resolve, reject) => {
+            axios.get(`${DOMAIN}/api/v1/products-home?keyword=${searchName}&page=${currentPage}`).then(result => {
                     resolve(result.data)
                 }, reject)
         })
@@ -199,6 +215,66 @@ class ClientRequest{
         return new Promise((resolve,reject)=>{
             axios.get(`${DOMAIN}/api/v1/admin/users?keyword=${searchName}&page=${currentPage}`,{
                 params:{userToken}
+            }).then(result => {
+                    resolve(result.data)
+                }, reject)
+        })
+    }
+
+    getUserDetail(id){
+        return new Promise((resolve,reject)=>{
+            axios.get(`${DOMAIN}/api/v1/admin/user/${id}`,{
+                params:{userToken}
+            }).then(result => {
+                    resolve(result.data)
+                }, reject)
+        })
+    }
+
+    updateUserDetail(id,data,avatarPr){
+        return new Promise((resolve,reject)=>{
+            axios.put(`${DOMAIN}/api/v1/admin/user/${id}`,{
+                params:{userToken},
+                data,
+                avatarPr
+            }).then(result => {
+                    resolve(result.data)
+                }, reject)
+        })
+    }
+
+    deleteUserDetail(id){
+        return new Promise((resolve,reject)=>{
+            axios.delete(`${DOMAIN}/api/v1/admin/user/${id}`,{
+                params:{userToken}
+               
+            }).then(result => {
+                    resolve(result.data)
+                }, reject)
+        })
+    }
+
+    forgotPassword(email){
+        return new Promise((resolve,reject)=>{
+            axios.post(`${DOMAIN}/api/v1/user/password/forgot`,email).then(result => {
+                    resolve(result.data)
+                }, reject)
+        })
+    }
+
+    resetPassword(data,token){
+        return new Promise((resolve,reject)=>{
+            axios.put(`${DOMAIN}/api/v1/user/password/reset/${token}`,data).then(result => {
+                    resolve(result.data)
+                }, reject)
+        })
+    }
+
+    postOrder(data){
+        return new Promise((resolve,reject)=>{
+            axios.post(`${DOMAIN}/api/v1/order/create`,{
+                params:{userToken},
+                data
             }).then(result => {
                     resolve(result.data)
                 }, reject)

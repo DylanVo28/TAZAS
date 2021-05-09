@@ -4,7 +4,7 @@ import clientRequest from '../../APIFeatures/clientRequest';
 import getFormattedDate from '../../HandlerCaculate/formatDate';
 import Curved from '../../images/curved0.jpg'
 import { NotificationManager, NotificationContainer } from 'react-notifications';
-const UserDetail=()=>{
+const UserDetail=(props)=>{
     const [user,setUser]=useState({
         name:"",
         url:'',
@@ -21,10 +21,18 @@ const UserDetail=()=>{
     const [edit,setEdit]=useState(true)
     const [changePass,setChangePass]=useState(false);
     useEffect(()=>{
+      console.log(props)
+      if(props.match.path=='/admin/profile')
         clientRequest.getProfileMe().then(res=>{
           setUser(res.user)
           setAvatarPr(res.user.avatar.url)
         })
+        else{
+          clientRequest.getUserDetail(props.match.params.id).then(res=>{
+            setUser(res.user)
+            setAvatarPr(res.user.avatar.url)
+          })
+        }
     },[])
     const onChangeAvatar=(e)=>{
       const reader=new FileReader()
@@ -82,8 +90,31 @@ const UserDetail=()=>{
         email:document.getElementsByName('email')[0].value,
         role:document.getElementsByName('role')[0].value,
       }
-      clientRequest.updateUser(data,avatarPr).then(NotificationManager.success('Success', 'Update success'))
+      
+      if(props.match.path=='/admin/profile'){
+        clientRequest.updateUser(data,avatarPr).then(NotificationManager.success('Success', 'Update success'))
+
+      }
+      else{
+        clientRequest.updateUserDetail(props.match.params.id,data,avatarPr).then(res=>console.log(res))
+      }
       setEdit(true)
+    }
+
+    const deleteUser=()=>{
+      if(props.match.path=='/admin/profile'){
+        clientRequest.deleteUserDetail(user._id).then(res=>{NotificationManager.success('Success', 'Update success')
+        localStorage.removeItem("token");
+        window.location.href='/login'
+      })
+      }
+      else{
+        clientRequest.deleteUserDetail(props.match.params.id).then(res=>{NotificationManager.success('Success', 'Update success')
+        window.location.href='/admin/users'
+      })
+      }
+     
+
     }
     const InfoUser=()=>{
         return (user && <div className="col-12 col-xl-8">
@@ -97,10 +128,12 @@ const UserDetail=()=>{
                 <a href="javascript:;">
                   {edit?
                   <i onClick={()=>setEdit(false)} className="fas fa-user-edit text-secondary text-sm" data-bs-toggle="tooltip" data-bs-placement="top" title aria-hidden="true" data-bs-original-title="Edit Profile" aria-label="Edit Profile" />
-                  :(<div className="btn-group"><button className='btn btn-primary' onClick={()=>saveUser()}>Save</button>
-                  <button className='btn' 
-                  onClick={()=>setChangePass(!changePass)}
-                  >Change Password</button></div>
+                  :(<div className="btn-group">
+                    <button className='btn btn-primary' onClick={()=>saveUser()}>Save</button>
+                  {props.match.path=='/admin/profile' &&<><button className='btn' 
+                  onClick={()=>setChangePass(!changePass)}>Change Password</button></>}
+                  <button className='btn' onClick={()=>deleteUser()} >Delete</button>
+                  </div>
                   )
                   } 
                 </a>
@@ -170,7 +203,7 @@ const UserDetail=()=>{
         <div className="container-fluid py-4">
             <div className="row">
                 {!changePass &&<InfoUser/>}
-                {changePass&&<ChangePassUser/>}
+                {(changePass && props.match.path=='/admin/profile')&&<ChangePassUser/>}
             </div>
         </div>
         <NotificationContainer/>

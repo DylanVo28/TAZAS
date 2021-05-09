@@ -2,6 +2,7 @@ import './ProductHome.css'
 import { useEffect } from 'react';
 import clientRequest from '../../../APIFeatures/clientRequest';
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 const ProductHome=(props)=>{
     const [product,setProduct]=useState({
         name:'',
@@ -19,8 +20,14 @@ const ProductHome=(props)=>{
         }],
     })
     useEffect(()=>{
+
         clientRequest.getProductDetail(props.match.params.id).then(res=>setProduct(res.product))
     },[])
+    const orderNow=()=>{
+        const cartItem=product;
+        localStorage.setItem('cartItem',JSON.stringify(cartItem));
+        window.location.href='/order/create-new'
+    }
     return (<div className="row product-home" style={{position:'relative'}}>
         <div className='product-home_left'>
         <h1 className='product-home_title'>{product.name}</h1>
@@ -43,7 +50,7 @@ const ProductHome=(props)=>{
                 
             </div>
             <br></br>
-            <div style={{display:'flex',justifyContent:'space-between'}}> <button className='btn-product-home'>Mua ngay</button>
+            <div style={{display:'flex',justifyContent:'space-between'}}> <button className='btn-product-home' onClick={()=>orderNow()}>Mua ngay</button>
             <button className='btn-product-home'>Thêm vào giỏ</button></div>
            
 
