@@ -109,6 +109,10 @@ const OrderDetail=(props)=>{
         })
         
     }
+    const updateOrderStatus=(status)=>{
+        clientRequest.updateOrder(order._id,status).then(res=>setOrder({...order,orderStatus:res.order.orderStatus}))
+    }
+
     return (        <div className="container-fluid py-4 order-detail">
         <div className="row">
             <div className="col-md-5 frame">
@@ -131,8 +135,11 @@ const OrderDetail=(props)=>{
             </div>
         </div>
        <NotificationContainer/>
-        
+        <div className='btn-group'>
         <button className="btn btn-danger" onClick={()=>deleteItem()}>Delete</button>
+        {order.orderStatus=='Processing'&&<button className='btn' onClick={(status)=>updateOrderStatus('Processing')}>Confirm Order</button>}
+        {order.orderStatus=='Delivered'&&<button className='btn' onClick={(status)=>updateOrderStatus('Delivered')}>Delivered</button>}
+        </div>
     </div>
     )
 }

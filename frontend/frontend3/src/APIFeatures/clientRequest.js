@@ -280,6 +280,28 @@ class ClientRequest{
                 }, reject)
         })
     }
+
+    updateOrder(id,orderStatus){
+        return new Promise((resolve,reject)=>{
+            axios.put(`${DOMAIN}/api/v1/admin/order/${id}`,{
+                params:{userToken},
+                orderStatus
+            }).then(result => {
+                    resolve(result.data)
+                }, reject)
+        })
+    }
+
+    updateCartItem(idItem){
+        return new Promise((resolve,reject)=>{
+            axios.put(`${DOMAIN}/api/v1/add-to-cart`,{
+                params:{userToken},
+                idItem
+            }).then(result => {
+                    resolve(result.data)
+                }, reject)
+        })
+    }
 }
 const clientRequest = new ClientRequest();
 export default clientRequest;

@@ -28,6 +28,9 @@ const ProductHome=(props)=>{
         localStorage.setItem('cartItem',JSON.stringify(cartItem));
         window.location.href='/order/create-new'
     }
+    const addToCart=()=>{
+        clientRequest.updateCartItem(product._id).then(res=>console.log(res))
+    }
     return (<div className="row product-home" style={{position:'relative'}}>
         <div className='product-home_left'>
         <h1 className='product-home_title'>{product.name}</h1>
@@ -51,7 +54,7 @@ const ProductHome=(props)=>{
             </div>
             <br></br>
             <div style={{display:'flex',justifyContent:'space-between'}}> <button className='btn-product-home' onClick={()=>orderNow()}>Mua ngay</button>
-            <button className='btn-product-home'>Thêm vào giỏ</button></div>
+            <button className='btn-product-home' onClick={()=>addToCart()}>Thêm vào giỏ</button></div>
            
 
         </div>

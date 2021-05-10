@@ -1,6 +1,5 @@
 import { React } from 'react';
 import '../../../css/Home.css'
-import HeartIcon from '../../../images/heart.svg'
 import  {Carousel}  from 'react-bootstrap';
 import { useEffect } from 'react';
 import clientRequest from '../../../APIFeatures/clientRequest';
@@ -8,36 +7,15 @@ import { useState } from 'react';
 import logo from '../../../images/tazas.png'
 import { Link } from 'react-router-dom';
 import Pagination from 'react-js-pagination';
-const Menu =()=>{
-    return (<header className="header_area menu-home">
-        <div className="classy-nav-container breakpoint-off d-flex align-items-center justify-content-between light left">
-            <nav className="classy-navbar" id="essenceNav">
-                <a className="nav-brand" href="index.html">
-                    <img src="img/core-img/logo.png" alt="" />
-                </a>
-            <div className="classy-navbar-toggler">
-                <span className="navbarToggler"><span />
-                <span /><span /></span></div>
-                
-                <div className="classy-menu">
-                    <div className="classycloseIcon">
-                        <div className="cross-wrap">
-                            <span className="top" />
-                            <span className="bottom" />
-                            </div></div>
-                            <div className="classynav">
-                                <ul className="menu-list">
-                                    <li className="megamenu-item"><a href="#">Shop</a></li><li className="cn-dropdown-item has-down pr12"><a href="#">Pages</a></li><li><a href="blog.html">Blog</a></li><li><a href="contact.html">Contact</a></li></ul></div></div></nav><div className="header-meta d-flex clearfix justify-content-end"><div className="search-area"><form action="#" method="post"><input type="search" name="search" id="headerSearch" placeholder="Type for search" /><button type="submit"><i className="fa fa-search" aria-hidden="true" /></button></form></div><div className="favourite-area"><a href="#"><img src={HeartIcon} alt="" /></a></div><div className="user-login-info"><a href="#"><img src="img/core-img/user.svg" alt="" /></a></div><div className="cart-area"><a href="#" id="essenceCartBtn"><img src="img/core-img/bag.svg" alt="" /> <span>3</span></a></div></div></div></header>
+import MenuHome from '../MenuHome';
 
-  )
-}
 
 const CaroselHome=()=>{
   return <div className='container' style={{marginTop:'87px'}}><Carousel className='carousel-home'>
   <Carousel.Item>
     <img
       className="d-block w-100"
-      src="https://static.remove.bg/remove-bg-web/2a274ebbb5879d870a69caae33d94388a88e0e35/assets/start_remove-79a4598a05a77ca999df1dcb434160994b6fde2c3e9101984fb1be0f16d0a74e.png"
+      src="/images/banner_tazas_1.png"
       alt="First slide"
     />
     <Carousel.Caption>
@@ -48,7 +26,7 @@ const CaroselHome=()=>{
   <Carousel.Item>
     <img
       className="d-block w-100"
-      src="https://interactive-examples.mdn.mozilla.net/media/cc0-images/grapefruit-slice-332-332.jpg"
+      src="/images/banner_tazas_2.png"
       alt="Second slide"
     />
 
@@ -60,7 +38,7 @@ const CaroselHome=()=>{
   <Carousel.Item>
     <img
       className="d-block w-100"
-      src="https://www.w3schools.com/w3css/img_lights.jpg"
+      src="/images/banner_tazas_3.png"
       alt="Third slide"
     />
 
@@ -91,7 +69,7 @@ const Home =()=>{
   }
     return (
         <>
-        <Menu/>
+        <MenuHome/>
         <CaroselHome/>
         <br></br>
         <div className='container product-list'>

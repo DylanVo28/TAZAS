@@ -13,7 +13,8 @@ const {
     getUserDetail,
     updateUser,
     deleteUser,
-    getUsersSearch}=require('../controllers/userController')
+    getUsersSearch,
+    updateCartItem}=require('../controllers/userController')
 const { isAuthenticatedUser ,authorizeRoles} = require('../middlewares/user')
 
 router.route('/user/create').post(registerUser)
@@ -43,4 +44,5 @@ router.route('/admin/user/:id')
 getUserDetail)
 .put(isAuthenticatedUser,authorizeRoles('admin'),updateUser)
 .delete(isAuthenticatedUser,authorizeRoles('admin'),deleteUser)
+router.route('/add-to-cart').put(isAuthenticatedUser,updateCartItem)
 module.exports=router;

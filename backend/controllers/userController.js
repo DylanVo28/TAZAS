@@ -86,7 +86,6 @@ exports.forgotPassword=catchAsyncErrors(async(req,res,next)=>{
 })
 
 exports.resetPassword=catchAsyncErrors(async(req,res,next)=>{
-    console.log(req)
     const resetPasswordToken=crypto.createHash('sha256').update(req.params.token).digest('hex');
     const user=await User.findOne({
         resetPasswordToken,
@@ -212,6 +211,33 @@ exports.deleteUser=catchAsyncErrors(async(req,res,next)=>{
         return next(new ErrorHandler('user not found',404))
     }
     await user.remove();
+    res.status(200).json({
+        success:true
+    })
+})
+exports.updateCartItem=catchAsyncErrors(async(req,res,next)=>{
+    const user=await User.findById(req.user.id)
+    if(!user){
+        return next(new ErrorHandler('user not found',404))
+    }
+    if(user.cartItems){
+        user.cartItems.forEach((item,index)=>{
+            if(item.product==req.body.idItem){
+                user.cartItems[index].quantity=item.quantity+1
+                user.save()
+                res.status(200).json({
+                    success:true
+                })
+                return
+            }
+        })
+    }
+   
+    user.cartItems.push({
+        product:req.body.idItem,
+        quantity:1
+    })
+    await user.save()
     res.status(200).json({
         success:true
     })
