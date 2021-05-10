@@ -2127,5 +2127,29 @@
     font-weight: 100;
     font-size: 16px;
 }
+.button-search button:hover{
+	opacity: 0.8;
+}
+.container.product-list button{
+    width: 40px;
+    height: 38px;
+    top: 1px;
+    right: 16px;
+    padding: 0 15px;
+    border: none;
+    background: none;
+    color: #160c0b;
+    border-radius: 0 2px 2px 0;
+}
+.search-input-home{
+	border: 1px solid #ddd;
+    color: #555;
+    font-size: 14px;
+    font-family: "Raleway", sans-serif;
+    height: 40px;
+    padding: 10px 55px 10px 10px;
+    width: 20%;
+	margin-bottom: 20px;
+}
 /* ##### The End ##### */
  

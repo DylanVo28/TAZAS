@@ -73,7 +73,10 @@ const Home =()=>{
         <CaroselHome/>
         <br></br>
         <div className='container product-list'>
-        <input placeholder='Search product' onChange={(e)=>setSearch(e.currentTarget.value)}/>
+          <input className='search-input-home' placeholder='Search product' onChange={(e)=>setSearch(e.currentTarget.value)}/>
+          <button  type="submit">
+              <i className="fa fa-search"></i>
+          </button>
         <div className='row'>
 
           {products.map(item=><div className='col-md-4' style={{marginBottom:'15px'}}>
