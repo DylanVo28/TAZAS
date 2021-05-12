@@ -8,6 +8,8 @@ import logo from '../../../images/tazas.png'
 import { Link } from 'react-router-dom';
 import Pagination from 'react-js-pagination';
 import MenuHome from '../MenuHome';
+import { Popup } from 'reactjs-popup';
+import ModalPopup from '../../shared/ModalPopup';
 
 
 const CaroselHome=()=>{
@@ -18,10 +20,7 @@ const CaroselHome=()=>{
       src="/images/banner_tazas_1.png"
       alt="First slide"
     />
-    <Carousel.Caption>
-      <h3>First slide label</h3>
-      <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
-    </Carousel.Caption>
+    
   </Carousel.Item>
   <Carousel.Item>
     <img
@@ -30,10 +29,7 @@ const CaroselHome=()=>{
       alt="Second slide"
     />
 
-    <Carousel.Caption>
-      <h3>Second slide label</h3>
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-    </Carousel.Caption>
+  
   </Carousel.Item>
   <Carousel.Item>
     <img
@@ -42,10 +38,7 @@ const CaroselHome=()=>{
       alt="Third slide"
     />
 
-    <Carousel.Caption>
-      <h3>Third slide label</h3>
-      <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur.</p>
-    </Carousel.Caption>
+    
   </Carousel.Item>
 </Carousel></div>
 }
@@ -69,7 +62,7 @@ const Home =()=>{
   }
     return (
         <>
-        <MenuHome/>
+        
         <CaroselHome/>
         <br></br>
         <div className='container product-list'>
@@ -106,8 +99,9 @@ const Home =()=>{
          linkClass="page-link"
          onChange={(e)=>handlePageChange(e)}/>
         </div>
-
+        
        </>
+       
     )
 }
 export default Home

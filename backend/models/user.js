@@ -45,6 +45,22 @@ const userSchema=new mongoose.Schema({
                 type:mongoose.Schema.Types.ObjectId,
                 ref:'Product'
             },
+            name:{
+                type:String,
+                default:''
+            },
+            image:{
+                type:String,
+                default:''
+            },
+            price:{
+                type:Number,
+                default:0.0
+            },
+            checked:{
+                type:Boolean,
+                default:false
+            },
             quantity:{
                 type:Number,
                 default:0.0

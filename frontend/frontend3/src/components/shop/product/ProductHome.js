@@ -3,6 +3,10 @@ import { useEffect } from 'react';
 import clientRequest from '../../../APIFeatures/clientRequest';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import MenuHome from '../MenuHome';
+import Popup from "reactjs-popup";
+import Modal from 'react-awesome-modal';
+import ModalPopup from '../../shared/ModalPopup';
 const ProductHome=(props)=>{
     const [product,setProduct]=useState({
         name:'',
@@ -19,6 +23,7 @@ const ProductHome=(props)=>{
             url:'default'
         }],
     })
+    const [showModal,setShowModal]=useState(false)
     useEffect(()=>{
 
         clientRequest.getProductDetail(props.match.params.id).then(res=>setProduct(res.product))
@@ -26,12 +31,26 @@ const ProductHome=(props)=>{
     const orderNow=()=>{
         const cartItem=product;
         localStorage.setItem('cartItem',JSON.stringify(cartItem));
+
         window.location.href='/order/create-new'
     }
     const addToCart=()=>{
-        clientRequest.updateCartItem(product._id).then(res=>console.log(res))
+        const data={
+            product:product._id,
+            name:product.name,
+            image:product.images[0].url,
+            price:product.price,
+            checked:true,
+            
+        }
+        clientRequest.updateCartItem(data).then(res=>console.log(res)).catch(err=>setShowModal(true))
+
+       
     }
-    return (<div className="row product-home" style={{position:'relative'}}>
+    return (
+    <>
+    <div className="row product-home" style={{position:'relative'}}>
+    
         <div className='product-home_left'>
         <h1 className='product-home_title'>{product.name}</h1>
         <br></br>
@@ -58,6 +77,14 @@ const ProductHome=(props)=>{
            
 
         </div>
-    </div>)
+        
+    </div>
+    <ModalPopup open={showModal}
+        handleChange={()=>setShowModal(!showModal)}
+        title={'Ban chua login'}
+        linkTo={'/login'}
+        titleLinkTo={'Login'}
+    />
+    </>)
 }
 export default ProductHome

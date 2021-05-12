@@ -220,25 +220,34 @@ exports.updateCartItem=catchAsyncErrors(async(req,res,next)=>{
     if(!user){
         return next(new ErrorHandler('user not found',404))
     }
-    if(user.cartItems){
-        user.cartItems.forEach((item,index)=>{
-            if(item.product==req.body.idItem){
-                user.cartItems[index].quantity=item.quantity+1
-                user.save()
-                res.status(200).json({
-                    success:true
-                })
-                return
+    var cartItems=user.cartItems
+    var checkFindItem=false
+    
+    
+        cartItems.forEach((item,index)=>{
+            if(item.product==req.body.data.product){
+                cartItems[index].quantity=item.quantity+1
+                checkFindItem=true
             }
         })
-    }
+        if(cartItems.length==0 || !checkFindItem){
+            cartItems.push({
+                product: req.body.data.product,
+                name:req.body.data.name,
+                image:req.body.data.image,
+                price:req.body.data.price,
+                checked:req.body.data.checked,
+                quantity:1
+            })
+        }
+    
    
-    user.cartItems.push({
-        product:req.body.idItem,
-        quantity:1
-    })
+    
+    user.cartItems=cartItems
     await user.save()
+   
     res.status(200).json({
         success:true
     })
+    
 })

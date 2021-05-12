@@ -17,7 +17,6 @@ function saveTheCookie(value) {
 export const login=(email,password)=>async(dispatch)=>{
     try{
         dispatch({type:LOGIN_REQUEST})
-        
         const data=await clientRequest.postLogin(email,password).then(res=>{return res})
       
         localStorage.setItem('token',data.token)
@@ -74,26 +73,16 @@ export const loadUser=()=>async(dispatch)=>{
         dispatch({
             type: LOAD_USER_REQUEST
         })
-        const config={
-            headers:{
-                'Content-Type':'application/json'
-            }
-        }
-        const userToken=localStorage.getItem("token")
-        const {data}=await axios.get('http://localhost:4000/api/v1/me',{
-            params:{
-                userToken
-            }
-        },config)
+        const user=await clientRequest.getProfileMe().then(res=>{return res.user})
         dispatch({
             type:LOAD_USER_SUCCESS,
-            payload:data.user
+             payload:user
         })
     }
     catch(error){
         dispatch({
             type:LOAD_USER_FAIL,
-            payload:error.response.data.message
+            payload:error.response
         })
     }
 }

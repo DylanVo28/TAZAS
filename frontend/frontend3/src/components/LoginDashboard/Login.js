@@ -30,10 +30,10 @@ const Menu =()=>{
             </Link>
           </li>
           <li className="nav-item">
-            <a className="nav-link me-2" href="../pages/profile.html">
-              <i className="fa fa-user opacity-6 text-dark me-1" aria-hidden="true" />
-              Profile
-            </a>
+            <Link className="nav-link me-2" to="/home">
+              <i className="fas fa-store opacity-6 text-dark me-1" aria-hidden="true" />
+              Store
+            </Link>
           </li>
           <li className="nav-item">
             <Link className="nav-link me-2" to="/create-account">

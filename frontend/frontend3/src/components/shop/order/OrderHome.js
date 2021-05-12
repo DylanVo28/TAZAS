@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import clientRequest from '../../../APIFeatures/clientRequest';
 import { useState } from 'react';
 import './OrderHome.css'
+import { Link } from 'react-router-dom';
 const OrderHome=()=>{
     const [product,setProduct]=useState({})
     const [user,setUser]=useState({})
@@ -57,7 +58,7 @@ const OrderHome=()=>{
         
 
     }
-    return <div className='container order-home'>
+    return <div className='container order-home' style={{marginTop:'80px'}}>
         <div className='row'>
             <div className='col-md-8'>
                 <h1>Shipping Info</h1>
@@ -104,6 +105,15 @@ const OrderHome=()=>{
                
                 </form>
             </div>}
+            {!user.avatar&&<div className='col-md-4'>
+                <h1>You have to login</h1>
+                <button className='btn'>
+                    <Link to='/login'>
+                        Login
+                    </Link>
+                </button>
+                </div>
+            }
         </div>
         <div className='row'>
             <div className='col-md-8'>

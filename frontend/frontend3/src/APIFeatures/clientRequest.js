@@ -292,11 +292,11 @@ class ClientRequest{
         })
     }
 
-    updateCartItem(idItem){
+    updateCartItem(data){
         return new Promise((resolve,reject)=>{
             axios.put(`${DOMAIN}/api/v1/add-to-cart`,{
                 params:{userToken},
-                idItem
+                data
             }).then(result => {
                     resolve(result.data)
                 }, reject)

@@ -18,7 +18,9 @@ import axios from "axios";
 import ProductHome from "./components/shop/product/ProductHome";
 import NewPassword from "./components/LoginDashboard/NewPassword";
 import OrderHome from './components/shop/order/OrderHome';
-
+import MenuHome from './components/shop/MenuHome';
+import CartItems from './components/shop/cart/CartItems';
+import 'reactjs-popup/dist/index.css';
 const ProtectedRoute = ({ component: Component, ...rest }) => {
   return (
     <Route {...rest} render={
@@ -29,7 +31,7 @@ const ProtectedRoute = ({ component: Component, ...rest }) => {
 
 function App() {
   useEffect(()=>{
-      store.dispatch(loadUser())
+      // store.dispatch(loadUser())
   },[])
   
   return (
@@ -40,6 +42,7 @@ function App() {
           <ProtectedRoute exact path='/' component={Ads}/>
         </Fragment>
         <Fragment>
+          <ProtectedRoute exact path={["/home","/product/:id","/order/create-new",'/cart-items']} component={MenuHome}/>
           <ProtectedRoute exact path='/home' component={Home}/>
          
 
@@ -47,6 +50,7 @@ function App() {
         <Fragment>
           <ProtectedRoute exact path="/product/:id" component={ProductHome}/>
           <ProtectedRoute exact path="/order/create-new" component={OrderHome}/>
+          <ProtectedRoute exact path="/cart-items" component={CartItems}/>
     </Fragment>
         <Admin/>
         
