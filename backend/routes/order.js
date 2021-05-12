@@ -1,5 +1,5 @@
 const express=require('express')
-const { newOrder, getOderDetail,  myOrders, allOrders, deleteOrder } = require('../controllers/oderController')
+const { newOrder, getOderDetail,  myOrders, allOrders, deleteOrder, updateOrder } = require('../controllers/oderController')
 const { isAuthenticatedUser, authorizeRoles } = require('../middlewares/user')
 const router=express.Router()
 router.route('/order/create').post(
@@ -15,6 +15,11 @@ router.route('/admin/order/:id').delete(
     isAuthenticatedUser,
     // authorizeRoles('admin'),
     deleteOrder)
+router.route('/admin/order/:id').put(
+    isAuthenticatedUser,
+    authorizeRoles('admin'),
+    updateOrder    
 
+)
 
 module.exports=router

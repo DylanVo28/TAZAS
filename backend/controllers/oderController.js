@@ -2,7 +2,7 @@ const catchAsyncError = require("../middlewares/catchAsyncError");
 const Order = require("../models/order");
 const APIFeatures = require("../utils/apiFeatures");
 const ErrorHandler = require("../utils/errorHandler");
-
+const Product =require('../models/product');
 exports.newOrder=catchAsyncError(async (req,res,next)=>{
 
     const {
@@ -65,6 +65,24 @@ exports.allOrders=catchAsyncError(async(req,res,next)=>{
 })
 exports.updateOrder=catchAsyncError(async (req,res,next)=>{
     //update comming
+    const order=await Order.findById(req.params.id);
+    if(!order){
+        return next(new ErrorHandler('Order not found',404))
+    }
+    order.orderStatus=req.body.orderStatus
+
+    // console.log(order)
+    order.orderItems.forEach(async item=>{
+        const product=await Product.findById(item.product);
+        console.log(product)
+        product.stock-=item.quantity
+        await product.save()
+    })
+    await order.save();
+    res.status(200).json({
+        success:true,
+        order
+    })
 })
 
 exports.deleteOrder=catchAsyncError(async(req,res,next)=>{

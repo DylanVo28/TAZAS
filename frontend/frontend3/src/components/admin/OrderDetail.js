@@ -137,7 +137,7 @@ const OrderDetail=(props)=>{
        <NotificationContainer/>
         <div className='btn-group'>
         <button className="btn btn-danger" onClick={()=>deleteItem()}>Delete</button>
-        {order.orderStatus=='Processing'&&<button className='btn' onClick={(status)=>updateOrderStatus('Processing')}>Confirm Order</button>}
+        {order.orderStatus=='Processing'&&<button className='btn' onClick={(status)=>updateOrderStatus('Confirmed')}>Confirm Order</button>}
         {order.orderStatus=='Delivered'&&<button className='btn' onClick={(status)=>updateOrderStatus('Delivered')}>Delivered</button>}
         </div>
     </div>
