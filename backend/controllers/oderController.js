@@ -2,8 +2,8 @@ const catchAsyncError = require("../middlewares/catchAsyncError");
 const Order = require("../models/order");
 const APIFeatures = require("../utils/apiFeatures");
 const ErrorHandler = require("../utils/errorHandler");
-const Product =require('../models/product');
-exports.newOrder=catchAsyncError(async (req,res,next)=>{
+const Product = require('../models/product');
+exports.newOrder = catchAsyncError(async (req, res, next) => {
 
     const {
         orderItems,
@@ -14,8 +14,8 @@ exports.newOrder=catchAsyncError(async (req,res,next)=>{
         totalPrice,
         orderStatus,
         shippingPrice
-    }=req.body.data;
-    const order=await Order.create({
+    } = req.body.data;
+    const order = await Order.create({
         orderItems,
         shippingInfo,
         paymentInfo,
@@ -24,73 +24,86 @@ exports.newOrder=catchAsyncError(async (req,res,next)=>{
         totalPrice,
         orderStatus,
         shippingPrice,
-        user:req.user.id,
-        paidAt:Date.now(),
+        user: req.user.id,
+        paidAt: Date.now(),
 
     })
     res.status(200).json({
-        success:true,
+        success: true,
         order
     })
 })
-exports.getOderDetail=catchAsyncError(async(req,res,next)=>{
-    const order=await Order.findById(req.params.id)
-    if(!order){
-        return next(new ErrorHandler('order not found',404))
+exports.getOderDetail = catchAsyncError(async (req, res, next) => {
+    const order = await Order.findById(req.params.id)
+    if (!order) {
+        return next(new ErrorHandler('order not found', 404))
     }
     res.status(200).json({
-        success:true,
+        success: true,
         order
     })
 })
-exports.myOrders=catchAsyncError(async(req,res,next)=>{
-    const orders=await Order.find({user:req.user._id});
-    
+exports.myOrders = catchAsyncError(async (req, res, next) => {
+    const orders = await Order.find({ user: req.user._id });
+
     res.status(200).json({
-        success:true,
+        success: true,
         orders
     })
 })
-exports.allOrders=catchAsyncError(async(req,res,next)=>{
-    const orders=await Order.find()
-    let totalPayment=0;
-    orders.forEach(order=>{
-        totalPayment+=order.totalPrice
+exports.allOrders = catchAsyncError(async (req, res, next) => {
+    const orders = await Order.find()
+    let totalPayment = 0;
+    orders.forEach(order => {
+        totalPayment += order.totalPrice
     })
     res.status(200).json({
-        success:true,
+        success: true,
         totalPayment,
         orders
     })
 })
-exports.updateOrder=catchAsyncError(async (req,res,next)=>{
-    const order=await Order.findById(req.params.id);
-    if(!order){
-        return next(new ErrorHandler('Order not found',404))
+exports.updateOrder = catchAsyncError(async (req, res, next) => {
+    const order = await Order.findById(req.params.id);
+    if (!order) {
+        return next(new ErrorHandler('Order not found', 404))
     }
-    order.orderStatus=req.body.orderStatus
-    if(order.orderStatus=='Confirmed'){
-        order.orderItems.forEach(async item=>{
-            const product=await Product.findById(item.product);
-            product.stock-=item.quantity
+    order.orderStatus = req.body.orderStatus
+    if (order.orderStatus == 'Delivered') {
+        order.orderItems.forEach(async item => {
+            const product = await Product.findById(item.product);
+            product.stock -= item.quantity
             await product.save()
         })
     }
     await order.save();
-   
+
     res.status(200).json({
-        success:true,
+        success: true,
         order
     })
 })
+exports.deleteOrderBefore = catchAsyncError(async (req, res, next) => {
+    const order = await Order.findById(req.params.id);
+    if (!order) {
+        return next(new ErrorHandler('Order not found', 404))
+    }
+    order.orderStatus = req.body.orderStatus
+    if (order.orderStatus == 'Confirmed') {
+        await order.remove()
+        res.status(200).json({
+            success: true
+        })
+    }
+})
 
-exports.deleteOrder=catchAsyncError(async(req,res,next)=>{
-    const order=await Order.findById(req.params.id)
-    if(!order){
-        return next(new ErrorHandler('Order not found',404))
+exports.deleteOrder = catchAsyncError(async (req, res, next) => {
+    const order = await Order.findById(req.params.id)
+    if (!order) {
+        return next(new ErrorHandler('Order not found', 404))
     }
     await order.remove()
     res.status(200).json({
-        success:true
+        success: true
     })
 })
