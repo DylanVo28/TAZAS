@@ -15,13 +15,12 @@ router.route('/admin/order/:id').delete(
     isAuthenticatedUser,
     // authorizeRoles('admin'),
     deleteOrder)
-//===================================
-router.route('/admin/order/:id').put(
+
+router.route('/order/:id').delete(
     isAuthenticatedUser,
-    authorizeRoles('admin'),
-    deleteOrderBefore
+    // authorizeRoles('admin'),
+    deleteOrderBeforeDelivered
 )
-//===================================
 
 router.route('/admin/order/:id').put(
     isAuthenticatedUser,
