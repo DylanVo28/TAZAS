@@ -88,13 +88,12 @@ exports.deleteOrderBeforeDelivered = catchAsyncError(async (req, res, next) => {
     if (!order) {
         return next(new ErrorHandler('Order not found', 404))
     }
-    order.orderStatus = req.body.orderStatus
-    if (order.orderStatus == 'Confirmed') {
+    if (order.orderStatus == 'Confirmed' || order.orderStatus == 'Processing') {
         await order.remove()
-        res.status(200).json({
-            success: true
-        })
     }
+    res.status(200).json({
+        success: true
+    })
 })
 
 exports.deleteOrder = catchAsyncError(async (req, res, next) => {
