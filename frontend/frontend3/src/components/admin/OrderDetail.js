@@ -3,11 +3,13 @@ import { useEffect } from 'react';
 import { useState } from 'react';
 import { NotificationManager, NotificationContainer } from 'react-notifications';
 import clientRequest from '../../APIFeatures/clientRequest';
-import getFormattedDate from './../../HandlerCaculate/formatDate';
+import {getFormattedDate} from './../../HandlerCaculate/formatDate';
+import ModalPopup from './../shared/ModalPopup';
 
 const OrderDetail=(props)=>{
     const [order,setOrder]=useState({})
     const [user,setUser]=useState({})
+    const [showModal,setShowModal]=useState(false)
     
     useEffect(() => {
         async function fetchMyAPI() {
@@ -103,11 +105,15 @@ const OrderDetail=(props)=>{
         </>
     }
     const deleteItem=()=>{
-        clientRequest.deleteOrder(order._id).then(res=>{
-            NotificationManager.success('Success', 'Login success');
+        props.match.path=='/admin/order/:id'  && clientRequest.deleteOrder(order._id).then(res=>{
+            NotificationManager.success('Success', 'Delete success');
             window.location.href = '/admin/orders';
         })
-        
+        props.match.path=='/order/me/:id' && clientRequest.deleteMyOrder(order._id).then(res=>{
+       NotificationManager.success('Success', 'Delete success');
+            window.location.href = '/order/me';
+            
+        } ).catch(err=>NotificationManager.error('Error', 'Cannot delete order'))
     }
     const updateOrderStatus=(status)=>{
         clientRequest.updateOrder(order._id,status).then(res=>setOrder({...order,orderStatus:res.order.orderStatus}))
@@ -137,8 +143,15 @@ const OrderDetail=(props)=>{
        <NotificationContainer/>
         <div className='btn-group'>
         <button className="btn btn-danger" onClick={()=>deleteItem()}>Delete</button>
-        {order.orderStatus=='Processing'&&<button className='btn' onClick={(status)=>updateOrderStatus('Confirmed')}>Confirm Order</button>}
-        {order.orderStatus=='Confirmed'&&<button className='btn' onClick={(status)=>updateOrderStatus('Delivered')}>Delivered</button>}
+        {(order.orderStatus=='Processing' && props.match.path=='/admin/order/:id')&&<button className='btn' onClick={(status)=>updateOrderStatus('Confirmed')}>Confirm Order</button>}
+        {(order.orderStatus=='Confirmed'&& props.match.path=='/admin/order/:id')&&<button className='btn' onClick={(status)=>updateOrderStatus('Delivered')}>Delivered</button>}
+        <ModalPopup
+         open={showModal}
+         handleChange={()=>setShowModal(!showModal)}
+         title={"Product delivered, doesn't delete"}
+        //  linkTo={'/login'}
+        //  titleLinkTo={'Login'}
+        />
         </div>
     </div>
     )

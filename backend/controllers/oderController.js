@@ -45,7 +45,6 @@ exports.getOderDetail = catchAsyncError(async (req, res, next) => {
 })
 exports.myOrders = catchAsyncError(async (req, res, next) => {
     const orders = await Order.find({ user: req.user._id });
-
     res.status(200).json({
         success: true,
         orders
@@ -90,6 +89,9 @@ exports.deleteOrderBeforeDelivered = catchAsyncError(async (req, res, next) => {
     }
     if (order.orderStatus == 'Confirmed' || order.orderStatus == 'Processing') {
         await order.remove()
+    }
+    else{
+        return next(new ErrorHandler(`Order have ${order.orderStatus}`, 500))
     }
     res.status(200).json({
         success: true

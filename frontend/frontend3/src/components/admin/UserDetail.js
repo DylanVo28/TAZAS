@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useState } from 'react';
 import clientRequest from '../../APIFeatures/clientRequest';
-import getFormattedDate from '../../HandlerCaculate/formatDate';
+import {getFormattedDate} from '../../HandlerCaculate/formatDate';
 import Curved from '../../images/curved0.jpg'
 import { NotificationManager, NotificationContainer } from 'react-notifications';
 const UserDetail=(props)=>{
@@ -20,8 +20,8 @@ const UserDetail=(props)=>{
     const [avatarPr,setAvatarPr]=useState('')
     const [edit,setEdit]=useState(true)
     const [changePass,setChangePass]=useState(false);
+    const [disabledAvatar,setDisabledAvatar]=useState(true)
     useEffect(()=>{
-      console.log(props)
       if(props.match.path=='/admin/profile')
         clientRequest.getProfileMe().then(res=>{
           setUser(res.user)
@@ -42,6 +42,13 @@ const UserDetail=(props)=>{
         }
       }
       reader.readAsDataURL(e.target.files[0])
+      setUser({
+        ...user,
+        name:document.getElementsByName('name')[0].value,
+        email:document.getElementsByName('email')[0].value,
+        role:document.getElementsByName('role')[0].value,
+        
+      })
     }
     const MenuUser=()=>{
         return (user && <div className="container-fluid">
@@ -53,9 +60,8 @@ const UserDetail=(props)=>{
             <div className="col-auto">
               <div className="avatar avatar-xl position-relative">
                  <img src={avatarPr} alt="..." className="w-100 border-radius-lg shadow-sm" />
-                <input onChange={(e)=>onChangeAvatar(e)} type="file" className=" fa fa-pen btn btn-sm btn-icon-only bg-gradient-light position-absolute bottom-0 end-0 mb-n2 me-n2"/>
-                  {/* <i className="fa fa-pen top-0" data-bs-toggle="tooltip" data-bs-placement="top" title aria-hidden="true" data-bs-original-title="Edit Image" aria-label="Edit Image" /><span className="sr-only">Edit Image</span>
-                </input> */}
+                <input onChange={(e)=>onChangeAvatar(e)} type="file" className=" fa fa-pen btn btn-sm btn-icon-only bg-gradient-light position-absolute bottom-0 end-0 mb-n2 me-n2" disabled={disabledAvatar}/>
+                 
               </div>
             </div>
             <div className="col-auto my-auto">
@@ -90,7 +96,6 @@ const UserDetail=(props)=>{
         email:document.getElementsByName('email')[0].value,
         role:document.getElementsByName('role')[0].value,
       }
-      
       if(props.match.path=='/admin/profile'){
         clientRequest.updateUser(data,avatarPr).then(NotificationManager.success('Success', 'Update success'))
 
@@ -127,7 +132,9 @@ const UserDetail=(props)=>{
               <div className="col-md-4 text-right">
                 <a href="javascript:;">
                   {edit?
-                  <i onClick={()=>setEdit(false)} className="fas fa-user-edit text-secondary text-sm" data-bs-toggle="tooltip" data-bs-placement="top" title aria-hidden="true" data-bs-original-title="Edit Profile" aria-label="Edit Profile" />
+                  <i onClick={()=>{setEdit(false)
+                  setDisabledAvatar(false)
+                  }} className="fas fa-user-edit text-secondary text-sm" data-bs-toggle="tooltip" data-bs-placement="top" title aria-hidden="true" data-bs-original-title="Edit Profile" aria-label="Edit Profile" />
                   :(<div className="btn-group">
                     <button className='btn btn-primary' onClick={()=>saveUser()}>Save</button>
                   {props.match.path=='/admin/profile' &&<><button className='btn' 
@@ -146,20 +153,14 @@ const UserDetail=(props)=>{
             <ul className="list-group">
               <li className="list-group-item border-0 ps-0 pt-0 text-sm"><strong className="text-dark">Full Name:</strong> &nbsp;<input name='name' defaultValue={user.name} disabled={edit}/> </li>
               <li className="list-group-item border-0 ps-0 text-sm"><strong className="text-dark">Email:</strong> &nbsp; <input name='email' defaultValue={user.email} disabled={edit}/></li>
-              <li className="list-group-item border-0 ps-0 text-sm"><strong className="text-dark">Role:</strong> &nbsp;<input name='role' defaultValue={user.role} disabled={edit}/>  </li>
+              <li className="list-group-item border-0 ps-0 text-sm"><strong className="text-dark">Role:</strong> &nbsp;
+              <select defaultValue={user.role} name='role' disabled={edit}>
+  <option value="user">user</option>
+  <option value="admin">admin</option>
+</select>
+               </li>
               <li className="list-group-item border-0 ps-0 text-sm"><strong className="text-dark">Create At:</strong> &nbsp; {getFormattedDate(user.createAt)}</li>
-              <li className="list-group-item border-0 ps-0 pb-0">
-                <strong className="text-dark text-sm">Social:</strong> &nbsp;
-                <a className="btn btn-facebook btn-simple mb-0 ps-1 pe-2 py-0" href="javascript:;">
-                  <i className="fab fa-facebook fa-lg" aria-hidden="true" />
-                </a>
-                <a className="btn btn-twitter btn-simple mb-0 ps-1 pe-2 py-0" href="javascript:;">
-                  <i className="fab fa-twitter fa-lg" aria-hidden="true" />
-                </a>
-                <a className="btn btn-instagram btn-simple mb-0 ps-1 pe-2 py-0" href="javascript:;">
-                  <i className="fab fa-instagram fa-lg" aria-hidden="true" />
-                </a>
-              </li>
+              
             </ul>
           </div>
         </div>

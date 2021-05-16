@@ -3,9 +3,9 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import clientRequest from '../../APIFeatures/clientRequest';
-import getFormattedDate from './../../HandlerCaculate/formatDate';
+import {getFormattedDate} from './../../HandlerCaculate/formatDate';
 
-const OrdersList=()=>{
+const OrdersList=(props)=>{
     const [stOrders,setStOrders]=useState([])
     const [sizePage,setSizePage]=useState({
         current:1,
@@ -13,11 +13,18 @@ const OrdersList=()=>{
         count:10,
   
       })
-    useEffect(()=>{
-      clientRequest.getOrders().then(res=>{
-        setStOrders(res.orders)
-        setSizePage({...sizePage,total:res.orders.length})
-      })
+    useEffect( ()=>{
+      props.match.path=='/order/me' && clientRequest.getMyOrders().then(res=>{
+          setStOrders(res.orders)
+          setSizePage({...sizePage,total:res.orders.length})
+        })
+      
+      props.match.path=='/admin/orders' && clientRequest.getOrders().then(res=>{
+              setStOrders(res.orders)
+              setSizePage({...sizePage,total:res.orders.length})
+            })
+      
+      
     },[])
    
     const OrderRow=(order)=>{
@@ -37,9 +44,12 @@ const OrdersList=()=>{
                     <span className="text-secondary text-xs font-weight-bold">{getFormattedDate(order.createAt)}</span>
                   </td>
                   <td className="align-middle">
-                    <Link  to={"/admin/order/"+order._id} className="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">
+                    {props.match.path=='/admin/orders' && <Link  to={"/admin/order/"+order._id} className="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">
                       Detail
-                    </Link>
+                    </Link>}
+                    {props.match.path=='/order/me' && <Link  to={"/order/me/"+order._id} className="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">
+                      Detail
+                    </Link>}
                   </td>
                   
                 </tr>

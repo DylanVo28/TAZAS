@@ -1,7 +1,6 @@
 
 import axios from 'axios';
-import { useState } from 'react';
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { NotificationContainer, NotificationManager } from 'react-notifications';
 import { Redirect, Switch } from 'react-router-dom';
 import clientRequest from '../../APIFeatures/clientRequest';
@@ -10,7 +9,6 @@ import imageDefault from '../../images/default.jpg'
 const ProductDetail=(props)=>{
   
   const [avatar,setAvatar]=useState('')
-  const [avatarPreview,setAvatarPreview]=useState('')
   const [stProduct,setStProduct]=useState({
     name:'',
     price:0,
@@ -30,7 +28,6 @@ const ProductDetail=(props)=>{
     else if(props.match.path=='/admin/product/:id'){
       clientRequest.getProductDetail(props.match.params.id).then(res=>{
         setStProduct(res.product)
-        setAvatarPreview(res.product.images[0].url)
         setAvatar(res.product.images[0].url)
       })
       
@@ -48,11 +45,7 @@ const ProductDetail=(props)=>{
         stock:Number(document.getElementsByName('stock')[0].value),
         image:avatar
       }
-      const config={
-        headers:{
-            'Content-Type':'application/json'
-        }
-    }
+      
     clientRequest.newProduct(data).then(res=>{NotificationManager.success('Success', 'Success')
     window.location.href=`/admin/product/${res.product._id}`
     })
@@ -81,7 +74,7 @@ const ProductDetail=(props)=>{
     
 
     //update duoc nhung bao loi
-    clientRequest.updateProduct(stProduct._id,data).then(NotificationManager.success('Success', 'Success'))
+    clientRequest.updateProduct(stProduct._id,data).then(NotificationManager.success('Success', 'Success')).catch(err=>console.error())
       
     }
     
@@ -95,8 +88,12 @@ const ProductDetail=(props)=>{
      
       
   }
+ 
   const Form =()=>{
-    return(<form style={{padding:'30px 0'}} onSubmit={submitHandler}>
+    
+    return(<form style={{padding:'30px 0'}} 
+    onSubmit={submitHandler}
+    >
         <div className="form-row">
           <div className="form-group col-md-6">
             <label>Name</label>
@@ -115,10 +112,6 @@ const ProductDetail=(props)=>{
         </div>
         
         <div className="form-row">
-          {/* <div className="form-group col-md-6">
-            <label htmlFor="inputCity">City</label>
-            <input type="text" className="form-control" id="inputCity" />
-          </div> */}
           <div className="form-group col-md-4">
             <label>Classify</label>
             <select className="form-control" name='classify' defaultValue={stProduct.classify}>
@@ -163,11 +156,19 @@ const onChangeAvatar=(e)=>{
   const reader=new FileReader()
   reader.onload=()=>{
     if(reader.readyState===2){
-      setAvatarPreview(reader.result)
       setAvatar(reader.result)
     }
   }
   reader.readAsDataURL(e.target.files[0])
+  setStProduct({...stProduct,
+    name:document.getElementsByName('name')[0].value,
+    price:Number(document.getElementsByName('price')[0].value),
+    description:document.getElementsByName('descriptionInput')[0].value,
+    classify:document.getElementsByName('classify')[0].value,
+    category:document.getElementsByName('category')[0].value,
+    stock:Number(document.getElementsByName('stock')[0].value)
+
+    })
 }
 const InputImage=()=>{
     return(<div className="custom-file">
@@ -178,7 +179,8 @@ const InputImage=()=>{
      className='custom-file-input'
      accept='images/*'
      onChange={(e)=>onChangeAvatar(e)}
-    required />
+    required 
+    />
     <div className="invalid-feedback">Example invalid custom file feedback</div>
     <img src={(avatar)?(avatar):(imageDefault)} style={{width:'100%'}}/>
   </div>

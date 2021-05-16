@@ -1,4 +1,5 @@
 const Product =require('../models/product')
+const checkUrlImage  =require('./../utils/checkUrlImage');
 const ErrorHandler=require('../utils/errorHandler')
 const catchAsyncError=require('../middlewares/catchAsyncError')
 const APIFeatures = require('../utils/apiFeatures')
@@ -6,16 +7,21 @@ const cloudinary=require('cloudinary')
 //add new product
 exports.newProduct=catchAsyncError (async (req,res,next)=>{
     req.body.user=req.user.id
-    const result=await cloudinary.v2.uploader.upload(req.body.data.image,{
-        folder:'tazas'
-    })
+    if(!checkUrlImage(req.body.data.image)){
+        const result=await cloudinary.v2.uploader.upload(req.body.data.image,{
+            folder:'tazas'
+        })
+        if(result){
+            req.body.data.images=[]
+            req.body.data.images.push({
+                url:result.secure_url,
+                public_id:result.asset_id
+            })
+        }
+    }
     req.body.data.user=req.user._id
     req.body.data.seller=req.user.name
-    req.body.data.images=[]
-    req.body.data.images.push({
-        url:result.secure_url,
-        public_id:result.asset_id
-    })
+    
     const product= await Product.create(req.body.data)
   
 
@@ -82,17 +88,23 @@ exports.getSingleProduct=catchAsyncError(async (req,res,next)=>{
 
 //update product
 exports.updateProduct=catchAsyncError(async (req,res,next)=>{
-
-    const result=await cloudinary.v2.uploader.upload(req.body.data.image,{
-        folder:'tazas'
-      
-    })
+    
+    
     const product=await Product.findById(req.params.id).catch(error=>console.error())
     if(!product){
         return next(new ErrorHandler('Product not found',404));
     }
-    product.images[0].url=result.secure_url
-    product.images[0].public_id=result.asset_id
+    if(!checkUrlImage(req.body.data.image)){
+        const result=await cloudinary.v2.uploader.upload(req.body.data.image,{
+            folder:'tazas'
+        })
+        if(result){
+            product.images[0].url=result.secure_url
+            product.images[0].public_id=result.asset_id
+        }
+    }
+    
+   
     product.save()
     product=await Product.findByIdAndUpdate(req.params.id,req.body.data,{
         new:true,

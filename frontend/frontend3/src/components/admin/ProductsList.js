@@ -3,7 +3,7 @@ import { React, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Pagination from "react-js-pagination";
 import clientRequest from '../../APIFeatures/clientRequest';
-import getFormattedDate from './../../HandlerCaculate/formatDate';
+import {getFormattedDate} from './../../HandlerCaculate/formatDate';
 // require("bootstrap/less/bootstrap.less");
 
 const ProductsList=()=>{

@@ -302,6 +302,28 @@ class ClientRequest{
                 }, reject)
         })
     }
+
+    getMyOrders(){
+        return new Promise((resolve,reject)=>{
+            axios.get(`${DOMAIN}/api/v1/orders/me`,{
+                params:{userToken}
+                
+            }).then(result => {
+                    resolve(result.data)
+                }, reject)
+        })
+
+    }
+
+    deleteMyOrder(id){
+        return new Promise((resolve,reject)=>{
+            axios.delete(`${DOMAIN}/api/v1/order/${id}`,{
+                params:{userToken}
+            }).then(result => {
+                    resolve(result.data)
+                }, reject)
+        })
+    }
 }
 const clientRequest = new ClientRequest();
 export default clientRequest;

@@ -10,4 +10,7 @@ const getFormattedDate=(dateString) =>{
     
     return day+'/'+month + '/'  + year;
   }
-  export default getFormattedDate
+  const checkURL=(url)=> {
+    return(url.match(/\.(jpeg|jpg|gif|png)$/) != null);
+}
+  export {getFormattedDate,checkURL}

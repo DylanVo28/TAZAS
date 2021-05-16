@@ -6,20 +6,27 @@ const sendEmail=require('../utils/sendEmail')
 const crypto=require('crypto')
 const cloudinary=require('cloudinary')
 const APIFeatures = require('../utils/apiFeatures')
+const checkUrlImage = require('../utils/checkUrlImage')
 exports.registerUser=catchAsyncErrors(async(req,res,next)=>{
-    const result=await cloudinary.v2.uploader.upload(req.body.avatar,{
-        folder:'tazas',
-      
-    })
-    const {name,email,password,avatar}=req.body
+    var avatar
+    if(!checkUrlImage(req.body.avatar)){
+        const result=await cloudinary.v2.uploader.upload(req.body.avatar,{
+            folder:'tazas'
+        })
+        if(result){
+            avatar={
+                public_id:result.secure_url,
+                url:result.secure_url
+
+            }
+        }
+    }
+    const {name,email,password}=req.body
     const user=await User.create({
         name,
         email,
         password,
-        avatar:{
-            public_id:result.asset_id,
-            url:result.secure_url
-        }
+        avatar
     })
     sendToken(user,200,res)
 
@@ -124,21 +131,26 @@ exports.userUpdatePassword=catchAsyncErrors(async(req,res,next)=>{
 
 })
 exports.updateProfile=catchAsyncErrors(async(req,res,next)=>{
-   
-    
-    const result=await cloudinary.v2.uploader.upload(req.body.avatarPr,{
-        folder:'tazas',
-       
-    })
+    var avatar
+    if(!checkUrlImage(req.body.avatarPr)){
+        const result=await cloudinary.v2.uploader.upload(req.body.avatarPr,{
+            folder:'tazas'
+        })
+        if(result){
+            avatar={
+                public_id:result.secure_url,
+                url:result.secure_url
+
+            }
+        }
+    }
+  
     const newUserData={
         
         name:req.body.data.name,
         email:req.body.data.email,
         role:req.body.data.role,
-        avatar:{
-            public_id:result.asset_id,
-            url:result.url
-        }
+        avatar
     }
     
     const user=await User.findByIdAndUpdate(req.user.id,newUserData,{
@@ -182,18 +194,24 @@ exports.getUserDetail=catchAsyncErrors(async(req,res,next)=>{
     })
 })
 exports.updateUser=catchAsyncErrors(async(req,res,next)=>{
-    
-    const result=await cloudinary.v2.uploader.upload(req.body.avatarPr,{
-        folder:'tazas',
-    })
+    var avatar
+    if(!checkUrlImage(req.body.avatarPr)){
+        const result=await cloudinary.v2.uploader.upload(req.body.avatarPr,{
+            folder:'tazas'
+        })
+        if(result){
+            avatar={
+                public_id:result.secure_url,
+                url:result.secure_url
+            }
+        }
+    }
+   
     const newUserData={
         name:req.body.data.name,
         email:req.body.data.email,
         role:req.body.data.role,
-        avatar:{
-            public_id:result.asset_id,
-            url:result.secure_url
-        }
+        avatar
     }
     const user=await User.findByIdAndUpdate(req.params.id,newUserData,{
         new:true,
@@ -222,8 +240,6 @@ exports.updateCartItem=catchAsyncErrors(async(req,res,next)=>{
     }
     var cartItems=user.cartItems
     var checkFindItem=false
-    
-    
         cartItems.forEach((item,index)=>{
             if(item.product==req.body.data.product){
                 cartItems[index].quantity=item.quantity+1
@@ -240,12 +256,8 @@ exports.updateCartItem=catchAsyncErrors(async(req,res,next)=>{
                 quantity:1
             })
         }
-    
-   
-    
     user.cartItems=cartItems
     await user.save()
-   
     res.status(200).json({
         success:true
     })

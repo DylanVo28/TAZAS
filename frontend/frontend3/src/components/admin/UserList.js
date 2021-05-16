@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import clientRequest from '../../APIFeatures/clientRequest';
 import { useState } from 'react';
-import getFormattedDate from './../../HandlerCaculate/formatDate';
+import {getFormattedDate} from './../../HandlerCaculate/formatDate';
 import { Link } from 'react-router-dom';
 import Pagination from 'react-js-pagination';
 
