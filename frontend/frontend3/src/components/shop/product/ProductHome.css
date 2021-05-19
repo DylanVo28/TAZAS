@@ -46,3 +46,16 @@
     border-bottom: 1px solid black;
     margin-bottom: 5px;
 }
+.review-product .col-md-3.text-right img{
+    max-width: 100px;
+    text-align: right;
+}
+.review-product .input-review{
+    border: none;
+    background: none;
+    box-shadow: 1px 1px 12px #0000004d;
+    border-radius: 30px;
+    width: 100%;
+    height: 66px;
+    padding: 15px;
+}

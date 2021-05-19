@@ -117,7 +117,9 @@ const OrderDetail=(props)=>{
         } ).catch(err=>NotificationManager.error('Error', 'Cannot delete order'))
     }
     const updateOrderStatus=(status)=>{
-        clientRequest.updateOrder(order._id,status).then(res=>setOrder({...order,orderStatus:res.order.orderStatus}))
+        clientRequest.updateOrder(order._id,status).then(res=>{setOrder({...order,orderStatus:res.order.orderStatus})
+        NotificationManager.success('Success', 'success');
+    }).catch(err=>NotificationManager.error('Success', 'error'))
     }
 
     return (        <div className="container-fluid py-4 order-detail">
@@ -144,9 +146,12 @@ const OrderDetail=(props)=>{
        <NotificationContainer/>
         <div className='btn-group'>
         <button className="btn btn-danger" onClick={()=>deleteItem()}>Delete</button>
-        {(order.orderStatus=='Processing' && props.match.path=='/admin/order/:id')&&<button className='btn' onClick={(status)=>updateOrderStatus('Confirmed')}>Confirm Order</button>}
-        {(order.orderStatus=='Confirmed'&& props.match.path=='/admin/order/:id')&&<button className='btn' onClick={(status)=>updateOrderStatus('Delivered')}>Delivered</button>}
-        {(order.orderStatus=='Delivered'&& props.match.path=='/order/me/:id')&&<button className='btn' onClick={(status)=>updateOrderStatus('Complete')}>Has Received</button>}
+        {(order.orderStatus=='Processing' && props.match.path=='/admin/order/:id')&&<button className='btn' 
+        onClick={(status)=>updateOrderStatus('Confirmed')}>Confirm Order</button>}
+        {(order.orderStatus=='Confirmed'&& props.match.path=='/admin/order/:id')&&<button className='btn' 
+        onClick={(status)=>updateOrderStatus('Delivered')}>Delivered</button>}
+        {(order.orderStatus=='Delivered'&& props.match.path=='/order/me/:id')&&<button className='btn' 
+        onClick={(status)=>updateOrderStatus('Complete')}>Has Received</button>}
         
         <ModalPopup
          open={showModal}

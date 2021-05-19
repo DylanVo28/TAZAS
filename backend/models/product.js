@@ -88,6 +88,10 @@ const productSchema=new mongoose.Schema({
                 ref:'User',
                 required:true
             },
+            avatar:{
+                type:String,
+                required:true
+            },
             name:{
                 type:String,
                 required:true

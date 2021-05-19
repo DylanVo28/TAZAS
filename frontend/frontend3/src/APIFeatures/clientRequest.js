@@ -324,6 +324,28 @@ class ClientRequest{
                 }, reject)
         })
     }
+    updateReviewProduct(rating,comment,productId,avatar){
+        return new Promise((resolve,reject)=>{
+            axios.put(`${DOMAIN}/api/v1/review`,{
+                params:{userToken},
+                rating,
+                comment,
+                productId,
+                avatar
+            }).then(result => {
+                    resolve(result.data)
+                }, reject)
+        })
+    }
+    getReviewsByProduct(id){
+        return new Promise((resolve,reject)=>{
+            axios.get(`${DOMAIN}/api/v1/reviews?id=${id}`,{
+                params:{userToken},
+            }).then(result => {
+                    resolve(result.data)
+                }, reject)
+        })
+    }
 }
 const clientRequest = new ClientRequest();
 export default clientRequest;
