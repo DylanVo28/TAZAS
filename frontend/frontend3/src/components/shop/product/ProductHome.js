@@ -7,6 +7,7 @@ import MenuHome from '../MenuHome';
 import Popup from "reactjs-popup";
 import Modal from 'react-awesome-modal';
 import ModalPopup from '../../shared/ModalPopup';
+import { NotificationContainer, NotificationManager } from 'react-notifications';
 const ProductHome=(props)=>{
     const [product,setProduct]=useState({
         name:'',
@@ -43,7 +44,7 @@ const ProductHome=(props)=>{
             checked:true,
             
         }
-        clientRequest.updateCartItem(data).then(res=>console.log(res)).catch(err=>setShowModal(true))
+        clientRequest.updateCartItem(data).then(res=>NotificationManager.success('Success', 'update cart success')).catch(err=>setShowModal(true))
 
        
     }
@@ -85,6 +86,8 @@ const ProductHome=(props)=>{
         linkTo={'/login'}
         titleLinkTo={'Login'}
     />
+        <NotificationContainer/>
+
     </>)
 }
 export default ProductHome

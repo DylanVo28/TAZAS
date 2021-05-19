@@ -12,6 +12,7 @@ const OrderDetail=(props)=>{
     const [showModal,setShowModal]=useState(false)
     
     useEffect(() => {
+      
         async function fetchMyAPI() {
             clientRequest.getOrder(props.match.params.id).then(res=>{
                 setOrder(res.order)
@@ -145,6 +146,8 @@ const OrderDetail=(props)=>{
         <button className="btn btn-danger" onClick={()=>deleteItem()}>Delete</button>
         {(order.orderStatus=='Processing' && props.match.path=='/admin/order/:id')&&<button className='btn' onClick={(status)=>updateOrderStatus('Confirmed')}>Confirm Order</button>}
         {(order.orderStatus=='Confirmed'&& props.match.path=='/admin/order/:id')&&<button className='btn' onClick={(status)=>updateOrderStatus('Delivered')}>Delivered</button>}
+        {(order.orderStatus=='Delivered'&& props.match.path=='/order/me/:id')&&<button className='btn' onClick={(status)=>updateOrderStatus('Complete')}>Has Received</button>}
+        
         <ModalPopup
          open={showModal}
          handleChange={()=>setShowModal(!showModal)}

@@ -97,11 +97,11 @@ const UserDetail=(props)=>{
         role:document.getElementsByName('role')[0].value,
       }
       if(props.match.path=='/admin/profile'){
-        clientRequest.updateUser(data,avatarPr).then(NotificationManager.success('Success', 'Update success'))
+        clientRequest.updateUser(data,avatarPr).then(NotificationManager.success('Success', 'Update success')).catch(err=>NotificationManager.error('error', 'Update failed'))
 
       }
       else{
-        clientRequest.updateUserDetail(props.match.params.id,data,avatarPr).then(res=>console.log(res))
+        clientRequest.updateUserDetail(props.match.params.id,data,avatarPr).then(NotificationManager.success('Success', 'Update success')).catch(err=>NotificationManager.error('error', 'Update failed'))
       }
       setEdit(true)
     }
@@ -168,14 +168,18 @@ const UserDetail=(props)=>{
       )
     }
     const savePassword=()=>{
+
       const data={
         oldPassword:document.getElementsByName('oldPassword')[0].value,
         password:document.getElementsByName('password')[0].value,
       }
-      clientRequest.updatePassword(data.oldPassword,data.password).then(res=>{NotificationManager.success('Success', 'Update password success')
+      clientRequest.updatePassword(data.oldPassword,data.password).then(res=>{
+        NotificationManager.success('Success', 'Update password success')
       localStorage.removeItem("token");
       window.location.href='/login'
-    })
+    }).catch(err=>
+      NotificationManager.error('Error', 'Update password failed')
+    )
 
     }
     const ChangePassUser=()=>{

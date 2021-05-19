@@ -132,6 +132,7 @@ exports.userUpdatePassword=catchAsyncErrors(async(req,res,next)=>{
 })
 exports.updateProfile=catchAsyncErrors(async(req,res,next)=>{
     var avatar
+
     if(!checkUrlImage(req.body.avatarPr)){
         const result=await cloudinary.v2.uploader.upload(req.body.avatarPr,{
             folder:'tazas'
@@ -140,19 +141,20 @@ exports.updateProfile=catchAsyncErrors(async(req,res,next)=>{
             avatar={
                 public_id:result.secure_url,
                 url:result.secure_url
-
             }
         }
     }
-  
-    const newUserData={
+   
+    var newUserData={
         
         name:req.body.data.name,
         email:req.body.data.email,
         role:req.body.data.role,
-        avatar
+        
     }
-    
+    if(avatar){
+        newUserData.avatar=avatar
+    }
     const user=await User.findByIdAndUpdate(req.user.id,newUserData,{
         new:true,
         runValidators:true,

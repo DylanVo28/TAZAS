@@ -6,11 +6,7 @@ import clientRequest from './../../APIFeatures/clientRequest';
 const Menu =(props)=>{
   const [avatar,setAvatar]=useState('')
   useEffect(()=>{
-    const config={
-      headers:{
-          'Content-Type':'application/json'
-      }
-  }
+    console.log(props)
   clientRequest.getProfileMe().then(res=>setAvatar(res.user.avatar.url))
   
   },[])
