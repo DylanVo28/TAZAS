@@ -1,4 +1,4 @@
-import React, { Fragment, useReducer,useEffect } from "react";
+import React, { Fragment, useReducer,useEffect,useState } from "react";
 import Routes from "./components";
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 // import { LayoutContext, layoutState, layoutReducer } from "./components/shop";
@@ -21,6 +21,7 @@ import OrderHome from './components/shop/order/OrderHome';
 import MenuHome from './components/shop/MenuHome';
 import CartItems from './components/shop/cart/CartItems';
 import 'reactjs-popup/dist/index.css';
+import clientRequest from "./APIFeatures/clientRequest";
 const ProtectedRoute = ({ component: Component, ...rest }) => {
   return (
     <Route {...rest} render={
@@ -30,8 +31,11 @@ const ProtectedRoute = ({ component: Component, ...rest }) => {
 }
 
 function App() {
-  useEffect(()=>{
+  const [stripeApi,setStripeApi]=useState('')
+  useEffect(async()=>{
       // store.dispatch(loadUser())
+      const data=await clientRequest.getStripeApi()
+      setStripeApi(data.stripeApiKey)
   },[])
   
   return (
