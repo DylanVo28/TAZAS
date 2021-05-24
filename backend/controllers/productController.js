@@ -3,10 +3,11 @@ const checkUrlImage  =require('./../utils/checkUrlImage');
 const ErrorHandler=require('../utils/errorHandler')
 const catchAsyncError=require('../middlewares/catchAsyncError')
 const APIFeatures = require('../utils/apiFeatures')
-const cloudinary=require('cloudinary')
+const cloudinary=require('cloudinary');
+const UserLogin = require('../models/userLogin');
+const User = require('../models/user');
 //add new product
 exports.newProduct=catchAsyncError (async (req,res,next)=>{
-    req.body.user=req.user.id
     if(!checkUrlImage(req.body.data.image)){
         const result=await cloudinary.v2.uploader.upload(req.body.data.image,{
             folder:'tazas'
@@ -19,10 +20,21 @@ exports.newProduct=catchAsyncError (async (req,res,next)=>{
             })
         }
     }
-    req.body.data.user=req.user._id
-    req.body.data.seller=req.user.name
-    
-    const product= await Product.create(req.body.data)
+    const user=await User.findOne({userId:req.user.id})
+ 
+    const {name,price,description,classify,category,stock,images}=req.body.data
+    const data={
+        name:name,
+        price:price,
+        description:description,
+        classify:classify,
+        category:category,
+        stock:stock,
+        images:images,
+        user:user._id,
+        seller:user.name
+    }
+    const product= await Product.create(data)
   
 
     product.save()

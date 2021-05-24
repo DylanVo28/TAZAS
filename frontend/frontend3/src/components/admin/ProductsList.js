@@ -49,7 +49,7 @@ const ProductsList=()=>{
                     </div>
                   </td>
                   <td>
-                    <p className="text-xs font-weight-bold mb-0">{product.user}</p>
+                    <p className="text-xs font-weight-bold mb-0">{product.seller}</p>
                   </td>
                   <td className="align-middle text-center text-sm">
                   <p className="text-xs font-weight-bold mb-0">{product.stock}</p>
@@ -100,7 +100,7 @@ const ProductsList=()=>{
               <thead>
                 <tr>
                   <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Name</th>
-                  <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">User</th>
+                  <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Seller</th>
                   <th className="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Stock</th>
                   <th className="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">CreatedAt</th>
                   <th className="text-secondary opacity-7" />

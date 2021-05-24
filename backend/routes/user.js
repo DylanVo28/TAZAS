@@ -14,7 +14,10 @@ const {
     updateUser,
     deleteUser,
     getUsersSearch,
-    updateCartItem}=require('../controllers/userController')
+    addToCart,
+    updateToCart,
+    getProductsCart,
+    deleteUserLoginMe}=require('../controllers/userController')
 const { isAuthenticatedUser ,authorizeRoles} = require('../middlewares/user')
 
 router.route('/user/create').post(registerUser)
@@ -25,6 +28,7 @@ router.route('/user/password/reset/:token').put(resetPassword)
 router.route('/me').get(
     isAuthenticatedUser,
     userProfile)
+    .delete(isAuthenticatedUser,deleteUserLoginMe)
 router.route('/user/update-password').put(isAuthenticatedUser,userUpdatePassword)
 router.route('/user/update-profile').put(
     isAuthenticatedUser,
@@ -38,11 +42,10 @@ router.route('/admin/users').get(
     authorizeRoles('admin'),
     getUsersSearch)
 router.route('/admin/user/:id')
-.get(
-    isAuthenticatedUser,
-    // authorizeRoles('admin'),
-getUserDetail)
+.get(isAuthenticatedUser,authorizeRoles('admin'),getUserDetail)
 .put(isAuthenticatedUser,authorizeRoles('admin'),updateUser)
 .delete(isAuthenticatedUser,authorizeRoles('admin'),deleteUser)
-router.route('/add-to-cart').put(isAuthenticatedUser,updateCartItem)
+router.route('/add-to-cart').put(isAuthenticatedUser,addToCart)
+router.route('/update-to-cart').put(isAuthenticatedUser,updateToCart)
+router.route('/get-cart').get(isAuthenticatedUser,getProductsCart)
 module.exports=router;

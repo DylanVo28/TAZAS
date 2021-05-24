@@ -52,7 +52,7 @@ const ProductHome=(props)=>{
             checked:true,
             
         }
-        clientRequest.updateCartItem(data).then(res=>NotificationManager.success('Success', 'update cart success')).catch(err=>setShowModal(true))
+        clientRequest.addToCartItem(data).then(res=>NotificationManager.success('Success', 'update cart success')).catch(err=>setShowModal(true))
 
        
     }

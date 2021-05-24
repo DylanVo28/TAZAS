@@ -2,6 +2,7 @@ const User=require('../models/user')
 const jwt=require('jsonwebtoken')
 const ErrorHandler=require('../utils/errorHandler')
 const catchAsyncErrors=require('../middlewares/catchAsyncError')
+const UserLogin = require('../models/userLogin')
 exports.isAuthenticatedUser=catchAsyncErrors(async (req,res,next)=>{
     const token=(req.query.userToken)?(req.query.userToken):req.body.params.userToken
 
@@ -10,7 +11,7 @@ exports.isAuthenticatedUser=catchAsyncErrors(async (req,res,next)=>{
     }
     //get id user from jwt 
     const decoded=jwt.verify(token,process.env.JWT_SECRET)
-    req.user=await User.findById(decoded.id)
+    req.user=await UserLogin.findById(decoded.id)
     next()
 })
 exports.authorizeRoles=(...roles)=>{

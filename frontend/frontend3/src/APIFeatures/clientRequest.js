@@ -162,6 +162,16 @@ class ClientRequest{
         }) 
     }
 
+    deleteAccountMe(){
+        return new Promise((resolve,reject)=>{
+            axios.delete(`${DOMAIN}/api/v1/me`,{
+                params:{userToken},
+                },config).then(result => {
+                resolve(result.data)
+            }, reject)
+        }) 
+    }
+
     postLogin(email,password){
         return new Promise((resolve,reject)=>{
             axios.post(`${DOMAIN}/api/v1/user/login`,{email,password},config).then(result => {
@@ -292,7 +302,7 @@ class ClientRequest{
         })
     }
 
-    updateCartItem(data){
+    addToCartItem(data){
         return new Promise((resolve,reject)=>{
             axios.put(`${DOMAIN}/api/v1/add-to-cart`,{
                 params:{userToken},
@@ -351,6 +361,39 @@ class ClientRequest{
         return new Promise((resolve,reject)=>{
             axios.get(`${DOMAIN}/api/v1/get-stripe-api`,{
                 params:{userToken},
+            }).then(result => {
+                    resolve(result.data)
+                }, reject)
+        })
+    }
+
+    updateCartItem(data){
+        return new Promise((resolve,reject)=>{
+            axios.put(`${DOMAIN}/api/v1/update-to-cart`,{
+                params:{userToken},
+                data
+            }).then(result => {
+                    resolve(result.data)
+                }, reject)
+        })
+    }
+
+    processPayment(data){
+        
+        return new Promise((resolve,reject)=>{
+            axios.post(`${DOMAIN}/api/v1/payment/process`,{
+                params:{userToken},
+                data
+            }).then(result => {
+                    resolve(result.data)
+                }, reject)
+        })
+    }
+
+    getCart(){
+        return new Promise((resolve,reject)=>{
+            axios.get(`${DOMAIN}/api/v1/get-cart`,{
+                params:{userToken}
             }).then(result => {
                     resolve(result.data)
                 }, reject)

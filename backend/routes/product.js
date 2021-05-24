@@ -19,6 +19,7 @@ router.route('/home-length-product').get(
 router.route('/product/:id').get(getSingleProduct)
 router.route('/admin/product/new').post(
     isAuthenticatedUser,
+        authorizeRoles('admin'),
     newProduct)
 router.route('/admin/product/:id').put(
     isAuthenticatedUser,
@@ -27,5 +28,5 @@ router.route('/admin/product/:id').delete(
     isAuthenticatedUser,
     deleteProduct)
 router.route('/review').put(isAuthenticatedUser,createProductReview)
-router.route('/reviews').get(isAuthenticatedUser,getAllReviews).delete(isAuthenticatedUser,deleteReview)
+router.route('/reviews').get(getAllReviews).delete(isAuthenticatedUser,deleteReview)
 module.exports=router;

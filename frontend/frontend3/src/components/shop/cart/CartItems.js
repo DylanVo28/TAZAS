@@ -2,7 +2,10 @@ import { useEffect } from 'react';
 import clientRequest from '../../../APIFeatures/clientRequest';
 import { useState } from 'react';
 import { Table } from 'react-bootstrap';
-
+import { NotificationContainer, NotificationManager } from 'react-notifications';
+import Cards from 'react-credit-cards';
+import 'react-credit-cards/es/styles-compiled.css';
+import { useStripe,useElements,CardElement,CardNumberElement} from '@stripe/react-stripe-js';
 const CartItems=()=>{
     const [cartItems,setCartItems]=useState([])
     const [user,setUser]=useState(null)
@@ -10,9 +13,18 @@ const CartItems=()=>{
     const  [totalPrice,setTotalPrice]=useState(0)
     const [taxPrice,setTaxPrice]=useState(0)
     const [shippingPrice,setShippingPrice]=useState(2)
+    const [creditInput,setCreditInput]=useState({
+      cvc: '',
+    expiry: '',
+    focus: '',
+    name: '',
+    number: '',
+    })
+    const stripe = useStripe();
+    const elements = useElements();
     useEffect(()=>{
       fetchMyAPI()
-      
+      clientRequest.getCart().then(res=>console.log(res))
     },[])
     useEffect(()=>{
     
@@ -42,6 +54,7 @@ const CartItems=()=>{
       }
       const removeItem=(id)=>{
         const cartFilter=cartItems.filter(item=>item._id!=id)
+        clientRequest.updateCartItem(cartFilter).then(res=>NotificationManager.success('success','update success'))
         setCartItems(cartFilter)
       }
       const handleChecked=(index)=>e=>{
@@ -69,6 +82,23 @@ const CartItems=()=>{
         }
         clientRequest.postOrder(data).then(res=>console.log(res))
       }
+      const submitHandler=async (e)=>{
+        e.preventDefault();
+        const res=await clientRequest.processPayment(totalPrice)
+        const clientSecret=res.client_secret
+        console.log(clientSecret)
+        const cardElement = elements.getElement(CardNumberElement);
+        console.log(cardElement)
+        const result=await stripe.confirmCardPayment(clientSecret,{
+          payment_method:{
+            card :cardElement,
+            billing_details:{
+              name: user.name,
+              email: user.email
+            }
+          }
+        })
+      }
     return <>
     <div style={{height:'80px'}}></div>
     <div className='container'>
@@ -81,6 +111,7 @@ const CartItems=()=>{
       <th>Name</th>
       <th>Image</th>
       <th>Quantity</th>
+      <th>Price</th>
       <th></th>
     </tr>
   </thead>
@@ -91,6 +122,7 @@ const CartItems=()=>{
   <td>{item.name}</td>
   {item.image&&<td><img src={item.image}/></td>}
   <td> <input defaultValue={item.quantity} type='Number' onChange={updateCartChanged(index)}/></td>
+  <td>{item.price}</td>
     <td><button className='btn btn-danger fas fa-trash' onClick={()=>removeItem(item._id)}></button></td>
 </tr>})
 }
@@ -152,6 +184,51 @@ const CartItems=()=>{
 
         </div>
         </div>
+       
+
+        {/* <div id="PaymentForm">
+       <Cards
+       cvc={creditInput.cvc}
+       expiry={creditInput.expiry}
+       focused={creditInput.focus}
+       name={creditInput.name}
+       number={creditInput.number}
+       />
+       <form onSubmit={submitHandler}>
+         <CardNumberElement
+          
+         />
+        	<input
+            type="tel"
+            name="number"
+            placeholder="Card Number"
+           onBlur={(e)=>setCreditInput({...creditInput,number:e.currentTarget.value})}
+          />
+          	<input
+            type="tel"
+            name="name"
+            placeholder="Name"
+           onBlur={(e)=>setCreditInput({...creditInput,name:e.currentTarget.value})}
+          />
+          	<input
+            type="tel"
+            name="expiry"
+            placeholder="expiry"
+           onBlur={(e)=>{setCreditInput({...creditInput,expiry:e.currentTarget.value,focus:e.currentTarget.name})}}
+          />
+          <input
+            type="tel"
+            name="expiry"
+            placeholder="expiry"
+            onFocus={(e)=>setCreditInput({...creditInput,focus:'cvc'})}
+           onBlur={(e)=>{setCreditInput({...creditInput,cvc:e.currentTarget.value})}}
+          />
+          ...
+          <button type='submit'>Payment</button>
+        </form>
+        </div> */}
+        
+        <NotificationContainer/>
     </div></>
 }
 export default CartItems

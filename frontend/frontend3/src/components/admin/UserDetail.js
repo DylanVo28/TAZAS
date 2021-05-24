@@ -45,8 +45,11 @@ const UserDetail=(props)=>{
       setUser({
         ...user,
         name:document.getElementsByName('name')[0].value,
-        email:document.getElementsByName('email')[0].value,
+        emailUser:document.getElementsByName('emailUser')[0].value,
         role:document.getElementsByName('role')[0].value,
+        dateOfBirth:document.getElementsByName('dateOfBirth')[0].value,
+        placeOfBirth:document.getElementsByName('placeOfBirth')[0].value,
+        phoneNumber:document.getElementsByName('phoneNumber')[0].value,
         
       })
     }
@@ -87,14 +90,19 @@ const UserDetail=(props)=>{
       setUser({
         ...user,
         name:document.getElementsByName('name')[0].value,
-        email:document.getElementsByName('email')[0].value,
+        emailUser:document.getElementsByName('emailUser')[0].value,
         role:document.getElementsByName('role')[0].value,
-        
+        dateOfBirth:document.getElementsByName('dateOfBirth')[0].value,
+        placeOfBirth:document.getElementsByName('placeOfBirth')[0].value,
+        phoneNumber:document.getElementsByName('phoneNumber')[0].value,
       })
       const data={
         name:document.getElementsByName('name')[0].value,
-        email:document.getElementsByName('email')[0].value,
+        emailUser:document.getElementsByName('emailUser')[0].value,
         role:document.getElementsByName('role')[0].value,
+        dateOfBirth:document.getElementsByName('dateOfBirth')[0].value,
+        placeOfBirth:document.getElementsByName('placeOfBirth')[0].value,
+        phoneNumber:document.getElementsByName('phoneNumber')[0].value,
       }
       if(props.match.path=='/admin/profile'){
         clientRequest.updateUser(data,avatarPr).then(NotificationManager.success('Success', 'Update success')).catch(err=>NotificationManager.error('error', 'Update failed'))
@@ -106,9 +114,9 @@ const UserDetail=(props)=>{
       setEdit(true)
     }
 
-    const deleteUser=()=>{
+    const deleteUser=async()=>{
       if(props.match.path=='/admin/profile'){
-        clientRequest.deleteUserDetail(user._id).then(res=>{NotificationManager.success('Success', 'Update success')
+        await clientRequest.deleteAccountMe().then(res=>{NotificationManager.success('Success', 'Update success')
         localStorage.removeItem("token");
         window.location.href='/login'
       })
@@ -152,12 +160,24 @@ const UserDetail=(props)=>{
             <hr className="horizontal gray-light my-4" />
             <ul className="list-group">
               <li className="list-group-item border-0 ps-0 pt-0 text-sm"><strong className="text-dark">Full Name:</strong> &nbsp;<input name='name' defaultValue={user.name} disabled={edit}/> </li>
-              <li className="list-group-item border-0 ps-0 text-sm"><strong className="text-dark">Email:</strong> &nbsp; <input name='email' defaultValue={user.email} disabled={edit}/></li>
+              <li className="list-group-item border-0 ps-0 text-sm"><strong className="text-dark">Email:</strong> &nbsp; <input name='emailUser' defaultValue={user.emailUser} disabled={edit}/></li>
               <li className="list-group-item border-0 ps-0 text-sm"><strong className="text-dark">Role:</strong> &nbsp;
-              <select defaultValue={user.role} name='role' disabled={edit}>
+              <select defaultValue={user.role} name='role' disabled={true}>
   <option value="user">user</option>
   <option value="admin">admin</option>
 </select>
+
+               </li>
+               <li className="list-group-item border-0 ps-0 text-sm"><strong className="text-dark">Date Of Birth:</strong> &nbsp;
+               <input type="date" id="start" name="dateOfBirth"
+       defaultValue={user.dateOfBirth}
+       min="1960-01-01" disabled={edit}/>
+               </li>
+               <li className="list-group-item border-0 ps-0 text-sm"><strong className="text-dark">Place Of Birth:</strong> &nbsp;
+               <input  name="placeOfBirth" defaultValue={user.placeOfBirth} disabled={edit}/>
+               </li>
+               <li className="list-group-item border-0 ps-0 text-sm"><strong className="text-dark">Phone Number:</strong> &nbsp;
+               <input name="phoneNumber" defaultValue={user.phoneNumber} disabled={edit}/>
                </li>
               <li className="list-group-item border-0 ps-0 text-sm"><strong className="text-dark">Create At:</strong> &nbsp; {getFormattedDate(user.createAt)}</li>
               

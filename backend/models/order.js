@@ -55,15 +55,9 @@ const orderSchema=mongoose.Schema({
 
         }
     ],
-    paymentInfo:{
-        id:{
-            type:String,
-
-        },
-        status:{
-            type:String
-        }
-
+    paymentMethod:{
+        type:String,
+        default:'COD'
     },
     paidAt:{
         type:Date

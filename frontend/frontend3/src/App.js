@@ -22,6 +22,10 @@ import MenuHome from './components/shop/MenuHome';
 import CartItems from './components/shop/cart/CartItems';
 import 'reactjs-popup/dist/index.css';
 import clientRequest from "./APIFeatures/clientRequest";
+import {loadStripe} from '@stripe/stripe-js';
+import {Elements} from '@stripe/react-stripe-js';
+
+const stripePromise = loadStripe('pk_test_51It4PvLgUSTDjbyWTlRELXx6IQ2Bj9G8W3xaZboFziEHqkyqAzvWJyV05ay6gXGHfNZ4L2KshB0aIp3Xu62FTy4k000LIG8GRA');
 const ProtectedRoute = ({ component: Component, ...rest }) => {
   return (
     <Route {...rest} render={
@@ -54,7 +58,9 @@ function App() {
         <Fragment>
           <ProtectedRoute exact path="/product/:id" component={ProductHome}/>
           <ProtectedRoute exact path="/order/create-new" component={OrderHome}/>
+          <Elements stripe={stripePromise}>
           <ProtectedRoute exact path="/cart-items" component={CartItems}/>
+          </Elements>
     </Fragment>
         <Admin/>
         
