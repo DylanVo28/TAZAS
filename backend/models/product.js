@@ -77,39 +77,7 @@ const productSchema=new mongoose.Schema({
         required:[true,'Please enter product stock'],
         maxLength:[5,'Product stock cannot exceed 5 characters']
     },
-    numOfReviews:{
-        type:Number,
-        default:0,
-    },
-    reviews:[
-        {
-            user:{
-                type:mongoose.Schema.ObjectId,
-                ref:'User',
-                required:true
-            },
-            avatar:{
-                type:String,
-                required:true
-            },
-            name:{
-                type:String,
-                required:true
-            },
-            rating:{
-                type:Number,
-                required:true
-            },
-            comment:{
-                type:String,
-                required:true
-            },
-            createdAt:{
-                type:Date,
-                default:Date.now
-            }
-        }
-    ],
+   
     createdAt:{
         type:Date,
         default:Date.now

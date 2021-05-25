@@ -38,9 +38,26 @@ exports.getOderDetail = catchAsyncError(async (req, res, next) => {
     if (!order) {
         return next(new ErrorHandler('order not found', 404))
     }
+    var orderItems=await Promise.all(order.orderItems.map(async (item) => {
+        try {
+          // here candidate data is inserted into  
+          const product=await Product.findById(item.product)
+          // and response need to be added into final response array 
+          return {
+            name:product.name,
+            image:product.images[0].url,
+            price:product.price,
+            quantity:item.quantity
+        }
+        
+        } catch (error) {
+          console.log('error'+ error);
+        }
+      }))
     res.status(200).json({
         success: true,
-        order
+        order,
+        orderItems
     })
 })
 exports.myOrders = catchAsyncError(async (req, res, next) => {

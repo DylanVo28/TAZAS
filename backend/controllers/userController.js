@@ -31,7 +31,7 @@ exports.registerUser=catchAsyncErrors(async(req,res,next)=>{
     })
     const user=await User.create({
         name:`Customer ${userLogin._id}`,
-        userId:userLogin._id,
+        _id:userLogin._id,
         avatar:{
             public_id:'esgwlofliym7hrt08vch',
             url:'https://res.cloudinary.com/tazas/image/upload/v1620570274/tazas/esgwlofliym7hrt08vch.png'
@@ -131,7 +131,7 @@ exports.userProfile=catchAsyncErrors(async(req,res,next)=>{
     if(!userLogin){
         return next(new ErrorHandler('User not found',400))
     }
-    let user=(await User.findOne({userId:userLogin._id})).toObject()
+    let user=(await User.findById(req.user.id)).toObject()
     user.role=userLogin.role
     
     res.status(200).json({
@@ -180,11 +180,12 @@ exports.updateProfile=catchAsyncErrors(async(req,res,next)=>{
         runValidators:true,
         useFindAndModify:false
     })
-    const user=await User.findOneAndUpdate({userId: req.user.id},newUserData,{
+    const user=await User.findByIdAndUpdate( req.user.id,newUserData,{
         new:true,
         runValidators:true,
         useFindAndModify:false
     })
+    await Product.updateMany({"user":req.user.id},{$set:{"seller":user.name}})
     res.status(200).json({
         success:true
     })
@@ -251,7 +252,7 @@ exports.updateUser=catchAsyncErrors(async(req,res,next)=>{
 })
 exports.deleteUser=catchAsyncErrors(async(req,res,next)=>{
     const user=await User.findById(req.params.id)
-    const userLogin=await UserLogin.findById(user.userId)
+    const userLogin=await UserLogin.findById(req.params.id)
     if(!userLogin){
         return next(new ErrorHandler('user not found',404))
     }

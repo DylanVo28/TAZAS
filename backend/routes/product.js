@@ -27,6 +27,5 @@ router.route('/admin/product/:id').put(
 router.route('/admin/product/:id').delete(
     isAuthenticatedUser,
     deleteProduct)
-router.route('/review').put(isAuthenticatedUser,createProductReview)
 router.route('/reviews').get(getAllReviews).delete(isAuthenticatedUser,deleteReview)
 module.exports=router;

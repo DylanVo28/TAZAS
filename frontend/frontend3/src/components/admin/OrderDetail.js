@@ -10,12 +10,13 @@ const OrderDetail=(props)=>{
     const [order,setOrder]=useState({})
     const [user,setUser]=useState({})
     const [showModal,setShowModal]=useState(false)
-    
+    const [tableItems,setTableItems]=useState()
     useEffect(() => {
       
         async function fetchMyAPI() {
             clientRequest.getOrder(props.match.params.id).then(res=>{
                 setOrder(res.order)
+                setTableItems(res.orderItems)
                 clientRequest.getUser(res.order.user).then(res=>setUser(res.user))
             })
         }
@@ -33,7 +34,7 @@ const OrderDetail=(props)=>{
                         </div>
                     </div>
                 <div className='col-3'>Email:</div>
-    <div className='col-9'>{user.email}</div>
+    <div className='col-9'>{user.emailUser}</div>
     <div className='col-3'>Name:</div>
     <div className='col-9'>{user.name}</div>
 
@@ -70,7 +71,7 @@ const OrderDetail=(props)=>{
 
 
               </div>
-              {order.orderItems.map(item=><div className='row'>
+              {tableItems&&tableItems.map(item=><div className='row'>
               <div className='col-3'>{item.name}</div>
                 <div className='col-3'>{item.quantity}</div>
                 <div className='col-3'>
@@ -145,7 +146,6 @@ const OrderDetail=(props)=>{
         </div>
        <NotificationContainer/>
         <div className='btn-group'>
-        <button className="btn btn-danger" onClick={()=>deleteItem()}>Delete</button>
         {(order.orderStatus=='Processing' && props.match.path=='/admin/order/:id')&&<button className='btn' 
         onClick={(status)=>updateOrderStatus('Confirmed')}>Confirm Order</button>}
         {(order.orderStatus=='Confirmed'&& props.match.path=='/admin/order/:id')&&<button className='btn' 
