@@ -3,9 +3,9 @@ import clientRequest from '../../../APIFeatures/clientRequest';
 import { useState } from 'react';
 import { Table } from 'react-bootstrap';
 import { NotificationContainer, NotificationManager } from 'react-notifications';
-import Cards from 'react-credit-cards';
-import 'react-credit-cards/es/styles-compiled.css';
-import { useStripe,useElements,CardElement,CardNumberElement} from '@stripe/react-stripe-js';
+// import Cards from 'react-credit-cards';
+// import 'react-credit-cards/es/styles-compiled.css';
+// import { useStripe,useElements,CardElement,CardNumberElement} from '@stripe/react-stripe-js';
 const CartItems=()=>{
     const [cartItems,setCartItems]=useState([])
     const [user,setUser]=useState(null)
@@ -20,8 +20,8 @@ const CartItems=()=>{
     name: '',
     number: '',
     })
-    const stripe = useStripe();
-    const elements = useElements();
+    // const stripe = useStripe();
+    // const elements = useElements();
     useEffect(()=>{
       fetchMyAPI()
       clientRequest.getCart().then(res=>console.log(res))
@@ -82,23 +82,7 @@ const CartItems=()=>{
         }
         clientRequest.postOrder(data).then(res=>console.log(res))
       }
-      const submitHandler=async (e)=>{
-        e.preventDefault();
-        const res=await clientRequest.processPayment(totalPrice)
-        const clientSecret=res.client_secret
-        console.log(clientSecret)
-        const cardElement = elements.getElement(CardNumberElement);
-        console.log(cardElement)
-        const result=await stripe.confirmCardPayment(clientSecret,{
-          payment_method:{
-            card :cardElement,
-            billing_details:{
-              name: user.name,
-              email: user.email
-            }
-          }
-        })
-      }
+     
     return <>
     <div style={{height:'80px'}}></div>
     <div className='container'>
