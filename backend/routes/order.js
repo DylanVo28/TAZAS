@@ -5,7 +5,11 @@ const router = express.Router()
 router.route('/order/create').post(
     isAuthenticatedUser,
     newOrder)
-router.route('/order/:id').get(isAuthenticatedUser, getOderDetail)
+    router.route('/order/:id').get(isAuthenticatedUser,
+        getOderDetail)
+router.route('/admin/order/:id').get(isAuthenticatedUser,
+    authorizeRoles('admin'),
+    getOderDetail)
 router.route('/orders/me').get(isAuthenticatedUser, myOrders)
 router.route('/admin/orders').get(
     isAuthenticatedUser,

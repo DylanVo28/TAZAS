@@ -20,7 +20,7 @@ exports.newProduct=catchAsyncError (async (req,res,next)=>{
             })
         }
     }
-    const user=await User.findOne({userId:req.user.id})
+    const user=await User.findById(req.user.id)
  
     const {name,price,description,classify,category,stock,images}=req.body.data
     const data={

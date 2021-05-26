@@ -24,7 +24,8 @@ const CartItems=()=>{
     // const elements = useElements();
     useEffect(()=>{
       fetchMyAPI()
-      clientRequest.getCart().then(res=>console.log(res))
+      const cart=await clientRequest.getCart();
+      setCartItems(cart.myCart)
     },[])
     useEffect(()=>{
     
@@ -44,17 +45,17 @@ const CartItems=()=>{
    
     async function fetchMyAPI() {
       const cart=await clientRequest.getProfileMe();
-      setCartItems(cart.user.cartItems) 
       setUser(cart.user)
     }
       const updateCartChanged=(index)=>e=>{
         let newArr = [...cartItems];
         newArr[index].quantity =Number (e.target.value); 
+        newArr[index].total =Number (e.target.value*newArr[index].price); 
         setCartItems(newArr)
       }
       const removeItem=(id)=>{
         const cartFilter=cartItems.filter(item=>item._id!=id)
-        clientRequest.updateCartItem(cartFilter).then(res=>NotificationManager.success('success','update success'))
+        clientRequest.updateCartItem(id).then(res=>NotificationManager.success('success','update success'))
         setCartItems(cartFilter)
       }
       const handleChecked=(index)=>e=>{
@@ -88,6 +89,7 @@ const CartItems=()=>{
     <div className='container'>
         <div className='row'>
         <div className='col-md-6'>
+          <div>
         <Table striped bordered hover>
   <thead>
     <tr>
@@ -96,22 +98,26 @@ const CartItems=()=>{
       <th>Image</th>
       <th>Quantity</th>
       <th>Price</th>
+      <th>Total</th>
       <th></th>
     </tr>
   </thead>
   <tbody>
     {cartItems.map((item,index)=> {
-    return <tr>
+    return <tr >
       <td><input type="checkbox" defaultChecked={item.checked} onChange={handleChecked(index)}/></td>
   <td>{item.name}</td>
   {item.image&&<td><img src={item.image}/></td>}
   <td> <input defaultValue={item.quantity} type='Number' onChange={updateCartChanged(index)}/></td>
   <td>{item.price}</td>
+  <td>{item.total}</td>
+
     <td><button className='btn btn-danger fas fa-trash' onClick={()=>removeItem(item._id)}></button></td>
 </tr>})
 }
   </tbody>
 </Table>
+</div>
         </div>
         <div className="col-md-6">
         {user && <div className='user-cart-items'>

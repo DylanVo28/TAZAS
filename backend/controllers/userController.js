@@ -31,7 +31,7 @@ exports.registerUser=catchAsyncErrors(async(req,res,next)=>{
     })
     const user=await User.create({
         name:`Customer ${userLogin._id}`,
-        userId:userLogin._id,
+        _id:userLogin._id,
         avatar:{
             public_id:'esgwlofliym7hrt08vch',
             url:'https://res.cloudinary.com/tazas/image/upload/v1620570274/tazas/esgwlofliym7hrt08vch.png'
@@ -131,7 +131,7 @@ exports.userProfile=catchAsyncErrors(async(req,res,next)=>{
     if(!userLogin){
         return next(new ErrorHandler('User not found',400))
     }
-    let user=(await User.findOne({userId:userLogin._id})).toObject()
+    let user=(await User.findById(req.user.id)).toObject()
     user.role=userLogin.role
     
     res.status(200).json({
@@ -180,11 +180,12 @@ exports.updateProfile=catchAsyncErrors(async(req,res,next)=>{
         runValidators:true,
         useFindAndModify:false
     })
-    const user=await User.findOneAndUpdate({userId: req.user.id},newUserData,{
+    const user=await User.findByIdAndUpdate( req.user.id,newUserData,{
         new:true,
         runValidators:true,
         useFindAndModify:false
     })
+    await Product.updateMany({"user":req.user.id},{$set:{"seller":user.name}})
     res.status(200).json({
         success:true
     })
@@ -251,7 +252,7 @@ exports.updateUser=catchAsyncErrors(async(req,res,next)=>{
 })
 exports.deleteUser=catchAsyncErrors(async(req,res,next)=>{
     const user=await User.findById(req.params.id)
-    const userLogin=await UserLogin.findById(user.userId)
+    const userLogin=await UserLogin.findById(req.params.id)
     if(!userLogin){
         return next(new ErrorHandler('user not found',404))
     }
@@ -300,44 +301,12 @@ exports.addToCart=catchAsyncErrors(async(req,res,next)=>{
     })
     
 })
-
-exports.updateToCart=catchAsyncErrors(async(req,res,next)=>{
-    const userLogin=await UserLogin.findById(req.user.id)
-    const user=await User.findOne({userId: userLogin._id})
-    user.cartItems=req.body.data
-    await user.save()
+exports.changeRoleUser=catchAsyncErrors(async(req,res,next)=>{
+    const user=await UserLogin.findByIdAndUpdate(req.params.id,{$set:{role:'admin'}})
+    if(!user){
+        return (new ErrorHandler('change role failed',404))
+    }
     res.status(200).json({
         success:true
-    })
-})
-exports.getProductsCart=catchAsyncErrors(async(req,res,next)=>{
-    const userLogin=await UserLogin.findById(req.user.id)
-    const user=await User.findOne({userId: userLogin._id})
-    if(!user){
-        return next(new ErrorHandler('user not found',404))
-    }
-   
-    var cartItems=await Promise.all(user.cartItems.map(async (item) => {
-        try {
-          // here candidate data is inserted into  
-          const product=await Product.findById(item.product)
-          // and response need to be added into final response array 
-          return {
-            checked:item.checked,
-            quantity:item.quantity,
-            _id:item._id,
-            product:item.product,
-            imageUrl:product.images[0].url,
-            price:product.price,
-            name:product.name
-        }
-        
-        } catch (error) {
-          console.log('error'+ error);
-        }
-      }))
-    res.status(200).json({
-        success:true,
-        cartItems
     })
 })

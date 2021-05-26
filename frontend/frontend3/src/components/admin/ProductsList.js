@@ -16,7 +16,7 @@ const ProductsList=()=>{
 
     })
     useEffect(()=>{
-      clientRequest.getProducts()
+      clientRequest.getProductsRoleAdmin()
             .then((result) => {
               setListProduct(result.products)
             })
@@ -28,7 +28,7 @@ const ProductsList=()=>{
        
     },[])
     useEffect(()=>{
-      clientRequest.getSearchProducts(searchName,sizePage.current).then(res=>setListProduct(res.products))
+      clientRequest.getSearchProductsRoleAdmin(searchName,sizePage.current).then(res=>setListProduct(res.products))
     },[sizePage.current,searchName])
     const handlePageChange=(pageNumber)=> {
       setSizePage(sizePage=>({...sizePage,current:pageNumber}))

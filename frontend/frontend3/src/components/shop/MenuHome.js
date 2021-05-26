@@ -12,7 +12,7 @@ const MenuHome =()=>{
         clientRequest.getProfileMe().then(res=>{
             setUser(res.user)
             let totalQuantity=0;
-            res.user.cartItems.forEach(item=>totalQuantity+=item.quantity)
+            // res.user.cartItems.forEach(item=>totalQuantity+=item.quantity)
             setQuantity(totalQuantity)
         })
     },[])

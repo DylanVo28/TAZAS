@@ -40,10 +40,7 @@ const OrderHome=()=>{
                 user:user._id,
                 orderItems:[
                     {
-                        name:product.name,
                         quantity:product.quantity,
-                        image:product.images[0].url,
-                        price:product.price,
                         product:product._id
                     }
                 ],
@@ -100,7 +97,7 @@ const OrderHome=()=>{
                 </div>
                 <div className="form-group">
                     <label htmlFor="exampleInputEmail">Email</label>
-                    <input type="text" className="form-control" id="exampleInputEmail" defaultValue={user.email} disabled/>
+                    <input type="text" className="form-control" id="exampleInputEmail" defaultValue={user.emailUser} disabled/>
                 </div>
                
                 </form>
