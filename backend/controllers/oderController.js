@@ -93,11 +93,16 @@ exports.updateOrder = catchAsyncError(async (req, res, next) => {
     }
     order.orderStatus = req.body.orderStatus
     if (order.orderStatus == 'Delivered') {
+        order.deliveredAt=Date.now()
         order.orderItems.forEach(async item => {
             const product = await Product.findById(item.product);
             product.stock -= item.quantity
             await product.save()
         })
+        
+    }
+    if(order.orderStatus=='Complete'){
+        order.paidAt=Date.now()
     }
     await order.save();
 

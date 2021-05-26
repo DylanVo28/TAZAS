@@ -74,7 +74,7 @@ const Home =()=>{
 
           {products.map(item=><div className='col-md-4' style={{marginBottom:'15px'}}>
             <Link to={`/product/${item._id}`}>
-              <div style={{padding:'15px',border:'1px solid #d2d2d2'}}>
+              <div style={{padding:'15px'}}>
         <div className='avatar-home'>
           <img src={item.images[0].url}/>
           <div className='avatar-home_thumbnail'>

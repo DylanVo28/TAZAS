@@ -28,7 +28,6 @@ router.route('/order/:id').delete(
 
 router.route('/admin/order/:id').put(
     isAuthenticatedUser,
-    authorizeRoles('admin'),
     updateOrder
 
 )

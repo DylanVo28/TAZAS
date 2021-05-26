@@ -1,7 +1,8 @@
 const mongoose =require('mongoose')
 //error
+
 const connectDatabase=()=>{
-    mongoose.connect(process.env.DB_LOCAL_URI,{
+    mongoose.connect(process.env.DB_CLOUD,{
         useNewUrlParser:true,
         useUnifiedTopology:true,
         useCreateIndex:true
