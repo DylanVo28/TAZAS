@@ -1,10 +1,14 @@
 const mongoose=require('mongoose')
 const reviewSchema=mongoose.Schema({
+    
     userId:{
         type:mongoose.Schema.ObjectId,
         ref:'User'
     },
-   
+    productId:{
+        type:mongoose.Schema.ObjectId,
+        ref:'Product'
+    },
     comment:{
         type:String,
         require:true
@@ -20,3 +24,4 @@ const reviewSchema=mongoose.Schema({
     
 } )
 module.exports=mongoose.model('Review',reviewSchema)
+

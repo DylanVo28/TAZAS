@@ -7,25 +7,32 @@ router.route('/products').get(
     isAuthenticatedUser,
     // authorizeRoles('admin'),
     getProducts)
-
+router.route('/admin/products').get(
+        isAuthenticatedUser,
+        authorizeRoles('admin'),
+        getProducts)
+    
 router.route('/products-home').get(getProductsHome)
 
 router.route('/length-product').get(
         isAuthenticatedUser,
-        // authorizeRoles('admin'),
+        authorizeRoles('admin'),
         getLengthProduct)
 router.route('/home-length-product').get(
         getLengthProduct)
 router.route('/product/:id').get(getSingleProduct)
+router.route('/admin/product/:id').get(isAuthenticatedUser,authorizeRoles('admin'),getSingleProduct)
+
 router.route('/admin/product/new').post(
     isAuthenticatedUser,
         authorizeRoles('admin'),
     newProduct)
 router.route('/admin/product/:id').put(
     isAuthenticatedUser,
+    authorizeRoles('admin'),
     updateProduct)
 router.route('/admin/product/:id').delete(
     isAuthenticatedUser,
+    authorizeRoles('admin'),
     deleteProduct)
-router.route('/reviews').get(getAllReviews).delete(isAuthenticatedUser,deleteReview)
 module.exports=router;

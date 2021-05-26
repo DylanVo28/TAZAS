@@ -301,44 +301,12 @@ exports.addToCart=catchAsyncErrors(async(req,res,next)=>{
     })
     
 })
-
-exports.updateToCart=catchAsyncErrors(async(req,res,next)=>{
-    const userLogin=await UserLogin.findById(req.user.id)
-    const user=await User.findOne({userId: userLogin._id})
-    user.cartItems=req.body.data
-    await user.save()
+exports.changeRoleUser=catchAsyncErrors(async(req,res,next)=>{
+    const user=await UserLogin.findByIdAndUpdate(req.params.id,{$set:{role:'admin'}})
+    if(!user){
+        return (new ErrorHandler('change role failed',404))
+    }
     res.status(200).json({
         success:true
-    })
-})
-exports.getProductsCart=catchAsyncErrors(async(req,res,next)=>{
-    const userLogin=await UserLogin.findById(req.user.id)
-    const user=await User.findOne({userId: userLogin._id})
-    if(!user){
-        return next(new ErrorHandler('user not found',404))
-    }
-   
-    var cartItems=await Promise.all(user.cartItems.map(async (item) => {
-        try {
-          // here candidate data is inserted into  
-          const product=await Product.findById(item.product)
-          // and response need to be added into final response array 
-          return {
-            checked:item.checked,
-            quantity:item.quantity,
-            _id:item._id,
-            product:item.product,
-            imageUrl:product.images[0].url,
-            price:product.price,
-            name:product.name
-        }
-        
-        } catch (error) {
-          console.log('error'+ error);
-        }
-      }))
-    res.status(200).json({
-        success:true,
-        cartItems
     })
 })

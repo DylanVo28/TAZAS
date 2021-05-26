@@ -12,16 +12,27 @@ const OrderDetail=(props)=>{
     const [showModal,setShowModal]=useState(false)
     const [tableItems,setTableItems]=useState()
     useEffect(() => {
-      
-        async function fetchMyAPI() {
-            clientRequest.getOrder(props.match.params.id).then(res=>{
-                setOrder(res.order)
-                setTableItems(res.orderItems)
-                clientRequest.getUser(res.order.user).then(res=>setUser(res.user))
-            })
+        if(props.match.path=='/order/me/:id'){
+            async function fetchMyAPI() {
+                clientRequest.getOrder(props.match.params.id).then(res=>{
+                    setOrder(res.order)
+                    setTableItems(res.orderItems)
+                    setUser(res.user)
+                })
+            }
+            fetchMyAPI()
         }
-    
-        fetchMyAPI()
+        if(props.match.path=='/admin/order/:id'){
+            async function fetchMyAPIRoleAdmin() {
+                clientRequest.getOrderRoleAdmin(props.match.params.id).then(res=>{
+                    setOrder(res.order)
+                    setTableItems(res.orderItems)
+                    setUser(res.user)
+                })
+            }
+            fetchMyAPIRoleAdmin()
+        }
+       
       }, [])
    const FormUser=()=>{
                 return (<>

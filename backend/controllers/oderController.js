@@ -3,6 +3,7 @@ const Order = require("../models/order");
 const APIFeatures = require("../utils/apiFeatures");
 const ErrorHandler = require("../utils/errorHandler");
 const Product = require('../models/product');
+const User = require("../models/user");
 exports.newOrder = catchAsyncError(async (req, res, next) => {
 
     const {
@@ -38,6 +39,11 @@ exports.getOderDetail = catchAsyncError(async (req, res, next) => {
     if (!order) {
         return next(new ErrorHandler('order not found', 404))
     }
+    const user=await User.findById(order.user)
+    if(!user){
+        return next(new ErrorHandler('user not found', 404))
+
+    }
     var orderItems=await Promise.all(order.orderItems.map(async (item) => {
         try {
           // here candidate data is inserted into  
@@ -57,7 +63,8 @@ exports.getOderDetail = catchAsyncError(async (req, res, next) => {
     res.status(200).json({
         success: true,
         order,
-        orderItems
+        orderItems,
+        user
     })
 })
 exports.myOrders = catchAsyncError(async (req, res, next) => {

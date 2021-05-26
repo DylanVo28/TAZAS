@@ -35,7 +35,7 @@ const ProductHome=(props)=>{
 
         clientRequest.getProductDetail(props.match.params.id).then(res=>setProduct(res.product))
         clientRequest.getProfileMe().then(res=>setUser(res.user))
-        clientRequest.getReviewsByProduct(props.match.params.id).then(res=>setAllReviews(res.allReviews))
+        clientRequest.getReviewsByProduct(props.match.params.id).then(res=>setAllReviews(res.list))
     },[])
     const orderNow=()=>{
         const cartItem=product;
@@ -123,7 +123,7 @@ const ProductHome=(props)=>{
         </div>}
         {allReviews&&allReviews.map(item=><><div className='row' style={{alignItems:'center'}}>
             <div className='col-md-3 text-right'>
-                <img src={item.avatar}/>
+                <img src={item.image}/>
                 
             </div>
             <div className='col-md-9'>
@@ -140,7 +140,7 @@ const ProductHome=(props)=>{
   <input defaultValue={item.comment} disabled/>
   <br/>
   <span>Created At:  </span>
-  <span>{getFormattedDate( item.createdAt)}</span>
+  <span>{getFormattedDate( item.createAt)}</span>
             </div>
         </div></>)}
     </div>

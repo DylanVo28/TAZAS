@@ -19,6 +19,16 @@ class ClientRequest{
         })
     }
 
+    getProductsRoleAdmin(){
+        return new Promise( (resolve, reject) => {
+            axios.get(`${DOMAIN}/api/v1/admin/products`,{
+                params:{userToken}
+            }).then(result => {
+                    resolve(result.data)
+                }, reject)
+        })
+    }
+
     getLengthAllProducts(){
         return new Promise( (resolve, reject) => {
             axios.get(`${DOMAIN}/api/v1/length-product`,{
@@ -40,6 +50,16 @@ class ClientRequest{
     getSearchProducts(searchName,currentPage){
         return new Promise( (resolve, reject) => {
             axios.get(`${DOMAIN}/api/v1/products?keyword=${searchName}&page=${currentPage}`,{
+                params:{userToken}
+            }).then(result => {
+                    resolve(result.data)
+                }, reject)
+        })
+    }
+
+    getSearchProductsRoleAdmin(searchName,currentPage){
+        return new Promise( (resolve, reject) => {
+            axios.get(`${DOMAIN}/api/v1/admin/products?keyword=${searchName}&page=${currentPage}`,{
                 params:{userToken}
             }).then(result => {
                     resolve(result.data)
@@ -78,6 +98,16 @@ class ClientRequest{
     getProductDetail(id){
         return new Promise((resolve,reject)=>{
             axios.get(`${DOMAIN}/api/v1/product/${id}`,{
+                params:{userToken}
+            }).then(result => {
+                resolve(result.data)
+            }, reject)
+        })
+    }
+
+    getProductDetailRoleAdmin(id){
+        return new Promise((resolve,reject)=>{
+            axios.get(`${DOMAIN}/api/v1/admin/product/${id}`,{
                 params:{userToken}
             }).then(result => {
                 resolve(result.data)
@@ -128,7 +158,16 @@ class ClientRequest{
             }, reject)
         }) 
     }
-    
+    getOrderRoleAdmin(id){
+        return new Promise((resolve,reject)=>{
+            axios.get(`${DOMAIN}/api/v1/admin/order/${id}`,{
+                params:{
+                  userToken
+              }},config).then(result => {
+                resolve(result.data)
+            }, reject)
+        }) 
+    }
     getUser(id){
         return new Promise((resolve,reject)=>{
             axios.get(`${DOMAIN}/api/v1/admin/user/${id}`,{
@@ -392,7 +431,7 @@ class ClientRequest{
 
     getCart(){
         return new Promise((resolve,reject)=>{
-            axios.get(`${DOMAIN}/api/v1/get-cart`,{
+            axios.get(`${DOMAIN}/api/v1/my-cart`,{
                 params:{userToken}
             }).then(result => {
                     resolve(result.data)

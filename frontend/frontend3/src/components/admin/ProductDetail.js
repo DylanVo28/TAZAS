@@ -26,7 +26,7 @@ const ProductDetail=(props)=>{
       console.log('CREATE_PRODUCT')
     }
     else if(props.match.path=='/admin/product/:id'){
-      clientRequest.getProductDetail(props.match.params.id).then(res=>{
+      clientRequest.getProductDetailRoleAdmin(props.match.params.id).then(res=>{
         setStProduct(res.product)
         setAvatar(res.product.images[0].url)
       })
