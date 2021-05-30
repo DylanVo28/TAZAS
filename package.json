@@ -9,6 +9,7 @@
     "stag": "SET NODE_ENV=STAGING& nodemon backend/sever",
     "prod": "SET NODE_ENV=PRODUCTION& nodemon backend/sever",
     "seeder": "node backend/utils/seeder.js"
+   
   },
   "author": "Dinh Vo",
   "license": "ISC",

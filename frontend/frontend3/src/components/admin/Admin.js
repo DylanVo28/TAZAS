@@ -5,6 +5,8 @@ import Menu from "./Menu";
 import Sidebar from './Sidebar';
 import Dashboard from './Dashboard';
 import ProductsList from "./ProductsList";
+import DiscountList  from "./DiscountList";
+
 import ProductDetail from "./ProductDetail";
 import OrdersList from "./OrdersList";
 import store from "../../store";
@@ -57,6 +59,8 @@ const Admin=(props)=>{
         <PrivateRoute exact path='/admin/users' component={UserList} isAuthenticated={authenticated}/>
         <PrivateRoute exact path='/admin/user/:id' component={UserDetail} isAuthenticated={authenticated}/>
         <PrivateRoute exact path='/order/me' component={OrdersList} isAuthenticated={authenticated}/>
+        <PrivateRoute exact path='/admin/discounts' component={DiscountList} isAuthenticated={authenticated}/>
+
         </main>
         
         </Fragment>

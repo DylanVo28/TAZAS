@@ -15,6 +15,7 @@ var corsOptions = {
     preflightContinue: false,
     optionsSuccessStatus: 204
 }
+const path=require('path')
 app.use(cookieParser())
 app.use(cors());
 app.use(bodyParser.json({limit: '50mb'}));
@@ -33,12 +34,19 @@ const order=require('./routes/order')
 const payment=require('./routes/payment')
 const review=require('./routes/review')
 const cart=require('./routes/cart')
+const inventory=require('./routes/inventory')
 app.use('/api/v1',products)
 app.use('/api/v1',user)
 app.use('/api/v1',order)
 app.use('/api/v1',payment)
 app.use('/api/v1',review)
 app.use('/api/v1',cart)
+app.use('/api/v1',inventory)
 app.use(errorMiddleware)
-
+if(process.env.NODE_ENV==='PRODUCTION'){
+    app.use(express.static(path.join(__dirname,'../frontend/frontend3//build')))
+    app.get('*',(req,res)=>{
+        res.sendFile(path.join(__dirname,'../frontend/frontend3/index.html'))
+    })
+}
 module.exports=app

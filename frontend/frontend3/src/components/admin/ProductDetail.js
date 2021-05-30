@@ -2,9 +2,11 @@
 import axios from 'axios';
 import { useState, useEffect } from 'react';
 import { NotificationContainer, NotificationManager } from 'react-notifications';
-import { Redirect, Switch } from 'react-router-dom';
+import { Redirect, Switch, Link } from 'react-router-dom';
 import clientRequest from '../../APIFeatures/clientRequest';
 import imageDefault from '../../images/default.jpg'
+import  Modal  from 'react-awesome-modal';
+import { getFormattedDate } from '../../HandlerCaculate/formatDate';
 
 const ProductDetail=(props)=>{
   
@@ -21,7 +23,9 @@ const ProductDetail=(props)=>{
     category:'',
     stock:0,
   })
-  useEffect(()=>{
+  const [openModal,setOpenModal]=useState(false)
+  const [inventories,setInventories]=useState()
+  useEffect(async()=>{
     if(props.match.path=='/admin/create-product'){
       console.log('CREATE_PRODUCT')
     }
@@ -30,7 +34,8 @@ const ProductDetail=(props)=>{
         setStProduct(res.product)
         setAvatar(res.product.images[0].url)
       })
-      
+      const result=await clientRequest.getInventoryByProduct(props.match.params.id)
+      setInventories(result.list)
     }
   },[])
   const submitHandler=(e)=>{
@@ -149,6 +154,8 @@ const ProductDetail=(props)=>{
         
         <button type="submit" className="btn btn-primary">Save</button>
         {props.match.path=='/admin/product/:id' && <button style={{marginLeft:'15px'}} type="submit" className="btn btn-danger" onClick={()=>deleteItem(stProduct._id)}>Delete</button>}
+        {props.match.path=='/admin/product/:id' && <button style={{marginLeft:'15px'}} type="submit" className="btn btn-success"  onClick={()=>setOpenModal(true)}>Update Stock</button>}
+
       </form>
       )
 }
@@ -186,6 +193,69 @@ const InputImage=()=>{
   </div>
   )
 }
+const updateStock=async()=>{
+    const data={
+      productId:stProduct._id,
+      quantity:document.getElementsByName('addStock')[0].value
+    }
+    await clientRequest.addStock(data).then(res=>NotificationManager.success('Success', 'Success'))
+    setOpenModal(false)
+}
+const ModalStock=()=>{
+  return <Modal  visible={openModal} width="400" height="300" effect="fadeInUp"
+  onClickAway={() => setOpenModal(false)}
+  >  <div  className='popup-tazas text-center'>
+      <div style={{margin:'auto'}}> 
+            <h6>Update stock</h6>
+            <input placeholder="Input quantity" name='addStock'/>
+                <div className='btn-group btn'>
+                     <button className='btn btn-success' onClick={()=>updateStock()}>
+                      Update
+                     </button>
+                     <button className='btn'>
+                     <a href="javascript:void(0);"
+                      onClick={() =>setOpenModal(false)}
+                      >Close</a>
+                     </button>
+                     
+                 </div>
+                 </div>
+                 </div>
+             </Modal>
+}
+const InventoryRow=(item)=>{
+  return <tr>
+      
+            <td>
+              
+              <p>{item.seller}</p>
+            </td>
+            <td>
+              <p className="text-xs font-weight-bold mb-0">{item.quantity}</p>
+            </td>
+            <td className="align-middle text-center text-sm">
+            <p className="text-xs font-weight-bold mb-0">{getFormattedDate(item.updateDate) }</p>
+
+            </td>
+           
+            
+          </tr>
+}
+  const TableInventories=()=>{
+    return <table className="table align-items-center mb-0">
+      <thead>
+        <tr>
+          <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Seller</th>
+          <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Quantity</th>
+          <th className="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Update Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        {inventories && inventories.map(item=>InventoryRow(item))}
+      </tbody>
+
+    </table>
+  }
     return(
         <div style={{paddingTop:'30px'}}>
             <h3>{props.match.path=='/admin/create-product'?('Create Product'):('Product Detail')}</h3>
@@ -193,6 +263,11 @@ const InputImage=()=>{
        <div className="row">
            <div className="col-md-7 form">
             <Form/>
+            <br/>
+            <br/>
+            <h6>History Update Stock</h6>
+       <TableInventories/>
+
            </div>
            <div className="col-md-1"></div>
            <div className="col-md-3 form">
@@ -200,7 +275,7 @@ const InputImage=()=>{
            </div>
        </div>
        <NotificationContainer/>
-
+      <ModalStock/>
        </div>
     )
 }

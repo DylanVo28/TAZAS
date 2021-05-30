@@ -438,6 +438,28 @@ class ClientRequest{
                 }, reject)
         })
     }
+
+    addStock(data){
+        return new Promise((resolve,reject)=>{
+            axios.post(`${DOMAIN}/api/v1/add-stock`,{
+                params:{userToken},
+                data
+                
+            }).then(result => {
+                    resolve(result.data)
+                }, reject)
+        })
+    }
+
+    getInventoryByProduct(id){
+        return new Promise((resolve,reject)=>{
+            axios.get(`${DOMAIN}/api/v1/get-inventory-by-product/${id}`,{
+                params:{userToken},
+            }).then(result => {
+                    resolve(result.data)
+                }, reject)
+        })
+    }
 }
 const clientRequest = new ClientRequest();
 export default clientRequest;

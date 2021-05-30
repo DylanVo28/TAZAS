@@ -22,7 +22,7 @@ const CartItems=()=>{
     })
     // const stripe = useStripe();
     // const elements = useElements();
-    useEffect(()=>{
+    useEffect(async ()=>{
       fetchMyAPI()
       const cart=await clientRequest.getCart();
       setCartItems(cart.myCart)
