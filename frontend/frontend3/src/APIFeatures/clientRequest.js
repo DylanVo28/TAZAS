@@ -460,6 +460,47 @@ class ClientRequest{
                 }, reject)
         })
     }
+
+    createDiscount(data){
+        return new Promise((resolve,reject)=>{
+            axios.post(`${DOMAIN}/api/v1/create-discount`,{
+                params:{userToken},
+                data
+            }).then(result => {
+                    resolve(result.data)
+                }, reject)
+        })  
+    }
+
+    getListDiscount(name){
+        return new Promise((resolve,reject)=>{
+            axios.get(`${DOMAIN}/api/v1/admin/discounts?keyword=${name}`,{
+                params:{userToken},
+            }).then(result => {
+                    resolve(result.data)
+                }, reject)
+        })  
+    }
+
+    getDiscountDetail(id){
+        return new Promise((resolve,reject)=>{
+            axios.get(`${DOMAIN}/api/v1/admin/discount/${id}`,{
+                params:{userToken},
+            }).then(result => {
+                    resolve(result.data)
+                }, reject)
+        })  
+    }
+
+    removeDiscount(id){
+        return new Promise((resolve,reject)=>{
+            axios.delete(`${DOMAIN}/api/v1/admin/discount/${id}`,{
+                params:{userToken},
+            }).then(result => {
+                    resolve(result.data)
+                }, reject)
+        })  
+    }
 }
 const clientRequest = new ClientRequest();
 export default clientRequest;

@@ -1,6 +1,9 @@
-import { React, useState } from 'react';
+import { React, useState, useEffect } from 'react';
 import  Pagination  from 'react-js-pagination';
 import { Link } from 'react-router-dom';
+import clientRequest from '../../APIFeatures/clientRequest';
+import {getFormattedDate} from './../../HandlerCaculate/formatDate';
+
 const DiscountList=()=>{
     const [sizePage,setSizePage]=useState({
         current:1,
@@ -8,41 +11,46 @@ const DiscountList=()=>{
         count:10,
   
       })
+      const [discounts,setDiscounts]=useState()
+      const [searchName,setSearchName]=useState('')
+      useEffect(async()=>{
+        const list=await clientRequest.getListDiscount(searchName)
+        setDiscounts(list.discounts)
+      },[searchName])
       const handlePageChange=(pageNumber)=> {
         setSizePage(sizePage=>({...sizePage,current:pageNumber}))
       }
-    //   const ProductRow=(product)=>{
-    //     return <tr>
-            
-    //               <td>
-    //                 <div className="d-flex px-2 py-1">
-    //                   <div>
-    //                     <img src={product.images[0].url} className="avatar avatar-sm me-3" />
-    //                   </div>
-    //                   <div className="d-flex flex-column justify-content-center">
-    //                     <h6 className="mb-0 text-sm">{product.name}</h6>
-    //                     <p className="text-xs text-secondary mb-0">{product._id}</p>
-    //                   </div>
-    //                 </div>
-    //               </td>
-    //               <td>
-    //                 <p className="text-xs font-weight-bold mb-0">{product.seller}</p>
-    //               </td>
-    //               <td className="align-middle text-center text-sm">
-    //               <p className="text-xs font-weight-bold mb-0">{product.stock}</p>
 
-    //               </td>
-    //               <td className="align-middle text-center">
-    //                 <span className="text-secondary text-xs font-weight-bold">{getFormattedDate(product.createdAt)}</span>
-    //               </td>
-    //               <td className="align-middle">
-    //                 <Link  to={"/admin/product/"+product._id} className="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">
-    //                   Edit
-    //                 </Link>
-    //               </td>
+      const DiscountRow=(discount)=>{
+        return <tr>
+            
+                  <td>
+                    <div className="d-flex px-2 py-1">
+                      <div>
+                       
+                       <p>{discount.name}</p>
+                      </div>
+                    
+                    </div>
+                  </td>
+                  <td>
+                    <p className="text-xs font-weight-bold mb-0">{getFormattedDate(discount.validDate)}</p>
+                  </td>
+                  <td className="align-middle text-center text-sm">
+                  <p className="text-xs font-weight-bold mb-0">{discount.quantity}</p>
+
+                  </td>
+                  <td className="align-middle text-center">
+                    <span className="text-secondary text-xs font-weight-bold">{getFormattedDate(discount.createAt)}</span>
+                  </td>
+                  <td className="align-middle">
+                    <Link  to={"/admin/discount/"+discount._id} className="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">
+                      Edit
+                    </Link>
+                  </td>
                   
-    //             </tr>
-    // }
+                </tr>
+    }
     return <div className="container-fluid py-4">
     <div className="row">
       <div className="col-12">
@@ -50,7 +58,7 @@ const DiscountList=()=>{
           <div className="card-header pb-0">
             <h6>Discount List</h6>
             <div style={{display:'flex',justifyContent:'space-between'}}>
-            <input className='search-product' placeholder="Search product"/>
+            <input className='search-product' placeholder="Search product" onChange={e=>setSearchName(e.currentTarget.value)}/>
             <Link name="" id="" class="btn create-button" to="/admin/create-discount" role="button">Create Discount</Link>
             </div>
             <br/>
@@ -69,7 +77,7 @@ const DiscountList=()=>{
                   </tr>
                 </thead>
                 <tbody>
-                   
+                   {discounts&& discounts.map(item=>DiscountRow(item))}
                  
                 </tbody>
   

@@ -1,0 +1,98 @@
+import clientRequest from "../../APIFeatures/clientRequest"
+import { NotificationContainer, NotificationManager } from 'react-notifications';
+import { useEffect,useState } from 'react';
+import { getFormattedDate,formattedDateFromParse } from "../../HandlerCaculate/formatDate";
+
+const DiscountDetail=(props)=>{
+  const  [discount,setDiscount]=useState()
+  useEffect( async ()=>{
+    if(props.match.path=="/admin/discount/:id"){
+      const res=await clientRequest.getDiscountDetail(props.match.params.id)
+      setDiscount(res.discount)
+    }
+  },[])
+    const convertDate=(date)=>{
+        const d=new Date(date)
+        return Date.parse(d)
+    }
+    const submitHanddler=async (e)=>{
+
+        e.preventDefault();
+        
+        const list=await clientRequest.getListDiscount(document.getElementsByName('name')[0].value)
+        if(list.discounts.length!=0){
+          NotificationManager.error("Error","Tên đã trùng, vui lòng đổi tên khác")
+          return
+        }
+        
+        const data={
+            name:document.getElementsByName('name')[0].value,
+            categoryProduct:document.getElementsByName('categoryProduct')[0].value,
+            validDate:convertDate(document.getElementsByName('validDate')[0].value),
+            quantity:Number( document.getElementsByName('quantiy')[0].value),
+            value:Number( document.getElementsByName('value')[0].value)
+        }
+        await clientRequest.createDiscount(data).then(res=>NotificationManager.success("Success","Create Success"))
+    }
+    const removeDiscountItem=async ()=>{
+      await clientRequest.removeDiscount(discount._id).then(res=>{
+        NotificationManager.success("Success","Remove Success")
+        window.location.href='/admin/discounts'
+      }
+        
+        ).catch(err=>
+          NotificationManager.error("Error","Remove failed")
+          )
+    }
+    return <div className='row'>
+        <div className='col-md-6'>
+        <form onSubmit={submitHanddler}>
+  <div className="form-group">
+    <label htmlFor="formGroupExampleInput">Name</label>
+    <input type="text" className="form-control" id="formGroupExampleInput" defaultValue={discount&&discount.name} name='name' />
+  </div>
+  <div className="form-group col-md-4">
+            <label>Category</label>
+            <select className="form-control" name='category' defaultValue={discount&&discount.categoryProduct} name='categoryProduct'>
+              <option selected>Jackets & Coats</option>
+              <option>Hoodies & Sweatshirts</option>
+              <option>Cardigan & Jumpers</option>
+              <option>T-shirt & Tanks</option>
+              <option>Shoes</option>
+              <option>Shirts</option>
+              <option>Basics</option>
+              <option>Blazers & Suits</option>
+              <option>Shorts</option>
+              <option>Trousers</option>
+              <option>Jeans</option>
+              <option>Swimwear</option>
+              <option>Underwear</option>
+              <option>Socks</option>
+
+              
+            </select>
+          </div>
+  <div className="form-group">
+    <label htmlFor="formGroupExampleInput2">Valid Date</label>
+    <input type="date" id="start" name="validDate" defaultValue={discount?formattedDateFromParse(discount.validDate):Date.now()} min="2018-01-01" max="2099-12-31" />
+
+  </div>
+  <div className="form-group">
+    <label htmlFor="formGroupExampleInput2">Quantity</label>
+    <input type="text" className="form-control" id="formGroupExampleInput2" defaultValue={discount&&discount.quantity} name='quantiy'/>
+  </div>
+  <div className="form-group">
+    <label htmlFor="formGroupExampleInput2">Value (%)</label>
+    <input type="text" className="form-control" id="formGroupExampleInput2" defaultValue={discount&&discount.value} name='value'/>
+  </div>
+  {<button type='submit'>Create Discount</button>}
+
+</form>
+{props.match.path=="/admin/discount/:id"&&<button onClick={()=>removeDiscountItem()}>Delete</button>}
+
+<NotificationContainer/>
+
+        </div>
+    </div>
+}
+export default DiscountDetail

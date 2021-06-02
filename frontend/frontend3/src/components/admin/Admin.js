@@ -15,6 +15,7 @@ import axios from "axios";
 import OrderDetail from './OrderDetail';
 import UserDetail from "./UserDetail";
 import UserList from "./UserList";
+import DiscountDetail from "./DiscountDetail";
 const ProtectedRoute = ({ component: Component, ...rest }) => {
     return (
       <Route {...rest} render={
@@ -60,6 +61,7 @@ const Admin=(props)=>{
         <PrivateRoute exact path='/admin/user/:id' component={UserDetail} isAuthenticated={authenticated}/>
         <PrivateRoute exact path='/order/me' component={OrdersList} isAuthenticated={authenticated}/>
         <PrivateRoute exact path='/admin/discounts' component={DiscountList} isAuthenticated={authenticated}/>
+        <PrivateRoute exact path={['/admin/create-discount','/admin/discount/:id']} component={DiscountDetail} isAuthenticated={authenticated} />
 
         </main>
         
