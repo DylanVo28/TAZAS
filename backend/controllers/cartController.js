@@ -41,6 +41,7 @@ exports.getMyCart=catchAsyncError(async(req,res,next)=>{
             image:product.images[0].url,
             price:product.price,
             quantity:item.quantity,
+            category:product.category,
             total:Number (product.price*item.quantity)
         }
         

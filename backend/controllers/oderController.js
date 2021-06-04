@@ -4,6 +4,8 @@ const APIFeatures = require("../utils/apiFeatures");
 const ErrorHandler = require("../utils/errorHandler");
 const Product = require('../models/product');
 const User = require("../models/user");
+const Discount = require("../models/discount");
+
 exports.newOrder = catchAsyncError(async (req, res, next) => {
 
     const {
@@ -14,8 +16,14 @@ exports.newOrder = catchAsyncError(async (req, res, next) => {
         taxPrice,
         totalPrice,
         orderStatus,
-        shippingPrice
+        shippingPrice,
+        discountId
     } = req.body.data;
+    if(discountId){
+        await Discount.findByIdAndUpdate(discountId,{$inc:{
+            quantity:-1
+        }})
+    }
     const order = await Order.create({
         orderItems,
         shippingInfo,
@@ -27,7 +35,7 @@ exports.newOrder = catchAsyncError(async (req, res, next) => {
         shippingPrice,
         user: req.user.id,
         paidAt: Date.now(),
-
+        discountId
     })
     res.status(200).json({
         success: true,
@@ -35,10 +43,11 @@ exports.newOrder = catchAsyncError(async (req, res, next) => {
     })
 })
 exports.getOderDetail = catchAsyncError(async (req, res, next) => {
-    const order = await Order.findById(req.params.id)
+    var order = await Order.findById(req.params.id)
     if (!order) {
         return next(new ErrorHandler('order not found', 404))
     }
+    const discount=await Discount.findById(order.discountId)
     const user=await User.findById(order.user)
     if(!user){
         return next(new ErrorHandler('user not found', 404))
@@ -64,7 +73,8 @@ exports.getOderDetail = catchAsyncError(async (req, res, next) => {
         success: true,
         order,
         orderItems,
-        user
+        user,
+        discount
     })
 })
 exports.myOrders = catchAsyncError(async (req, res, next) => {

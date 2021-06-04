@@ -2,9 +2,11 @@ import clientRequest from "../../APIFeatures/clientRequest"
 import { NotificationContainer, NotificationManager } from 'react-notifications';
 import { useEffect,useState } from 'react';
 import { getFormattedDate,formattedDateFromParse } from "../../HandlerCaculate/formatDate";
+import Modal from 'react-awesome-modal';
 
 const DiscountDetail=(props)=>{
   const  [discount,setDiscount]=useState()
+  const [openModal,setOpenModal]=useState(false)
   useEffect( async ()=>{
     if(props.match.path=="/admin/discount/:id"){
       const res=await clientRequest.getDiscountDetail(props.match.params.id)
@@ -43,6 +45,36 @@ const DiscountDetail=(props)=>{
         ).catch(err=>
           NotificationManager.error("Error","Remove failed")
           )
+    }
+    
+    const updateDiscountItem=async()=>{
+      const data=document.getElementsByName('addStock')[0].value
+      await clientRequest.updateStock(discount._id,data).then(res=>{
+        NotificationManager.success('success',"success")
+        setOpenModal(false)
+      })
+    }
+    const ModalStock=()=>{
+      return <Modal  visible={openModal} width="400" height="300" effect="fadeInUp"
+      onClickAway={() => setOpenModal(false)}
+      >  <div  className='popup-tazas text-center'>
+          <div style={{margin:'auto'}}> 
+                <h6>Update stock</h6>
+                <input placeholder="Input quantity" name='addStock'/>
+                    <div className='btn-group btn'>
+                         <button className='btn btn-success' onClick={()=>updateDiscountItem()}>
+                          Update
+                         </button>
+                         <button className='btn'>
+                         <a href="javascript:void(0);"
+                          onClick={() =>setOpenModal(false)}
+                          >Close</a>
+                         </button>
+                         
+                     </div>
+                     </div>
+                     </div>
+                 </Modal>
     }
     return <div className='row'>
         <div className='col-md-6'>
@@ -89,9 +121,10 @@ const DiscountDetail=(props)=>{
 
 </form>
 {props.match.path=="/admin/discount/:id"&&<button onClick={()=>removeDiscountItem()}>Delete</button>}
+{props.match.path=="/admin/discount/:id"&&<button onClick={()=>setOpenModal(true)}>Update Stock</button>}
 
 <NotificationContainer/>
-
+<ModalStock/>
         </div>
     </div>
 }

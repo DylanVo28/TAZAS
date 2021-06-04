@@ -36,7 +36,7 @@ const MenuHome =()=>{
                             <div className="classynav">
                                 <ul className="menu-list">
                                     <li className="megamenu-item">
-                                        <a href="#">Shop</a>
+                                        <Link to='/home'>Shop</Link>
                                         </li><li className="cn-dropdown-item has-down pr12">
                                             <a href="#">Pages</a></li><li><a href="blog.html">Blog</a></li><li><a href="contact.html">Contact</a></li></ul></div></div></nav><div className="header-meta d-flex clearfix justify-content-end"><div className="search-area"><form action="#" method="post"><input type="search" name="search" id="headerSearch" placeholder="Type for search" /><button type="submit"><i className="fa fa-search" aria-hidden="true" /></button></form></div><div className="favourite-area"><a href="#">
                                                 <img src={HeartIcon} alt="" /></a></div><div className="user-login-info">

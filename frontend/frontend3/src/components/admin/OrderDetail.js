@@ -11,6 +11,7 @@ const OrderDetail=(props)=>{
     const [user,setUser]=useState({})
     const [showModal,setShowModal]=useState(false)
     const [tableItems,setTableItems]=useState()
+    const [discount,setDiscount]=useState()
     useEffect(() => {
         if(props.match.path=='/order/me/:id'){
             async function fetchMyAPI() {
@@ -18,6 +19,7 @@ const OrderDetail=(props)=>{
                     setOrder(res.order)
                     setTableItems(res.orderItems)
                     setUser(res.user)
+                    setDiscount(res.discount)
                 })
             }
             fetchMyAPI()
@@ -28,6 +30,7 @@ const OrderDetail=(props)=>{
                     setOrder(res.order)
                     setTableItems(res.orderItems)
                     setUser(res.user)
+                    setDiscount(res.discount)
                 })
             }
             fetchMyAPIRoleAdmin()
@@ -114,6 +117,8 @@ const OrderDetail=(props)=>{
     <div className='col-8'>{order.orderStatus}</div>
     <div className='col-4'>Created At:</div>
     <div className='col-8'>{getFormattedDate(order.createAt)}</div>
+    <div className='col-4'>Discount code:</div>
+    {discount&&<div className='col-8'>{discount.name}</div>}
 </div>
         </>
     }

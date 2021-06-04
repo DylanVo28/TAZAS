@@ -501,6 +501,27 @@ class ClientRequest{
                 }, reject)
         })  
     }
+
+    updateStock(id,data){
+        return new Promise((resolve,reject)=>{
+            axios.put(`${DOMAIN}/api/v1/admin/discount/${id}`,{
+                params:{userToken},
+                data
+            }).then(result => {
+                    resolve(result.data)
+                }, reject)
+        })  
+    }
+
+    getDiscount(name){
+        return new Promise((resolve,reject)=>{
+            axios.get(`${DOMAIN}/api/v1/discount/${name}`,{
+                params:{userToken},
+            }).then(result => {
+                    resolve(result.data)
+                }, reject)
+        })  
+    }
 }
 const clientRequest = new ClientRequest();
 export default clientRequest;

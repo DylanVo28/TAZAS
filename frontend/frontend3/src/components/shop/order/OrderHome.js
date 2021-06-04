@@ -3,6 +3,8 @@ import clientRequest from '../../../APIFeatures/clientRequest';
 import { useState } from 'react';
 import './OrderHome.css'
 import { Link } from 'react-router-dom';
+import NotificationManager from 'react-notifications/lib/NotificationManager';
+import NotificationContainer from 'react-notifications/lib/NotificationContainer';
 const OrderHome=()=>{
     const [product,setProduct]=useState({})
     const [user,setUser]=useState({})
@@ -48,7 +50,7 @@ const OrderHome=()=>{
                 totalPrice:Number (totalPrice),
                 orderStatus:'Processing'
             }
-            clientRequest.postOrder(data).then(res=>console.log(res))
+            clientRequest.postOrder(data).then(res=>NotificationManager.success('success',"Tạo đơn thành công")).catch(err=>NotificationManager.error('error','tao đơn không thành công'))
         } catch (error) {
             
         }
@@ -152,7 +154,7 @@ const OrderHome=()=>{
                 <span>{totalPrice}$</span>
             </div>
             <button className='btn' onClick={()=>sendOrder()}>Order Now</button>
-
+            <NotificationContainer/>
             </div>
         </div>
     </div>

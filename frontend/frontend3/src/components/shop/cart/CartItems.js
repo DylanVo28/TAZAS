@@ -3,10 +3,11 @@ import clientRequest from '../../../APIFeatures/clientRequest';
 import { useState } from 'react';
 import { Table } from 'react-bootstrap';
 import { NotificationContainer, NotificationManager } from 'react-notifications';
+import { compareValidDate } from '../../../HandlerCaculate/formatDate';
 // import Cards from 'react-credit-cards';
 // import 'react-credit-cards/es/styles-compiled.css';
 // import { useStripe,useElements,CardElement,CardNumberElement} from '@stripe/react-stripe-js';
-const CartItems=()=>{
+const CartItems=(props)=>{
     const [cartItems,setCartItems]=useState([])
     const [user,setUser]=useState(null)
     const [itemsPrice,setItemsPrice]=useState(0)
@@ -20,19 +21,41 @@ const CartItems=()=>{
     name: '',
     number: '',
     })
+    const [searchDiscount,setSearchDiscount]=useState('');
+    const [stDiscount,setStDiscount]=useState();
     // const stripe = useStripe();
     // const elements = useElements();
     useEffect(async ()=>{
       fetchMyAPI()
-      const cart=await clientRequest.getCart();
-      setCartItems(cart.myCart)
+      if(props.match.path=='/order/create-new'){
+        var list=[]
+        var temp=JSON.parse(localStorage.getItem('cartItem'));
+        temp.quantity=1;
+        temp.total=temp.price* temp.quantity
+        temp.checked=true
+        temp.product=temp._id
+        list.push(temp)
+        setCartItems(list)
+   
+
+      }
+      else{
+        
+        const cart=await clientRequest.getCart();
+        setCartItems(cart.myCart)
+      }
+     
     },[])
     useEffect(()=>{
-    
+      
      var total = cartItems.reduce(function(acc, item){
        
        if(item.checked) {
-        return acc + (item.quantity * item.price);
+         console.log(item)
+         if(stDiscount &&(stDiscount.categoryProduct==item.category)){
+           return acc + (item.quantity * item.price-(item.quantity*item.price*stDiscount.value*0.01));
+         }
+        return acc+ (item.quantity*item.price)
        }
        return acc
   }, 0);
@@ -41,7 +64,7 @@ const CartItems=()=>{
   setTaxPrice(tax)
   setTotalPrice(total+tax+shippingPrice)
   
-    },[cartItems])
+    },[cartItems,stDiscount])
    
     async function fetchMyAPI() {
       const cart=await clientRequest.getProfileMe();
@@ -79,16 +102,40 @@ const CartItems=()=>{
                 totalPrice:Number (totalPrice),
                 shippingPrice: Number(shippingPrice),
                 taxPrice:Number(taxPrice),
-                orderStatus:'Processing'
+                orderStatus:'Processing',
+                discountId: stDiscount?stDiscount._id:null
         }
-        clientRequest.postOrder(data).then(res=>console.log(res))
+        
+        clientRequest.postOrder(data).then(res=>{console.log(res)
+        NotificationManager.success("Success","tao đơn thành công")
+        })
       }
      
+     const applyCode=async(e)=>{
+        const res=await clientRequest.getDiscount(searchDiscount).catch(err=>{ NotificationManager.error('error','Code không tồn tại')
+        setStDiscount(null)})
+        
+        if(res){
+          if(res.discount.quantity==0){
+            NotificationManager.error('error','Code đã sài hết')
+            setStDiscount(null)
+            return
+          }
+          if(!compareValidDate(res.discount.validDate)){
+            NotificationManager.error('error','Code đã hết hạn')
+          setStDiscount(null)
+            return
+          }
+          NotificationManager.success('success','apply thành công')
+          setStDiscount(res.discount)
+        }
+       
+     }
     return <>
     <div style={{height:'80px'}}></div>
     <div className='container'>
         <div className='row'>
-        <div className='col-md-6'>
+        <div className='col-md-8'>
           <div>
         <Table striped bordered hover>
   <thead>
@@ -103,10 +150,11 @@ const CartItems=()=>{
     </tr>
   </thead>
   <tbody>
-    {cartItems.map((item,index)=> {
+    {cartItems && cartItems.map((item,index)=> {
     return <tr >
       <td><input type="checkbox" defaultChecked={item.checked} onChange={handleChecked(index)}/></td>
   <td>{item.name}</td>
+  {item.images&&<td><img src={item.images[0].url}/></td> }
   {item.image&&<td><img src={item.image}/></td>}
   <td> <input defaultValue={item.quantity} type='Number' onChange={updateCartChanged(index)}/></td>
   <td>{item.price}</td>
@@ -119,7 +167,7 @@ const CartItems=()=>{
 </Table>
 </div>
         </div>
-        <div className="col-md-6">
+        <div className="col-md-4">
         {user && <div className='user-cart-items'>
              <img src={user.avatar.url}/>
               <div className='row'>
@@ -156,7 +204,7 @@ const CartItems=()=>{
                 </form>
                 <div>
                 <span>Items Price:</span>
-                <span>{itemsPrice}$</span>
+                <span>{itemsPrice}$ {stDiscount&&<span>(-{stDiscount.value}%)</span>}</span>
             </div>
             <div>
                 <span>Shipping Price:</span>
@@ -170,6 +218,12 @@ const CartItems=()=>{
                 <span>Total Price:</span>
                 <span>{totalPrice}$</span>
             </div>
+            <div>
+              <span>Discount Code</span>
+              <span><input placeholder='Nhập mã khuyến mãi' onChange={(e)=>setSearchDiscount(e.currentTarget.value)}/></span>
+              <span><button onClick={()=>applyCode()}>Apply code</button></span>
+            </div>
+           
         <button className='btn' onClick={()=>handleSubmit()}>Order Now</button>
 
         </div>

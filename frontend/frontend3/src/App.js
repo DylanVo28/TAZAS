@@ -57,7 +57,7 @@ function App() {
         </Fragment>
         <Fragment>
           <ProtectedRoute exact path="/product/:id" component={ProductHome}/>
-          <ProtectedRoute exact path="/order/create-new" component={OrderHome}/>
+          <ProtectedRoute exact path="/order/create-new" component={CartItems}/>
           {/* <Elements stripe={stripePromise}> */}
           <ProtectedRoute exact path="/cart-items" component={CartItems}/>
           {/* </Elements> */}
