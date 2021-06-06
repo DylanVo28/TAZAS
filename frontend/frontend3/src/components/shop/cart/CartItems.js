@@ -3,6 +3,7 @@ import clientRequest from '../../../APIFeatures/clientRequest';
 import { useState } from 'react';
 import { Table } from 'react-bootstrap';
 import { NotificationContainer, NotificationManager } from 'react-notifications';
+import '../cart/CartItems.css'
 import { compareValidDate } from '../../../HandlerCaculate/formatDate';
 // import Cards from 'react-credit-cards';
 // import 'react-credit-cards/es/styles-compiled.css';
@@ -133,7 +134,7 @@ const CartItems=(props)=>{
      }
     return <>
     <div style={{height:'80px'}}></div>
-    <div className='container'>
+    <div className=''>
         <div className='row'>
         <div className='col-md-8'>
           <div>

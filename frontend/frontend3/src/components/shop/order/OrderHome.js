@@ -44,7 +44,7 @@ const OrderHome=()=>{
                     {
                         quantity:product.quantity,
                         product:product._id
-                    }
+                    }       
                 ],
                 itemsPrice:Number (itemsPrice),
                 totalPrice:Number (totalPrice),
@@ -52,7 +52,7 @@ const OrderHome=()=>{
             }
             clientRequest.postOrder(data).then(res=>NotificationManager.success('success',"Tạo đơn thành công")).catch(err=>NotificationManager.error('error','tao đơn không thành công'))
         } catch (error) {
-            
+            console.log("Aaa");
         }
         
 
@@ -116,26 +116,31 @@ const OrderHome=()=>{
         </div>
         <div className='row'>
             <div className='col-md-8'>
-            <table class="table table-borderless">
-  <thead>
-    <tr>
-      <th scope="col">name</th>
-      <th scope="col">Image</th>
-      <th scope="col">Quantity</th>
-      <th>Price</th>
-      <th></th>
-      <th></th>
+            <table class="table-main table-borderless">
+  <thead className="table-head">
+    <tr className="">
+      <th scope="col" className="col c1">Name</th>
+      <th scope="col" className="col c2">Image</th>
+      <th scope="col" className="col c3">Quantity</th>
+      <th scope="col" className="col c4">Price</th>
+      <th scope="col" className="col c5">Delete</th>
+      
+
 
     </tr>
   </thead>
   {product.images&&<tbody>
     
     <tr>
-      <td colspan="2">{product.name}</td>
-      <td><img src={product.images[0].url} style={{width:'40px'}}/></td>
-      <td><input type='number' onChange={(e)=>changeQuantity(e)} onBlur={(e)=>setProduct({...product,quantity:Number (e.currentTarget.value)})} defaultValue={1}/></td>
-      <td>{product.price}</td>
-      <td><div className='btn-group'>
+      <td colspan="" className="product-name col">{product.name}</td>
+
+      <td className="product-img col"><img src={product.images[0].url} style={{width:'40px'}}/></td>
+      
+      <td className="product-quantity col"><input type='number' onChange={(e)=>changeQuantity(e)} onBlur={(e)=>setProduct({...product,quantity:Number (e.currentTarget.value)})} defaultValue={1}/></td>
+      
+      <td className="product-price col">{product.price}</td>
+      
+      <td className="product-group col"><div className='btn-group'>
           <button className='btn fas fa-trash-alt' onClick={()=>removeProduct()}></button>
 
           </div></td>
@@ -153,10 +158,12 @@ const OrderHome=()=>{
                 <span>Total Price:</span>
                 <span>{totalPrice}$</span>
             </div>
-            <button className='btn' onClick={()=>sendOrder()}>Order Now</button>
+            <button className='btn btn-order' onClick={()=>sendOrder()}>Order Now</button>
             <NotificationContainer/>
             </div>
         </div>
     </div>
 }
 export default OrderHome
+
+// là sao
