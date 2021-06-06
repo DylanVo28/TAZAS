@@ -25,4 +25,14 @@ const getFormattedDate=(dateString) =>{
   const checkURL=(url)=> {
     return(url.match(/\.(jpeg|jpg|gif|png)$/) != null);
 }
-  export {getFormattedDate,checkURL,formattedDateFromParse}
+const compareValidDate=(date)=>{
+  const date1 = new Date();
+    const date2 = new Date(date);
+    console.log( date1.getTime() )
+    console.log(date2.getTime())
+    if(date1.getTime() > date2.getTime()){
+       return false
+    }
+    return true
+}
+  export {getFormattedDate,checkURL,formattedDateFromParse,compareValidDate}

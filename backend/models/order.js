@@ -81,6 +81,10 @@ const orderSchema=mongoose.Schema({
     createAt:{
         type:Date,
         default:Date.now
+    },
+    discountId:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:'Discount'
     }
 
 })

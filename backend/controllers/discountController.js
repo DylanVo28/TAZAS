@@ -50,3 +50,20 @@ exports.removeDiscount=catchAsyncError(async(req,res,next)=>{
         success:true,
     })
 })
+
+exports.updateStock=catchAsyncError(async(req,res,next)=>{
+    await Discount.findByIdAndUpdate(req.params.id,{$inc:{quantity:+Number(req.body.data)}})
+    res.status(201).json({
+        success:true,
+    })
+})
+
+exports.getDiscount=catchAsyncError(async(req,res,next)=>{
+    const discount=await Discount.findOne({name:req.params.name})
+    if(!discount){
+        return next(new ErrorHandler('discount not found',404))
+    }
+    res.status(201).json({
+        discount
+    })
+})
