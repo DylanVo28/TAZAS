@@ -3,6 +3,7 @@ import clientRequest from '../../../APIFeatures/clientRequest';
 import { useState } from 'react';
 import { Table } from 'react-bootstrap';
 import { NotificationContainer, NotificationManager } from 'react-notifications';
+import '../cart/CartItems.css'
 // import Cards from 'react-credit-cards';
 // import 'react-credit-cards/es/styles-compiled.css';
 // import { useStripe,useElements,CardElement,CardNumberElement} from '@stripe/react-stripe-js';
@@ -86,7 +87,7 @@ const CartItems=()=>{
      
     return <>
     <div style={{height:'80px'}}></div>
-    <div className='container'>
+    <div className=''>
         <div className='row'>
         <div className='col-md-6'>
           <div>
