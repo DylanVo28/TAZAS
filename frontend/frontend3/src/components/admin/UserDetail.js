@@ -159,10 +159,10 @@ const UserDetail=(props)=>{
             
             <hr className="horizontal gray-light my-4" />
             <ul className="list-group">
-              <li className="list-group-item border-0 ps-0 pt-0 text-sm"><strong className="text-dark">Full Name:</strong> &nbsp;<input name='name' defaultValue={user.name} disabled={edit}/> </li>
-              <li className="list-group-item border-0 ps-0 text-sm"><strong className="text-dark">Email:</strong> &nbsp; <input name='emailUser' defaultValue={user.emailUser} disabled={edit}/></li>
+              <li className="list-group-item border-0 ps-0 pt-0 text-sm"><strong className="text-dark">Full Name:</strong> &nbsp;<input name='name' defaultValue={user.name} disabled={props.match.path=="/admin/user/:id"||edit}/> </li>
+              <li className="list-group-item border-0 ps-0 text-sm"><strong className="text-dark">Email:</strong> &nbsp; <input name='emailUser' defaultValue={user.emailUser} disabled={props.match.path=="/admin/user/:id"||edit}/></li>
               <li className="list-group-item border-0 ps-0 text-sm"><strong className="text-dark">Role:</strong> &nbsp;
-              <select defaultValue={user.role} name='role' disabled={true}>
+              <select defaultValue={user.role} name='role' disabled={props.match.path=="/admin/user/:id"&&!edit?false:true}>
   <option value="user">user</option>
   <option value="admin">admin</option>
 </select>
@@ -171,13 +171,13 @@ const UserDetail=(props)=>{
                <li className="list-group-item border-0 ps-0 text-sm"><strong className="text-dark">Date Of Birth:</strong> &nbsp;
                <input type="date" id="start" name="dateOfBirth"
        defaultValue={user.dateOfBirth}
-       min="1960-01-01" disabled={edit}/>
+       min="1960-01-01" disabled={props.match.path=="/admin/user/:id"||edit}/>
                </li>
                <li className="list-group-item border-0 ps-0 text-sm"><strong className="text-dark">Place Of Birth:</strong> &nbsp;
-               <input  name="placeOfBirth" defaultValue={user.placeOfBirth} disabled={edit}/>
+               <input  name="placeOfBirth" defaultValue={user.placeOfBirth} disabled={props.match.path=="/admin/user/:id"||edit}/>
                </li>
                <li className="list-group-item border-0 ps-0 text-sm"><strong className="text-dark">Phone Number:</strong> &nbsp;
-               <input name="phoneNumber" defaultValue={user.phoneNumber} disabled={edit}/>
+               <input name="phoneNumber" defaultValue={user.phoneNumber} disabled={props.match.path=="/admin/user/:id"||edit}/>
                </li>
               <li className="list-group-item border-0 ps-0 text-sm"><strong className="text-dark">Create At:</strong> &nbsp; {getFormattedDate(user.createAt)}</li>
               

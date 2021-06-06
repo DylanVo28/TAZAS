@@ -10,6 +10,7 @@ import Pagination from 'react-js-pagination';
 import MenuHome from '../MenuHome';
 import { Popup } from 'reactjs-popup';
 import ModalPopup from '../../shared/ModalPopup';
+import { set } from 'mongoose';
 
 
 const CaroselHome=()=>{
@@ -50,13 +51,14 @@ const Home =()=>{
   })
   const [products,setProducts]=useState([]);
   const [search,setSearch]=useState('')
+  const [category,setCategory]=useState('')
   useEffect(()=>{
     clientRequest.getLengthAllProductsHome().then(res=>setSizePage({...sizePage,total:res.lengthProducts}))
-    clientRequest.getSearchProductsHome('',sizePage.current).then(res=>setProducts(res.products))
+    clientRequest.getSearchProductsHome('',sizePage.current,'').then(res=>setProducts(res.products))
   },[])
   useEffect(()=>{
-    clientRequest.getSearchProductsHome(search,sizePage.current).then(res=>setProducts(res.products))
-  },[sizePage.current,search])
+    clientRequest.getSearchProductsHome(search,sizePage.current,category).then(res=>setProducts(res.products))
+  },[sizePage.current,search,category])
   const handlePageChange=(e)=>{
     setSizePage({...sizePage,current:e})
   }
@@ -70,6 +72,32 @@ const Home =()=>{
           <button  type="submit">
               <i className="fa fa-search"></i>
           </button>
+          <div>
+          <span>Filter Product</span>
+          <span>
+          <select className="form-select" aria-label="Default select example" onChange={(e)=>setCategory(e.target.value)}>
+        
+        <option selected value='' >All</option>
+
+        <option value={'jacketsCoats'}>Jackets & Coats</option>
+              <option  value={'hoodiesSweatshirts'}>Hoodies & Sweatshirts</option>
+              <option value={'cardiganJumpers'}>Cardigan & Jumpers</option>
+              <option value={'tshirtTanks'}>T-shirt & Tanks</option>
+              <option value={'shoes'}>Shoes</option>
+              <option value={'shirts'}>Shirts</option>
+              <option value={'basics'}>Basics</option>
+              <option value={'blazersSuits'}>Blazers & Suits</option>
+              <option value={'shorts'}>Shorts</option>
+              <option value={'trousers'}>Trousers</option>
+              <option value={'jeans'}>Jeans</option>
+              <option value={'swimwear'}>Swimwear</option>
+              <option value={'underwear'}>Underwear</option>
+              <option value={'socks'}>Socks</option>
+      </select>
+          </span>
+          </div>
+          
+         
         <div className='row'>
 
           {products.map(item=><div className='col-md-4' style={{marginBottom:'15px'}}>

@@ -81,11 +81,11 @@ const DiscountDetail=(props)=>{
         <form onSubmit={submitHanddler}>
   <div className="form-group">
     <label htmlFor="formGroupExampleInput">Name</label>
-    <input type="text" className="form-control" id="formGroupExampleInput" defaultValue={discount&&discount.name} name='name' />
+    <input type="text" className="form-control" id="formGroupExampleInput" defaultValue={discount&&discount.name} name='name' disabled={props.match.path=="/admin/discount/:id"}/>
   </div>
   <div className="form-group col-md-4">
             <label>Category</label>
-            <select className="form-control" name='category' defaultValue={discount&&discount.categoryProduct} name='categoryProduct'>
+            <select disabled={props.match.path=="/admin/discount/:id"} className="form-control" name='category' defaultValue={discount&&discount.categoryProduct} name='categoryProduct'>
               <option selected>Jackets & Coats</option>
               <option>Hoodies & Sweatshirts</option>
               <option>Cardigan & Jumpers</option>
@@ -106,21 +106,20 @@ const DiscountDetail=(props)=>{
           </div>
   <div className="form-group">
     <label htmlFor="formGroupExampleInput2">Valid Date</label>
-    <input type="date" id="start" name="validDate" defaultValue={discount?formattedDateFromParse(discount.validDate):Date.now()} min="2018-01-01" max="2099-12-31" />
+    <input disabled={props.match.path=="/admin/discount/:id"} type="date" id="start" name="validDate" defaultValue={discount?formattedDateFromParse(discount.validDate):Date.now()} min="2018-01-01" max="2099-12-31" />
 
   </div>
   <div className="form-group">
     <label htmlFor="formGroupExampleInput2">Quantity</label>
-    <input type="text" className="form-control" id="formGroupExampleInput2" defaultValue={discount&&discount.quantity} name='quantiy'/>
+    <input disabled={props.match.path=="/admin/discount/:id"} type="text" className="form-control" id="formGroupExampleInput2" defaultValue={discount&&discount.quantity} name='quantiy'/>
   </div>
   <div className="form-group">
     <label htmlFor="formGroupExampleInput2">Value (%)</label>
-    <input type="text" className="form-control" id="formGroupExampleInput2" defaultValue={discount&&discount.value} name='value'/>
+    <input disabled={props.match.path=="/admin/discount/:id"} type="text" className="form-control" id="formGroupExampleInput2" defaultValue={discount&&discount.value} name='value'/>
   </div>
-  {<button type='submit'>Create Discount</button>}
+  {props.match.path=="/admin/create-discount"&&<button type='submit'>Create Discount</button>}
 
 </form>
-{props.match.path=="/admin/discount/:id"&&<button onClick={()=>removeDiscountItem()}>Delete</button>}
 {props.match.path=="/admin/discount/:id"&&<button onClick={()=>setOpenModal(true)}>Update Stock</button>}
 
 <NotificationContainer/>

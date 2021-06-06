@@ -34,6 +34,7 @@ const Sidebar=()=>{
       <SidebarRow url={'/admin/profile'} icon={"fas fa-user"} title={'Profile'}/>
       <SidebarRow url={'/order/me'} icon={"fas fa-shipping-fast"} title={'My orders'}/>
       <SidebarRow url={'/admin/discounts'} icon={"fas fa-badge-dollar"} title={'Discounts'}/>
+      <SidebarRow url={'/admin/analytics'} icon={"fas fa-chart-line"} title={'Analytics'}/>
      
      
     </ul>

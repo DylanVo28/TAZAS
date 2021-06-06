@@ -212,35 +212,22 @@ exports.getUsersSearch=catchAsyncErrors(async(req,res,next)=>{
     })
 })
 exports.getUserDetail=catchAsyncErrors(async(req,res,next)=>{
-    const user=await User.findById(req.params.id);
-    if(!user){
-        return next(new ErrorHandler('User not found',404))
+    const userLogin=await UserLogin.findById(req.params.id)
+    if(!userLogin){
+        return next(new ErrorHandler('User not found',400))
     }
+    let user=(await User.findById(req.params.id)).toObject()
+    user.role=userLogin.role
+    
     res.status(200).json({
         success:true,
         user
     })
 })
 exports.updateUser=catchAsyncErrors(async(req,res,next)=>{
-    var avatar
-    if(!checkUrlImage(req.body.avatarPr)){
-        const result=await cloudinary.v2.uploader.upload(req.body.avatarPr,{
-            folder:'tazas'
-        })
-        if(result){
-            avatar={
-                public_id:result.secure_url,
-                url:result.secure_url
-            }
-        }
-    }
-    const newUserData={
-        name:req.body.data.name,
-        email:req.body.data.email,
-        role:req.body.data.role,
-        avatar
-    }
-    const user=await User.findByIdAndUpdate(req.params.id,newUserData,{
+    const {role}=req.body.data
+    
+    const user=await UserLogin.findByIdAndUpdate(req.params.id,{$set:{role:role}},{
         new:true,
         runValidators:true,
         useFindAndModify:false

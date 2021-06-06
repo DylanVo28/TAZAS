@@ -67,9 +67,9 @@ class ClientRequest{
         })
     }
 
-    getSearchProductsHome(searchName,currentPage){
+    getSearchProductsHome(searchName,currentPage,category){
         return new Promise( (resolve, reject) => {
-            axios.get(`${DOMAIN}/api/v1/products-home?keyword=${searchName}&page=${currentPage}`).then(result => {
+            axios.get(`${DOMAIN}/api/v1/products-home?keyword=${searchName}&page=${currentPage}&category=${category}`).then(result => {
                     resolve(result.data)
                 }, reject)
         })
@@ -516,6 +516,61 @@ class ClientRequest{
     getDiscount(name){
         return new Promise((resolve,reject)=>{
             axios.get(`${DOMAIN}/api/v1/discount/${name}`,{
+                params:{userToken},
+            }).then(result => {
+                    resolve(result.data)
+                }, reject)
+        })  
+    }
+
+    analyticsByProduct(filter){
+        return new Promise((resolve,reject)=>{
+            axios.get(`${DOMAIN}/api/v1/analytics-by-product?filter=${filter}`,{
+                params:{userToken},
+            }).then(result => {
+                    resolve(result.data)
+                }, reject)
+        })  
+    }
+    analyticsByUser(filter){
+        return new Promise((resolve,reject)=>{
+            axios.get(`${DOMAIN}/api/v1/analytics-by-user?filter=${filter}`,{
+                params:{userToken},
+            }).then(result => {
+                    resolve(result.data)
+                }, reject)
+        })  
+    }
+    analyticsByOrder(filter){
+        return new Promise((resolve,reject)=>{
+            axios.get(`${DOMAIN}/api/v1/analytics-by-order?filter=${filter}`,{
+                params:{userToken},
+            }).then(result => {
+                    resolve(result.data)
+                }, reject)
+        })  
+    }
+    topSellingByProduct(filter){
+        return new Promise((resolve,reject)=>{
+            axios.get(`${DOMAIN}/api/v1/top-sell-by-product?filter=${filter}`,{
+                params:{userToken},
+            }).then(result => {
+                    resolve(result.data)
+                }, reject)
+        })  
+    }
+    topSellingByReview(filter){
+        return new Promise((resolve,reject)=>{
+            axios.get(`${DOMAIN}/api/v1/top-sell-by-review?filter=${filter}`,{
+                params:{userToken},
+            }).then(result => {
+                    resolve(result.data)
+                }, reject)
+        })  
+    }
+    topSellingByUser(filter){
+        return new Promise((resolve,reject)=>{
+            axios.get(`${DOMAIN}/api/v1/top-sell-by-user?filter=${filter}`,{
                 params:{userToken},
             }).then(result => {
                     resolve(result.data)

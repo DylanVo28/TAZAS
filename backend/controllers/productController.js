@@ -77,6 +77,7 @@ exports.getProductsHome=catchAsyncError(async (req,res,next)=>{
     const resPerPage=6
     const apiFeatures=new APIFeatures(Product.find(),req.query)
     .search()
+    .filter()
     .pagination(resPerPage)
     const products=await apiFeatures.query;
     res.status(200).json({
