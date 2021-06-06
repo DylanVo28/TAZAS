@@ -46,12 +46,10 @@ function App() {
     <Fragment>
 
       <Router>
+       
         <Fragment>
-          <ProtectedRoute exact path='/' component={Ads}/>
-        </Fragment>
-        <Fragment>
-          <ProtectedRoute exact path={["/home","/product/:id","/order/create-new",'/cart-items']} component={MenuHome}/>
-          <ProtectedRoute exact path='/home' component={Home}/>
+          <ProtectedRoute exact path={['/',"/home","/product/:id","/order/create-new",'/cart-items']} component={MenuHome}/>
+          <ProtectedRoute exact path={['/','/home']} component={Home}/>
          
 
         </Fragment>

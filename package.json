@@ -8,8 +8,8 @@
     "dev": "SET NODE_ENV=DEVELOPMENT& nodemon backend/sever",
     "stag": "SET NODE_ENV=STAGING& nodemon backend/sever",
     "prod": "SET NODE_ENV=PRODUCTION& nodemon backend/sever",
-    "seeder": "node backend/utils/seeder.js"
-   
+    "seeder": "node backend/utils/seeder.js",
+    "heroku:postbuild": "NPM_CONFIG_PRODUCTION=false && npm install --prefix frontend && npm run build --prefix frontend"
   },
   "author": "Dinh Vo",
   "license": "ISC",

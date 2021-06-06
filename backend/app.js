@@ -1,7 +1,7 @@
 const express=require('express')
 
 const app=express();
-
+const dotenv=require('dotenv');
 const errorMiddleware=require('./middlewares/error')
 const cookieParser=require('cookie-parser')
 const bodyParser=require('body-parser')
@@ -16,6 +16,11 @@ var corsOptions = {
     optionsSuccessStatus: 204
 }
 const path=require('path')
+
+
+if(process.env.NODE_ENV!=='PRODUCTION'){
+    dotenv.config({path:'backend/config/config.env'})
+}
 app.use(cookieParser())
 app.use(cors());
 app.use(bodyParser.json({limit: '50mb'}));
@@ -48,9 +53,9 @@ app.use('/api/v1',discount)
 app.use('/api/v1',analytic)
 app.use(errorMiddleware)
 if(process.env.NODE_ENV==='PRODUCTION'){
-    app.use(express.static(path.join(__dirname,'../frontend/frontend3//build')))
+    app.use(express.static(path.join(__dirname,'../frontend/frontend3/build')))
     app.get('*',(req,res)=>{
-        res.sendFile(path.join(__dirname,'../frontend/frontend3/index.html'))
+        res.sendFile(path.join(__dirname,'../frontend/frontend3/build/index.html'))
     })
 }
 module.exports=app
