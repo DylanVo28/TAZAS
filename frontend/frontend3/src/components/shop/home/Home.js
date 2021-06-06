@@ -102,18 +102,23 @@ const Home =()=>{
 
           {products.map(item=><div className='col-md-4' style={{marginBottom:'15px'}}>
             <Link to={`/product/${item._id}`}>
-              <div style={{padding:'15px'}}>
+              <div className="element-product" style={{padding:'15px'}}>
         <div className='avatar-home'>
+          <div className='line'>
           <img src={item.images[0].url}/>
           <div className='avatar-home_thumbnail'>
           <img src={logo}/>
+          
           </div>
+
+          </div>
+          
          
         </div>
         <br></br>
         <br></br>
 
-        <div style={{display:'flex',justifyContent:'space-between'}}>
+        <div className="product-info" style={{display:'flex',justifyContent:'space-between'}}>
             <span>{item.name}</span>
             <span>{item.price}$</span>
           </div>

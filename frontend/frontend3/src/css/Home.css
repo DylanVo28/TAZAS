@@ -6,7 +6,7 @@
  body {
 	 font-family: 'Poppins', sans-serif;
 	 font-size: 14px;
-	 background-color: #fff;
+	 background-color: #f1d8cd;
 	 margin-top: 85px;
 }
  @media only screen and (max-width:767px) {
@@ -2109,7 +2109,68 @@
 .avatar-home{
 	position: relative;
 	overflow: hidden;
+	position: relative;
 }
+/* Fix avatar-home */
+
+.avatar-home img{
+	transition: transform .5s ease-in;
+	position: relative;
+}
+.avatar-home:hover img{
+	transform: scale(1.4);
+}
+.avatar-home .line{
+	
+}
+.avatar-home .line:before{
+	content:'';
+	width:0px;
+	height:3px;
+	position:absolute;
+	top:0;
+	left:0;
+	background:#00d9ff;
+	transition:.5s;
+	mix-blend-mode:multiply;
+}
+.avatar-home .line:after{
+	content:'';
+	width:0px;
+	height:3px;
+	position:absolute;
+	top:0;
+	right:0;
+	background:#e89651;
+	transition:.5s;
+	mix-blend-mode:multiply;
+}
+
+.avatar-home .line:hover:before{
+	width:50%;
+	transform:translate(100%);
+}
+.avatar-home .line:hover:after{
+	width:50%;
+	transform:translate(-100%);
+}
+
+
+.element-product  .product-info > span{
+	color: #484848;
+	font-weight: bold;
+	font-family: monospace;
+	letter-spacing: .4px;
+	text-transform:lowercase;
+	text-transform:capitalize;
+	transition: .5s linear
+}	
+.element-product:hover  .product-info > span{
+	color: rgb(184, 152, 152);
+	
+}	
+/* Fix avatar-home */
+
 .avatar-home .avatar-home_thumbnail {
     position: absolute;
     bottom: 0;
@@ -2150,6 +2211,14 @@
     padding: 10px 55px 10px 10px;
     width: 20%;
 	margin-bottom: 20px;
+	outline: none;
+}
+
+button > .fa-search{
+	color:rgb(102, 102, 102);
+}
+button > .fa-search:hover{
+	color: #000;
 }
 /* ##### The End ##### */
  
