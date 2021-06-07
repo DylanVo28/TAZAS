@@ -11,9 +11,7 @@ const  [checkForgot,setCheckForgot]=useState(false)
 const Menu =()=>{
     return (<nav className="navbar navbar-expand-lg  blur blur-rounded top-0  z-index-3 shadow position-absolute my-3 py-2 start-0 end-0 mx-4">
     <div className="container-fluid">
-      <a className="navbar-brand font-weight-bolder ms-lg-0 ms-3 " href="../pages/dashboard.html">
-        Soft UI Dashboard
-      </a>
+     
       <button className="navbar-toggler shadow-none ms-2" type="button" data-bs-toggle="collapse" data-bs-target="#navigation" aria-controls="navigation" aria-expanded="false" aria-label="Toggle navigation">
         <span className="navbar-toggler-icon mt-2">
           <span className="navbar-toggler-bar bar1" />
@@ -49,9 +47,7 @@ const Menu =()=>{
           </li>
         </ul>
         <ul className="navbar-nav d-lg-block d-none">
-          <li className="nav-item">
-            <a href="https://www.creative-tim.com/product/soft-ui-dashboard" className="btn btn-sm btn-round mb-0 me-1 bg-gradient-dark">Free download</a>
-          </li>
+         
         </ul>
       </div>
     </div>

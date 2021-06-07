@@ -32,7 +32,8 @@ exports.getAllReviewByProduct=catchAsyncError(async (req,res,next)=>{
             comment: item.comment,
             rating:item.rating,
             createAt:item.createAt,
-            image:user.avatar.url
+            image:user.avatar.url,
+            userName:user.name
         }
         
         } catch (error) {

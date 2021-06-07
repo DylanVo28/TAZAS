@@ -6,9 +6,7 @@ import {NotificationContainer, NotificationManager} from 'react-notifications';
 const MenuSignUp=()=>{
     return (<nav className="navbar navbar-expand-lg position-absolute top-0 z-index-3 w-100 shadow-none my-3  navbar-transparent mt-4">
     <div className="container">
-      <a className="navbar-brand font-weight-bolder ms-lg-0 ms-3 text-white" href="../pages/dashboard.html">
-        Soft UI Dashboard
-      </a>
+     
       <button className="navbar-toggler shadow-none ms-2" type="button" data-bs-toggle="collapse" data-bs-target="#navigation" aria-controls="navigation" aria-expanded="false" aria-label="Toggle navigation">
         <span className="navbar-toggler-icon mt-2">
           <span className="navbar-toggler-bar bar1" />
@@ -24,12 +22,7 @@ const MenuSignUp=()=>{
               Dashboard
             </Link>
           </li>
-          <li className="nav-item">
-            <a className="nav-link me-2" href="../pages/profile.html">
-              <i className="fa fa-user opacity-6  me-1" aria-hidden="true" />
-              Profile
-            </a>
-          </li>
+          
           <li className="nav-item">
             <Link className="nav-link me-2" to="/create-account">
               <i className="fas fa-user-circle opacity-6  me-1" aria-hidden="true" />
@@ -44,9 +37,7 @@ const MenuSignUp=()=>{
           </li>
         </ul>
         <ul className="navbar-nav d-lg-block d-none">
-          <li className="nav-item">
-            <a href="https://www.creative-tim.com/product/soft-ui-dashboard" className="btn btn-sm btn-round mb-0 me-1 bg-gradient-light">Free download</a>
-          </li>
+         
         </ul>
       </div>
     </div>
