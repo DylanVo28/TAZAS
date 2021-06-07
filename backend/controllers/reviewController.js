@@ -40,8 +40,10 @@ exports.getAllReviewByProduct=catchAsyncError(async (req,res,next)=>{
           console.log('error'+ error);
         }
       }))
+      let averageReview = list.reduce((a, b) => a.rating + b.rating) / list.length;
     res.status(200).json({
         success: true,
-        list
+        list,
+        averageReview
     })
 })
