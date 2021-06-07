@@ -1,6 +1,6 @@
 import React, { Fragment, useReducer,useEffect,useState } from "react";
 import Routes from "./components";
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
 // import { LayoutContext, layoutState, layoutReducer } from "./components/shop";
 import Dashboard from './components/admin/Dashboard'
 import Sidebar from './components/admin/Sidebar';
@@ -33,13 +33,22 @@ const ProtectedRoute = ({ component: Component, ...rest }) => {
     } />
   )
 }
-
+const PrivateRoute = ({ component: Component, handleLogout, isAuthenticated, ...rest }) => (
+  <Route {...rest} render={(props) => (
+      isAuthenticated === true
+      ? <Component {...props} handleLogout={handleLogout} />
+      : <Redirect to="/login"/>
+  )} />
+);
 function App() {
-  const [stripeApi,setStripeApi]=useState('')
+  const [authenticated,setAuthenticated]=useState(true)
   useEffect(async()=>{
-      // store.dispatch(loadUser())
-      // const data=await clientRequest.getStripeApi()
-      // setStripeApi(data.stripeApiKey)
+    if(!localStorage.getItem("token")){
+      setAuthenticated(false)
+    }
+    else{
+      setAuthenticated(true)
+    }
   },[])
   
   return (
@@ -57,7 +66,7 @@ function App() {
           <ProtectedRoute exact path="/product/:id" component={ProductHome}/>
           <ProtectedRoute exact path="/order/create-new" component={CartItems}/>
           {/* <Elements stripe={stripePromise}> */}
-          <ProtectedRoute exact path="/cart-items" component={CartItems}/>
+          <PrivateRoute exact path="/cart-items" component={CartItems} isAuthenticated={authenticated}/>
           {/* </Elements> */}
     </Fragment>
         <Admin/>

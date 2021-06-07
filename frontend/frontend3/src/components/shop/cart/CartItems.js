@@ -5,6 +5,7 @@ import { Table } from 'react-bootstrap';
 import { NotificationContainer, NotificationManager } from 'react-notifications';
 import '../cart/CartItems.css'
 import { compareValidDate } from '../../../HandlerCaculate/formatDate';
+import { Link } from 'react-router-dom';
 // import Cards from 'react-credit-cards';
 // import 'react-credit-cards/es/styles-compiled.css';
 // import { useStripe,useElements,CardElement,CardNumberElement} from '@stripe/react-stripe-js';
@@ -24,8 +25,7 @@ const CartItems=(props)=>{
     })
     const [searchDiscount,setSearchDiscount]=useState('');
     const [stDiscount,setStDiscount]=useState();
-    // const stripe = useStripe();
-    // const elements = useElements();
+   
     useEffect(async ()=>{
       fetchMyAPI()
       if(props.match.path=='/order/create-new'){
@@ -52,7 +52,6 @@ const CartItems=(props)=>{
      var total = cartItems.reduce(function(acc, item){
        
        if(item.checked) {
-         console.log(item)
          if(stDiscount &&(stDiscount.categoryProduct==item.category)){
            return acc + (item.quantity * item.price-(item.quantity*item.price*stDiscount.value*0.01));
          }
@@ -106,7 +105,14 @@ const CartItems=(props)=>{
                 orderStatus:'Processing',
                 discountId: stDiscount?stDiscount._id:null
         }
-        
+        if(!data.shippingInfo.address || !data.shippingInfo.city || !data.shippingInfo.phoneNo || !data.shippingInfo.postalCode || !data.shippingInfo.country){
+          NotificationManager.error("Error","Vui lòng nhập thông tin đầy đủ")
+          return
+        }
+        if(data.orderItems.length==0){
+          NotificationManager.error("Error","Giỏ hàng rỗng hoặc chưa có chọn sản phẩm nào")
+          return
+        }
         clientRequest.postOrder(data).then(res=>{console.log(res)
         NotificationManager.success("Success","tao đơn thành công")
         })
@@ -156,12 +162,13 @@ const CartItems=(props)=>{
       <td><input type="checkbox" defaultChecked={item.checked} onChange={handleChecked(index)}/></td>
   <td>{item.name}</td>
   {item.images&&<td><img src={item.images[0].url}/></td> }
-  {item.image&&<td><img src={item.image}/></td>}
-  <td> <input defaultValue={item.quantity} type='Number' onChange={updateCartChanged(index)}/></td>
+  {item.image&&<td><Link to={`/product/${item.product}`}><img src={item.image}/></Link></td>}
+  <td> <input defaultValue={item.quantity} type='Number' min={1} onChange={updateCartChanged(index)}/></td>
   <td>{item.price}</td>
   <td>{item.total}</td>
 
     <td><button className='btn btn-danger fas fa-trash' onClick={()=>removeItem(item._id)}></button></td>
+    
 </tr>})
 }
   </tbody>
@@ -222,7 +229,8 @@ const CartItems=(props)=>{
             <div>
               <span>Discount Code</span>
               <span><input placeholder='Nhập mã khuyến mãi' onChange={(e)=>setSearchDiscount(e.currentTarget.value)}/></span>
-              <span><button onClick={()=>applyCode()}>Apply code</button></span>
+              <span><button disabled={searchDiscount==''?true:false} onClick={()=>applyCode()}>Apply code</button></span>
+              {stDiscount && <p style={{color:"green"}}>Áp dụng cho thể loại : {stDiscount.categoryProduct}</p>}
             </div>
            
         <button className='btn' onClick={()=>handleSubmit()}>Order Now</button>
@@ -231,47 +239,7 @@ const CartItems=(props)=>{
         </div>
        
 
-        {/* <div id="PaymentForm">
-       <Cards
-       cvc={creditInput.cvc}
-       expiry={creditInput.expiry}
-       focused={creditInput.focus}
-       name={creditInput.name}
-       number={creditInput.number}
-       />
-       <form onSubmit={submitHandler}>
-         <CardNumberElement
-          
-         />
-        	<input
-            type="tel"
-            name="number"
-            placeholder="Card Number"
-           onBlur={(e)=>setCreditInput({...creditInput,number:e.currentTarget.value})}
-          />
-          	<input
-            type="tel"
-            name="name"
-            placeholder="Name"
-           onBlur={(e)=>setCreditInput({...creditInput,name:e.currentTarget.value})}
-          />
-          	<input
-            type="tel"
-            name="expiry"
-            placeholder="expiry"
-           onBlur={(e)=>{setCreditInput({...creditInput,expiry:e.currentTarget.value,focus:e.currentTarget.name})}}
-          />
-          <input
-            type="tel"
-            name="expiry"
-            placeholder="expiry"
-            onFocus={(e)=>setCreditInput({...creditInput,focus:'cvc'})}
-           onBlur={(e)=>{setCreditInput({...creditInput,cvc:e.currentTarget.value})}}
-          />
-          ...
-          <button type='submit'>Payment</button>
-        </form>
-        </div> */}
+        
         
         <NotificationContainer/>
     </div></>

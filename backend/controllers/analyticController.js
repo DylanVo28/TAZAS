@@ -571,7 +571,7 @@ exports.topSellingByReview=catchAsyncError(async(req,res,next)=>{
       }))
       finalList.sort(function(a,b){
 
-        return b.quantity-a.quantity
+        return b.numOfReviews-a.numOfReviews
     })
     finalList.slice(0,10)
     res.status(201).json({
