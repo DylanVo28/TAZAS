@@ -48,14 +48,16 @@ export const register=(userData)=>async(dispatch)=>{
     try{
         dispatch({type:REGISTER_USER_REQUEST})
        
-        const data=await clientRequest.createUser(userData).then(res=>{return res}).catch(
-        NotificationManager.error('Error message', 'Account creation failed')
+        const data=await clientRequest.createUser(userData).then(res=>{NotificationManager.success('Success message', 'Account successfully created')
+        window.location.href='/login'
+    })
+        .catch(err=>NotificationManager.error('Error message', 'Account creation failed')
         )
         dispatch({
             type:REGISTER_USER_SUCCESS,
             payload:data.user
         })
-        NotificationManager.success('Success message', 'Account successfully created');
+        
 
     }
     catch(error){

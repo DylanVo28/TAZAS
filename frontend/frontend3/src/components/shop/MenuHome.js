@@ -50,7 +50,7 @@ const MenuHome =()=>{
                                                     <img src={UserIcon} alt="" /></Link>
                                                     }
                                                     </div><div className="cart-area"><Link to="/cart-items" id="essenceCartBtn">
-                                                        <img src={CartIcon} alt="" /> <span>{quantity}</span></Link></div></div></div></header>
+                                                        <img src={CartIcon} alt="" /></Link></div></div></div></header>
 
   )
 }

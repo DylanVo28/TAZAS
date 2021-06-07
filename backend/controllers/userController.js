@@ -86,7 +86,7 @@ exports.forgotPassword=catchAsyncErrors(async(req,res,next)=>{
     }
     const resetToken=userLogin.getResetPasswordToken()
     await userLogin.save({validateBeforeSave:false})
-    const resetUrl=`${process.env.FRONTEND_URL}/password/reset/${resetToken}`
+    const resetUrl=`${process.env.NODE_ENV!=='PRODUCTION'? process.env.FRONTEND_URL:'https://tazas.herokuapp.com'}/password/reset/${resetToken}`
     const message =`Your password reset token is a follow: \n\n${resetUrl}\n\nIf you have not requested this email, then ignore it`
     try {
         await sendEmail({

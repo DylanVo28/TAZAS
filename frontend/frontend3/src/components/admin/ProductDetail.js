@@ -50,7 +50,10 @@ const ProductDetail=(props)=>{
         stock:Number(document.getElementsByName('stock')[0].value),
         image:avatar
       }
-      
+      if(!data.name|| !data.price || !data.description || !data.classify || !data.category || !data.stock || !data.image){
+        NotificationManager.error('Error', 'Vui long nhap day du thong tin')
+        return
+      }
     clientRequest.newProduct(data).then(res=>{NotificationManager.success('Success', 'Success')
     window.location.href=`/admin/product/${res.product._id}`
     })
@@ -76,7 +79,10 @@ const ProductDetail=(props)=>{
         stock:Number(document.getElementsByName('stock')[0].value),
         image:avatar
       }
-    
+      if(!data.name|| !data.price || !data.description || !data.classify || !data.category || !data.stock || !data.image){
+        NotificationManager.error('Error', 'Vui long nhap day du thong tin')
+        return
+      }
 
     //update duoc nhung bao loi
     clientRequest.updateProduct(stProduct._id,data).then(NotificationManager.success('Success', 'Success')).catch(err=>console.error())

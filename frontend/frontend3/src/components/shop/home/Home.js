@@ -57,7 +57,8 @@ const Home =()=>{
     clientRequest.getSearchProductsHome('',sizePage.current,'').then(res=>setProducts(res.products))
   },[])
   useEffect(()=>{
-    clientRequest.getSearchProductsHome(search,sizePage.current,category).then(res=>setProducts(res.products))
+    clientRequest.getSearchProductsHome(search,sizePage.current,category).then(res=>{setProducts(res.products)
+    })
   },[sizePage.current,search,category])
   const handlePageChange=(e)=>{
     setSizePage({...sizePage,current:e})
