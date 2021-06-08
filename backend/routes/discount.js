@@ -5,7 +5,7 @@ const { createDiscount, getAllDiscount, getDiscountDetail, getDiscountByName, re
 
 router.route('/create-discount').post(isAuthenticatedUser,authorizeRoles('admin'),createDiscount)
 router.route('/admin/discounts').get(getDiscountByName)
-router.route('/admin/discount/:id').get(isAuthenticatedUser,authorizeRoles('admin'),getDiscountDetail)
+router.route('/admin/discount/:id').get(getDiscountDetail)
 .delete(isAuthenticatedUser,authorizeRoles('admin'),removeDiscount)
 .put(isAuthenticatedUser,authorizeRoles('admin'),updateStock)
 router.route('/discount/:name').get(isAuthenticatedUser,getDiscount)

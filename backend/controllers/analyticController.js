@@ -503,11 +503,14 @@ exports.topSellingByProduct=catchAsyncError(async(req,res,next)=>{
           // here candidate data is inserted into 
           const product=await Product.findById(item.product)
           // and response need to be added into final response array 
-          return {
-            name:product.name,
-            product:item.product,
-            quantity:item.quantity
+          if(product){
+            return {
+                name:product.name,
+                product:item.product,
+                quantity:item.quantity
+              }
           }
+          
         } catch (error) {
           console.log('error'+ error);
         }
@@ -560,11 +563,14 @@ exports.topSellingByReview=catchAsyncError(async(req,res,next)=>{
           // here candidate data is inserted into 
           const product=await Product.findById(item.productId)
           // and response need to be added into final response array 
-          return {
-            name:product.name,
-            product:item.productId,
-            numOfReviews:item.numOfReviews
+          if(product){
+            return {
+                name:product.name,
+                product:item.productId,
+                numOfReviews:item.numOfReviews
+              }
           }
+         
         } catch (error) {
           console.log('error'+ error);
         }
