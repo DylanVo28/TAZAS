@@ -577,6 +577,16 @@ class ClientRequest{
                 }, reject)
         })  
     }
+
+    analyticsByTotalPayment(filter){
+        return new Promise((resolve,reject)=>{
+            axios.get(`${DOMAIN}/api/v1/analytics-payment?filter=${filter}`,{
+                params:{userToken},
+            }).then(result => {
+                    resolve(result.data)
+                }, reject)
+        })  
+    }
 }
 const clientRequest = new ClientRequest();
 export default clientRequest;

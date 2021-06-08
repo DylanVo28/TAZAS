@@ -36,6 +36,7 @@ const AnalyticsPage=()=>{
   const [topSellingProduct,setTopSellingProduct]=useState()
   const [topReviewProduct,setTopReviewProduct]=useState()
   const [topUser,setTopUser]=useState()
+  const [totalPayment,setTotalPayment]=useState()
   const [filter,setFilter]=useState('week')
     useEffect(async()=>{
    
@@ -46,16 +47,16 @@ const AnalyticsPage=()=>{
         await clientRequest.analyticsByOrder(filter),
         await clientRequest.topSellingByProduct(filter),
         await clientRequest.topSellingByReview(filter),
-        await clientRequest.topSellingByUser(filter)
-
+        await clientRequest.topSellingByUser(filter),
+        await clientRequest.analyticsByTotalPayment(filter)
       ]).then(res=>{
-        console.log(res)
         setAnalyticProduct(res[0].data)
         setAnalyticUser(res[1].data)
         setAnalyticOrder(res[2].data)
         setTopSellingProduct(res[3].finalList)
         setTopReviewProduct(res[4].finalList)
         setTopUser(res[5].finalList)
+        setTotalPayment(res[6].data)
       })
     },[filter])
     return  <>
@@ -77,6 +78,9 @@ const AnalyticsPage=()=>{
         <div className='col-md-6'>
         {analyticOrder && <Line data={analyticOrder} options={options} />}
 
+        </div>
+        <div className='col-md-6'>
+          {totalPayment&& <Line data={totalPayment} options={options}/>}
         </div>
 
       </div>

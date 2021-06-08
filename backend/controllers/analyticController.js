@@ -471,13 +471,13 @@ exports.analyticsByTotalPayment=catchAsyncError(async (req,res,next)=>{
     orders.map(item=>{
         const createdAt=new Date(item.paidAt)
         const dateNow=new Date();
-        if(req.query.filter=='week'&&createdAt.getTime()>(dateNow.getTime()-dayTime*7) && createdAt.getTime()<=dateNow.getTime()){
+        if(req.query.filter=='week'&&createdAt.getTime()>(dateNow.getTime()-dayTime*7) && createdAt.getTime()<=dateNow.getTime() && item.orderStatus=='Complete'){
             listData.push(item)
         }
-        if(req.query.filter=='month'&&createdAt.getTime()>(dateNow.getTime()-dayTime*30) && createdAt.getTime()<=dateNow.getTime()){
+        if(req.query.filter=='month'&&createdAt.getTime()>(dateNow.getTime()-dayTime*30) && createdAt.getTime()<=dateNow.getTime() && item.orderStatus=='Complete'){
             listData.push(item)
         }
-        if(req.query.filter=='year'&&createdAt.getTime()>(dateNow.getTime()-dayTime*30*12) && createdAt.getTime()<=dateNow.getTime()){
+        if(req.query.filter=='year'&&createdAt.getTime()>(dateNow.getTime()-dayTime*30*12) && createdAt.getTime()<=dateNow.getTime() && item.orderStatus=='Complete'){
             listData.push(item)
         }
     })
@@ -596,13 +596,13 @@ exports.analyticsByTotalPayment=catchAsyncError(async (req,res,next)=>{
     }
     var data;
     if(req.query.filter=='week'){
-        data=dataAnalytics(labelsByWeek,arrayWeek,'order created','rgba(0, 184, 148,1.0)','rgba(0, 184, 148,0.4)')
+        data=dataAnalytics(labelsByWeek,arrayWeek,'order created','rgba(108, 92, 231,1.0)','rgba(108, 92, 231,0.4)')
     }
     if(req.query.filter=='month'){
-        data=dataAnalytics(labelsByMonth,arrayMonth,'order created','rgba(0, 184, 148,1.0)','rgba(0, 184, 148,0.4)')
+        data=dataAnalytics(labelsByMonth,arrayMonth,'order created','rgba(108, 92, 231,1.0)','rgba(108, 92, 231,0.4)')
     }
     if(req.query.filter=='year'){
-        data=dataAnalytics(labelsByYear,arrayYear,'order created','rgba(0, 184, 148,1.0)','rgba(0, 184, 148,0.4)')
+        data=dataAnalytics(labelsByYear,arrayYear,'order created','rgba(108, 92, 231,1.0)','rgba(108, 92, 231,0.4)')
     }
     res.status(201).json({
         data
