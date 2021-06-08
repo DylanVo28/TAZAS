@@ -6,6 +6,7 @@ const APIFeatures = require('../utils/apiFeatures')
 const cloudinary=require('cloudinary');
 const UserLogin = require('../models/userLogin');
 const User = require('../models/user');
+const Review = require('../models/review');
 //add new product
 exports.newProduct=catchAsyncError (async (req,res,next)=>{
     if(!checkUrlImage(req.body.data.image)){
@@ -137,6 +138,7 @@ exports.deleteProduct=catchAsyncError(async(req,res,next)=>{
         return next(new ErrorHandler('Product not found',404));
     }
     await product.remove()
+    await Review.findByIdAndRemove({productId:req.params.id})
     res.status(200).json({
         success:true,
         message:"Product is deleted"

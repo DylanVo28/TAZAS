@@ -90,7 +90,7 @@ const AnalyticsPage=()=>{
       <th scope="col">Quantity</th>
       </thead>
       <tbody>
-        {topSellingProduct&& topSellingProduct.map((item,index)=> <tr>
+        {topSellingProduct&& topSellingProduct.map((item,index)=> item &&<tr>
           <th scope="row">{index+1}</th>
       <td>{item.name}</td>
       <td>{item.quantity}</td>
@@ -109,7 +109,7 @@ const AnalyticsPage=()=>{
       <th scope="col">Num of Review</th>
       </thead>
       <tbody>
-        {topReviewProduct&& topReviewProduct.map((item,index)=> <tr>
+        {topReviewProduct&& topReviewProduct.map((item,index)=>item&& <tr>
           <th scope="row">{index+1}</th>
       <td>{item.name}</td>
       <td>{item.numOfReviews}</td>
