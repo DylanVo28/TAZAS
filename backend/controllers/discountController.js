@@ -2,6 +2,7 @@ const catchAsyncError = require("../middlewares/catchAsyncError");
 const APIFeatures = require("../utils/apiFeatures");
 const ErrorHandler = require("../utils/errorHandler");
 const Discount = require('../models/discount');
+const DiscountUsed = require("../models/discountUsed");
 exports.createDiscount=catchAsyncError(async(req,res,next)=>{
     const {name,categoryProduct,validDate,quantity,value}=req.body.data
     await Discount.create({
@@ -64,6 +65,11 @@ exports.getDiscount=catchAsyncError(async(req,res,next)=>{
     if(!discount){
         return next(new ErrorHandler('discount not found',404))
     }
+    const discountUsed=await DiscountUsed.findOne({discountId:discount._id,userId:req.user._id})
+    if(discountUsed){
+        return next(new ErrorHandler('discount used',500))
+    }
+    
     res.status(201).json({
         discount
     })

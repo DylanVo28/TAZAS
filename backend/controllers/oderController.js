@@ -5,6 +5,7 @@ const ErrorHandler = require("../utils/errorHandler");
 const Product = require('../models/product');
 const User = require("../models/user");
 const Discount = require("../models/discount");
+const DiscountUsed = require("../models/discountUsed");
 
 exports.newOrder = catchAsyncError(async (req, res, next) => {
 
@@ -23,6 +24,7 @@ exports.newOrder = catchAsyncError(async (req, res, next) => {
         await Discount.findByIdAndUpdate(discountId,{$inc:{
             quantity:-1
         }})
+        await DiscountUsed.create({discountId:discountId,userId:req.user._id})
     }
     const order = await Order.create({
         orderItems,
