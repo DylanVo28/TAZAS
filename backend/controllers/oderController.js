@@ -24,6 +24,10 @@ exports.newOrder = catchAsyncError(async (req, res, next) => {
         await Discount.findByIdAndUpdate(discountId,{$inc:{
             quantity:-1
         }})
+        const discountUsed=await DiscountUsed.findOne({discountId:discountId,userId:req.user._id})
+        if(discountUsed){
+            return next(new ErrorHandler('Code discount used', 500))
+        }
         await DiscountUsed.create({discountId:discountId,userId:req.user._id})
     }
     const order = await Order.create({
