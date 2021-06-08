@@ -20,7 +20,7 @@ const getFormattedDate=(dateString) =>{
     var day = date.getDate().toString();
     day = day.length > 1 ? day : '0' + day;
     
-    return `${year}-${month}-${day}`
+    return `${month}-${day}-${year}`
   }
   const checkURL=(url)=> {
     return(url.match(/\.(jpeg|jpg|gif|png)$/) != null);
@@ -28,8 +28,7 @@ const getFormattedDate=(dateString) =>{
 const compareValidDate=(date)=>{
   const date1 = new Date();
     const date2 = new Date(date);
-    console.log( date1.getTime() )
-    console.log(date2.getTime())
+   
     if(date1.getTime() > date2.getTime()){
        return false
     }

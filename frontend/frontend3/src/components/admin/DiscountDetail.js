@@ -106,8 +106,8 @@ const DiscountDetail=(props)=>{
           </div>
   <div className="form-group">
     <label htmlFor="formGroupExampleInput2">Valid Date</label>
-    <input disabled={props.match.path=="/admin/discount/:id"} type="date" id="start" name="validDate" defaultValue={discount?formattedDateFromParse(discount.validDate):Date.now()} min="2018-01-01" max="2099-12-31" />
-
+   {props.match.path=='/admin/create-discount'&&<input type="date" id="start" name="validDate" defaultValue={Date.now()} min="2018-01-01" max="2099-12-31" />}
+    {discount&&props.match.path=="/admin/discount/:id"&&<span>{formattedDateFromParse(discount.validDate)}</span>}
   </div>
   <div className="form-group">
     <label htmlFor="formGroupExampleInput2">Quantity</label>
@@ -120,7 +120,7 @@ const DiscountDetail=(props)=>{
   {props.match.path=="/admin/create-discount"&&<button type='submit'>Create Discount</button>}
 
 </form>
-{props.match.path=="/admin/discount/:id"&&<button onClick={()=>setOpenModal(true)}>Update Stock</button>}
+{/* {props.match.path=="/admin/discount/:id"&&<button onClick={()=>setOpenModal(true)}>Update Stock</button>} */}
 
 <NotificationContainer/>
 <ModalStock/>

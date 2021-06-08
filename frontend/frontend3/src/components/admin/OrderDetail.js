@@ -168,6 +168,8 @@ const OrderDetail=(props)=>{
         onClick={(status)=>updateOrderStatus('Delivered')}>Delivered</button>}
         {(order.orderStatus=='Delivered'&& props.match.path=='/order/me/:id')&&<button className='btn' 
         onClick={(status)=>updateOrderStatus('Complete')}>Has Received</button>}
+         {(order.orderStatus=='Processing'&& props.match.path=='/order/me/:id')&&<button className='btn' 
+        onClick={(status)=>updateOrderStatus('Cancel')}>Cancel Order</button>}
         
         <ModalPopup
          open={showModal}

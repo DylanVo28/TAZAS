@@ -154,7 +154,7 @@ const ProductDetail=(props)=>{
           </div>
           <div className="form-group col-md-4">
             <label>Stock</label>
-            <input type="text" className="form-control" placeholder="Stock" name="stock" defaultValue={stProduct.stock}/>
+            <input type="text" className="form-control" placeholder="Stock" name="stock" defaultValue={stProduct.stock} disabled={props.match.path=='/admin/product/:id'}/>
           </div>
         </div>
         

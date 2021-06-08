@@ -15,9 +15,14 @@ const NewPassword=(props)=>{
         e.preventDefault();
         const stPassword=document.getElementsByName('password')[0].value
        const stConfirmPassword= document.getElementsByName('confirmPassword')[0].value
-        clientRequest.resetPassword({password:stPassword,confirmPassword:stConfirmPassword},props.match.params.token).then( res=>{NotificationManager.success('Success', 'Login success')
+        clientRequest.resetPassword({password:stPassword,confirmPassword:stConfirmPassword},props.match.params.token)
+        .then( res=>{NotificationManager.success('Success', 'Reset success')
         window.location.href='/login'
     })
+        .catch(err=>{
+        NotificationManager.error('Error', 'Reset Failed')
+    })
+        
     }
     return  <div className={'g-sidenav-show  bg-white'}>
     <div className={'container position-sticky z-index-sticky top-0'}>

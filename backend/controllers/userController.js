@@ -213,12 +213,11 @@ exports.getUsersSearch=catchAsyncErrors(async(req,res,next)=>{
 })
 exports.getUserDetail=catchAsyncErrors(async(req,res,next)=>{
     const userLogin=await UserLogin.findById(req.params.id)
-    if(!userLogin){
-        return next(new ErrorHandler('User not found',400))
-    }
+   
     let user=(await User.findById(req.params.id)).toObject()
-    user.role=userLogin.role
-    
+    if(userLogin){
+        user.role=userLogin.role
+    }
     res.status(200).json({
         success:true,
         user

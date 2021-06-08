@@ -39,11 +39,9 @@ const UserList=()=>{
            
            
             <td className="align-middle text-center">
-              <span className="text-secondary text-xs font-weight-bold">{item.email}</span>
+              <span className="text-secondary text-xs font-weight-bold">{item.emailUser}</span>
             </td>
-            <td>
-              <p className="text-xs font-weight-bold mb-0">{item.role}</p>
-            </td>
+           
             <td className="align-middle text-center">
               <span className="text-secondary text-xs font-weight-bold">{getFormattedDate (item.createAt)}</span>
             </td>
@@ -80,7 +78,6 @@ const UserList=()=>{
                   <tr>
                     <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Avatar</th>
                     <th className="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Email</th>
-                    <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Role</th>
                     <th className="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">createAt</th>
 
                     <th className="text-secondary opacity-7" />
