@@ -465,6 +465,151 @@ exports.analyticsByOrder=catchAsyncError(async (req,res,next)=>{
     })
 })
 
+exports.analyticsByTotalPayment=catchAsyncError(async (req,res,next)=>{
+    const orders=await Order.find()
+    const listData=[]
+    orders.map(item=>{
+        const createdAt=new Date(item.paidAt)
+        const dateNow=new Date();
+        if(req.query.filter=='week'&&createdAt.getTime()>(dateNow.getTime()-dayTime*7) && createdAt.getTime()<=dateNow.getTime()){
+            listData.push(item)
+        }
+        if(req.query.filter=='month'&&createdAt.getTime()>(dateNow.getTime()-dayTime*30) && createdAt.getTime()<=dateNow.getTime()){
+            listData.push(item)
+        }
+        if(req.query.filter=='year'&&createdAt.getTime()>(dateNow.getTime()-dayTime*30*12) && createdAt.getTime()<=dateNow.getTime()){
+            listData.push(item)
+        }
+    })
+    const arrayWeek=[0,0,0,0,0,0,0]
+    const arrayMonth=[0,0,0,0]
+    const arrayYear=[0,0,0,0,0,0,0,0,0,0,0,0]
+    if(req.query.filter=='week'){
+        listData.map(item=>{
+        const createdAt=new Date(item.paidAt)
+        const dateNow=new Date();
+        //ngay 7
+        if(createdAt.getTime()>(dateNow.getTime()-dayTime*7)&&createdAt.getTime()<=(dateNow.getTime()-dayTime*6)){
+            arrayWeek[0]+=item.totalPrice
+        }
+        //ngay 6
+        if(createdAt.getTime()>(dateNow.getTime()-dayTime*6)&&createdAt.getTime()<=(dateNow.getTime()-dayTime*5)){
+            arrayWeek[1]+=item.totalPrice
+        }
+        //ngay 5
+        if(createdAt.getTime()>(dateNow.getTime()-dayTime*5)&&createdAt.getTime()<=(dateNow.getTime()-dayTime*4)){
+            arrayWeek[2]+=item.totalPrice
+        }
+        //ngay 4
+        if(createdAt.getTime()>(dateNow.getTime()-dayTime*4)&&createdAt.getTime()<=(dateNow.getTime()-dayTime*3)){
+            arrayWeek[3]+=item.totalPrice
+        }
+        //ngay 3
+        if(createdAt.getTime()>(dateNow.getTime()-dayTime*3)&&createdAt.getTime()<=(dateNow.getTime()-dayTime*2)){
+            arrayWeek[4]+=item.totalPrice
+        }
+        //ngay 2
+        if(createdAt.getTime()>(dateNow.getTime()-dayTime*2)&&createdAt.getTime()<=(dateNow.getTime()-dayTime*1)){
+            arrayWeek[5]+=item.totalPrice
+        }
+        //ngay 1
+        if(createdAt.getTime()>(dateNow.getTime()-dayTime*1)&&createdAt.getTime()<=(dateNow.getTime())){
+            arrayWeek[6]+=item.totalPrice
+        }
+    })}
+    if(req.query.filter=='month'){
+        listData.map(item=>{
+            const createdAt=new Date(item.paidAt)
+            const dateNow=new Date();
+             //tuan 4
+             if(createdAt.getTime()>(dateNow.getTime()-dayTime*30)&&createdAt.getTime()<=(dateNow.getTime()-dayTime*22.5)){
+                arrayMonth[0]+=item.totalPrice
+            }
+            //tuan 3
+            if(createdAt.getTime()>(dateNow.getTime()-dayTime*22.5)&&createdAt.getTime()<=(dateNow.getTime()-dayTime*15)){
+                arrayMonth[1]+=item.totalPrice
+            }
+             //tuan 2
+             if(createdAt.getTime()>(dateNow.getTime()-dayTime*15)&&createdAt.getTime()<=(dateNow.getTime()-dayTime*7.5)){
+                arrayMonth[2]+=item.totalPrice
+            }
+             //tuan 1
+             if(createdAt.getTime()>(dateNow.getTime()-dayTime*7.5)&&createdAt.getTime()<=(dateNow.getTime())){
+                arrayMonth[3]+=item.totalPrice
+            }
+           
+        })
+    }
+    if(req.query.filter=='year'){
+        listData.map(item=>{
+            const createdAt=new Date(item.paidAt)
+            const dateNow=new Date();
+            //thang 12
+            if(createdAt.getTime()>(dateNow.getTime()-dayTime*30*12)&&createdAt.getTime()<=(dateNow.getTime()-dayTime*30*11)){
+                arrayYear[0]+=item.totalPrice
+            }
+            //thang 11
+            if(createdAt.getTime()>(dateNow.getTime()-dayTime*30*11)&&createdAt.getTime()<=(dateNow.getTime()-dayTime*30*10)){
+                arrayYear[1]+=item.totalPrice
+            }
+             //thang 10
+             if(createdAt.getTime()>(dateNow.getTime()-dayTime*30*10)&&createdAt.getTime()<=(dateNow.getTime()-dayTime*30*9)){
+                arrayYear[2]+=item.totalPrice
+            }
+             //thang 9
+             if(createdAt.getTime()>(dateNow.getTime()-dayTime*30*9)&&createdAt.getTime()<=(dateNow.getTime()-dayTime*30*8)){
+                arrayYear[3]+=item.totalPrice
+            }
+             //thang 8
+             if(createdAt.getTime()>(dateNow.getTime()-dayTime*30*8)&&createdAt.getTime()<=(dateNow.getTime()-dayTime*30*7)){
+                arrayYear[4]+=item.totalPrice
+            }
+             //thang 7
+             if(createdAt.getTime()>(dateNow.getTime()-dayTime*30*7)&&createdAt.getTime()<=(dateNow.getTime()-dayTime*30*6)){
+                arrayYear[5]+=item.totalPrice
+            }
+             //thang 6
+             if(createdAt.getTime()>(dateNow.getTime()-dayTime*30*6)&&createdAt.getTime()<=(dateNow.getTime()-dayTime*30*5)){
+                arrayYear[6]+=item.totalPrice
+            }
+             //thang 5
+             if(createdAt.getTime()>(dateNow.getTime()-dayTime*30*5)&&createdAt.getTime()<=(dateNow.getTime()-dayTime*30*4)){
+                arrayYear[7]+=item.totalPrice
+            }
+             //thang 4
+             if(createdAt.getTime()>(dateNow.getTime()-dayTime*30*4)&&createdAt.getTime()<=(dateNow.getTime()-dayTime*30*3)){
+                arrayYear[8]+=item.totalPrice
+            }
+             //thang 3
+             if(createdAt.getTime()>(dateNow.getTime()-dayTime*30*3)&&createdAt.getTime()<=(dateNow.getTime()-dayTime*30*2)){
+                arrayYear[9]+=item.totalPrice
+            }
+             //thang 2
+             if(createdAt.getTime()>(dateNow.getTime()-dayTime*30*2)&&createdAt.getTime()<=(dateNow.getTime()-dayTime*30*1)){
+                arrayYear[10]+=item.totalPrice
+            }
+             //thang 1
+             if(createdAt.getTime()>(dateNow.getTime()-dayTime*30*1)&&createdAt.getTime()<=(dateNow.getTime())){
+                arrayYear[11]+=item.totalPrice
+            }
+        })
+    }
+    var data;
+    if(req.query.filter=='week'){
+        data=dataAnalytics(labelsByWeek,arrayWeek,'order created','rgba(0, 184, 148,1.0)','rgba(0, 184, 148,0.4)')
+    }
+    if(req.query.filter=='month'){
+        data=dataAnalytics(labelsByMonth,arrayMonth,'order created','rgba(0, 184, 148,1.0)','rgba(0, 184, 148,0.4)')
+    }
+    if(req.query.filter=='year'){
+        data=dataAnalytics(labelsByYear,arrayYear,'order created','rgba(0, 184, 148,1.0)','rgba(0, 184, 148,0.4)')
+    }
+    res.status(201).json({
+        data
+    })
+})
+
+
 exports.topSellingByProduct=catchAsyncError(async(req,res,next)=>{
     const orders=await Order.find()
     const listDataOrder=[]
