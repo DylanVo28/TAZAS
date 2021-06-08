@@ -85,21 +85,21 @@ const DiscountDetail=(props)=>{
   </div>
   <div className="form-group col-md-4">
             <label>Category</label>
-            <select disabled={props.match.path=="/admin/discount/:id"} className="form-control" name='category' defaultValue={discount&&discount.categoryProduct} name='categoryProduct'>
-              <option selected>Jackets & Coats</option>
-              <option>Hoodies & Sweatshirts</option>
-              <option>Cardigan & Jumpers</option>
-              <option>T-shirt & Tanks</option>
-              <option>Shoes</option>
-              <option>Shirts</option>
-              <option>Basics</option>
-              <option>Blazers & Suits</option>
-              <option>Shorts</option>
-              <option>Trousers</option>
-              <option>Jeans</option>
-              <option>Swimwear</option>
-              <option>Underwear</option>
-              <option>Socks</option>
+            <select disabled={props.match.path=="/admin/discount/:id"} className="form-control" name='category' value={discount&& discount.categoryProduct} name='categoryProduct'>
+            <option value={'jacketsCoats'} selected>Jackets & Coats</option>
+              <option  value={'hoodiesSweatshirts'}>Hoodies & Sweatshirts</option>
+              <option value={'cardiganJumpers'}>Cardigan & Jumpers</option>
+              <option value={'tshirtTanks'}>T-shirt & Tanks</option>
+              <option value={'shoes'}>Shoes</option>
+              <option value={'shirts'}>Shirts</option>
+              <option value={'basics'}>Basics</option>
+              <option value={'blazersSuits'}>Blazers & Suits</option>
+              <option value={'shorts'}>Shorts</option>
+              <option value={'trousers'}>Trousers</option>
+              <option value={'jeans'}>Jeans</option>
+              <option value={'swimwear'}>Swimwear</option>
+              <option value={'underwear'}>Underwear</option>
+              <option value={'socks'}>Socks</option>
 
               
             </select>

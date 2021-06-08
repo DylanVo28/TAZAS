@@ -596,13 +596,13 @@ exports.analyticsByTotalPayment=catchAsyncError(async (req,res,next)=>{
     }
     var data;
     if(req.query.filter=='week'){
-        data=dataAnalytics(labelsByWeek,arrayWeek,'order created','rgba(108, 92, 231,1.0)','rgba(108, 92, 231,0.4)')
+        data=dataAnalytics(labelsByWeek,arrayWeek,'Total Payment','rgba(108, 92, 231,1.0)','rgba(108, 92, 231,0.4)')
     }
     if(req.query.filter=='month'){
-        data=dataAnalytics(labelsByMonth,arrayMonth,'order created','rgba(108, 92, 231,1.0)','rgba(108, 92, 231,0.4)')
+        data=dataAnalytics(labelsByMonth,arrayMonth,'Total Payment','rgba(108, 92, 231,1.0)','rgba(108, 92, 231,0.4)')
     }
     if(req.query.filter=='year'){
-        data=dataAnalytics(labelsByYear,arrayYear,'order created','rgba(108, 92, 231,1.0)','rgba(108, 92, 231,0.4)')
+        data=dataAnalytics(labelsByYear,arrayYear,'Total Payment','rgba(108, 92, 231,1.0)','rgba(108, 92, 231,0.4)')
     }
     res.status(201).json({
         data

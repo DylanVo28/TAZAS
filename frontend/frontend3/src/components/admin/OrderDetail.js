@@ -101,10 +101,10 @@ const OrderDetail=(props)=>{
         return <>
                 <h4>Total</h4>
                 <div className={'row'}>
-    <div className='col-4'>Status:</div>
-    <div className='col-8'>{(order.paymentInfo)?(order.paymentInfo.status):('')}</div>
+    <div className='col-4'>Payment method:</div>
+    <div className='col-8'>{order.paymentMethod}</div>
     <div className='col-4'>Paid At:</div>
-    <div className='col-8'>{getFormattedDate(order.paidAt)}</div>
+    <div className='col-8'>{order.paidAt?getFormattedDate(order.paidAt):""}</div>
     <div className='col-4'>Items Price:</div>
     <div className='col-8'>{order.itemsPrice}</div>
     <div className='col-4'>Tax Price:</div>
