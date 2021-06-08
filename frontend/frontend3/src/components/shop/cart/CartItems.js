@@ -115,11 +115,11 @@ const CartItems=(props)=>{
         }
         clientRequest.postOrder(data).then(res=>{console.log(res)
         NotificationManager.success("Success","tao đơn thành công")
-        })
+        }).catch(err=>NotificationManager.error("Error","Khong the tao duoc don hang"))
       }
      
      const applyCode=async(e)=>{
-        const res=await clientRequest.getDiscount(searchDiscount).catch(err=>{ NotificationManager.error('error','Code không tồn tại')
+        const res=await clientRequest.getDiscount(searchDiscount).catch(err=>{ NotificationManager.error('error','Code không tồn tại hoặc đã sử dụng')
         setStDiscount(null)})
         
         if(res){
