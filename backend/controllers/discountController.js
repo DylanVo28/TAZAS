@@ -38,6 +38,7 @@ exports.getDiscountByName=catchAsyncError(async(req,res,next)=>{
     .search()
     .pagination(resPerPage)
     const discounts=await apiFeatures.query;
+    discounts.sort((a,b)=>b.createAt.getTime()-a.createAt.getTime())
     res.status(200).json({
         success:true,
         discounts
