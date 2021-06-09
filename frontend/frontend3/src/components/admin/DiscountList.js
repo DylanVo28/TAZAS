@@ -9,14 +9,19 @@ const DiscountList=()=>{
         current:1,
         total:0,
         count:10,
-  
       })
       const [discounts,setDiscounts]=useState()
       const [searchName,setSearchName]=useState('')
+      const [user,setUser]=useState({})
       useEffect(async()=>{
         const list=await clientRequest.getListDiscount(searchName)
+       
         setDiscounts(list.discounts)
       },[searchName])
+      useEffect(async()=>{
+        const res=await clientRequest.getProfileMe()
+        setUser(res.user)
+      },[])
       const handlePageChange=(pageNumber)=> {
         setSizePage(sizePage=>({...sizePage,current:pageNumber}))
       }
@@ -45,7 +50,7 @@ const DiscountList=()=>{
                   </td>
                   <td className="align-middle">
                     <Link  to={"/admin/discount/"+discount._id} className="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">
-                      Edit
+                      Info
                     </Link>
                   </td>
                   
@@ -59,7 +64,7 @@ const DiscountList=()=>{
             <h6>Discount List</h6>
             <div style={{display:'flex',justifyContent:'space-between'}}>
             <input className='search-product' placeholder="Search product" onChange={e=>setSearchName(e.currentTarget.value)}/>
-            <Link name="" id="" class="btn create-button" to="/admin/create-discount" role="button">Create Discount</Link>
+            {user.role=='admin'&&<Link name="" id="" class="btn create-button" to="/admin/create-discount" role="button">Create Discount</Link>}
             </div>
             <br/>
   

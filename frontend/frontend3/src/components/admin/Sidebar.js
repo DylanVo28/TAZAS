@@ -1,6 +1,7 @@
 import { React, useState, useEffect } from 'react';
 import {Link} from'react-router-dom'
 import logo from '../../images/tazas.png'
+import clientRequest from './../../APIFeatures/clientRequest';
 const SidebarRow=(props)=>{
 
   return (
@@ -15,7 +16,11 @@ const SidebarRow=(props)=>{
 }
 
 const Sidebar=()=>{
-   
+  const [user,setUser]=useState({})
+    useEffect(async ()=>{
+      const res=await clientRequest.getProfileMe()
+      setUser(res.user)
+    },[])
     return (
         <aside className="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-left ms-3" id="sidenav-main">
   <div className="sidenav-header">
@@ -27,16 +32,14 @@ const Sidebar=()=>{
   <div className="collapse navbar-collapse  w-auto" id="sidenav-collapse-main">
     <ul className="navbar-nav">
     <SidebarRow url={'/home'} icon={"fas fa-store"} title={'Store'}/>
-      <SidebarRow url={'/admin/dashboard'} icon={'fas fa-home'} title={'Dashboard'}/>
-      <SidebarRow url={'/admin/products'} icon={'fas fa-archive'} title={'Products'}/>
-      <SidebarRow url={'/admin/orders'} icon={"fas fa-shipping-fast"} title={'Orders'}/>
-      <SidebarRow url={'/admin/users'} icon={"fas fa-users"} title={'Users'}/>
+      {user.role=='admin'&&<SidebarRow url={'/admin/dashboard'} icon={'fas fa-home'} title={'Dashboard'}/>}
+      {user.role=='admin'&&<SidebarRow url={'/admin/products'} icon={'fas fa-archive'} title={'Products'}/>}
+      {user.role=='admin'&&<SidebarRow url={'/admin/orders'} icon={"fas fa-shipping-fast"} title={'Orders'}/>}
+      {user.role=='admin'&&<SidebarRow url={'/admin/users'} icon={"fas fa-users"} title={'Users'}/>}
       <SidebarRow url={'/admin/profile'} icon={"fas fa-user"} title={'Profile'}/>
       <SidebarRow url={'/order/me'} icon={"fas fa-shipping-fast"} title={'My orders'}/>
       <SidebarRow url={'/admin/discounts'} icon={"fas fa-badge-dollar"} title={'Discounts'}/>
-      <SidebarRow url={'/admin/analytics'} icon={"fas fa-chart-line"} title={'Analytics'}/>
-     
-     
+      {user.role=='admin'&&<SidebarRow url={'/admin/analytics'} icon={"fas fa-chart-line"} title={'Analytics'}/>}
     </ul>
   </div>
   

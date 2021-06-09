@@ -76,11 +76,14 @@ exports.getProducts=catchAsyncError(async (req,res,next)=>{
 //get all product {{DOMAIN}}/api/v1/products?keyword=?
 exports.getProductsHome=catchAsyncError(async (req,res,next)=>{
     const resPerPage=6
-    const apiFeatures=new APIFeatures(Product.find(),req.query)
+    const list=await Product.find()
+    list.sort((a,b)=>b.createdAt-a.createdAt)
+    const apiFeatures=new APIFeatures(list,req.query)
     .search()
     .filter()
     .pagination(resPerPage)
     const products=await apiFeatures.query;
+    
     res.status(200).json({
         success:true,
         products
