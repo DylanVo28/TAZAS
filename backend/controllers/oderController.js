@@ -114,6 +114,9 @@ exports.updateOrder = catchAsyncError(async (req, res, next) => {
         order.deliveredAt=Date.now()
         order.orderItems.forEach(async item => {
             const product = await Product.findById(item.product);
+            if(product.stock<item.quantity){
+                return next(new ErrorHandler('Stock product is empty', 404))
+            }
             product.stock -= item.quantity
             await product.save()
         })
