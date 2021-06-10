@@ -110,17 +110,19 @@ exports.updateOrder = catchAsyncError(async (req, res, next) => {
         return next(new ErrorHandler('Order not found', 404))
     }
     order.orderStatus = req.body.orderStatus
-    if (order.orderStatus == 'Delivered') {
-        order.deliveredAt=Date.now()
+    if(order.orderStatus == 'Confirmed'){
         order.orderItems.forEach(async item => {
             const product = await Product.findById(item.product);
             if(product.stock<item.quantity){
-                return next(new ErrorHandler('Stock product is empty', 404))
+                return next(new ErrorHandler('Stock product less then item request', 404))
             }
             product.stock -= item.quantity
             await product.save()
+
         })
-        
+    }
+    if (order.orderStatus == 'Delivered') {
+        order.deliveredAt=Date.now()
     }
     if(order.orderStatus=='Complete'){
         order.paidAt=Date.now()
