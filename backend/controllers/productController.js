@@ -106,23 +106,22 @@ exports.getSingleProduct=catchAsyncError(async (req,res,next)=>{
 exports.updateProduct=catchAsyncError(async (req,res,next)=>{
     
     
-    const product=await Product.findById(req.params.id).catch(error=>console.error())
-    if(!product){
-        return next(new ErrorHandler('Product not found',404));
-    }
+   
     if(!checkUrlImage(req.body.data.image)){
         const result=await cloudinary.v2.uploader.upload(req.body.data.image,{
             folder:'tazas'
         })
         if(result){
-            product.images[0].url=result.secure_url
-            product.images[0].public_id=result.asset_id
+            req.body.data.images=[]
+            req.body.data.images.push({
+                url:result.secure_url,
+                public_id:result.asset_id
+            })
         }
     }
     
    
-    product.save()
-    product=await Product.findByIdAndUpdate(req.params.id,req.body.data,{
+    const product=await Product.findByIdAndUpdate(req.params.id,req.body.data,{
         new:true,
         runValidators:true,
         useFindAndModify:false
