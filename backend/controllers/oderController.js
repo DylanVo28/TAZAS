@@ -58,18 +58,20 @@ exports.getOderDetail = catchAsyncError(async (req, res, next) => {
         return next(new ErrorHandler('user not found', 404))
 
     }
-    var orderItems=await Promise.all(order.orderItems.map(async (item) => {
+    var orderItems=[]
+    await Promise.all(order.orderItems.map(async (item) => {
         try {
           // here candidate data is inserted into  
           const product=await Product.findById(item.product)
-          // and response need to be added into final response array 
-          return {
-            name:product.name,
-            image:product.images[0].url,
-            price:product.price,
-            quantity:item.quantity
-        }
-        
+          if(product!==null){
+            // and response need to be added into final response array 
+            orderItems.push({
+                name:product.name,
+                image:product.images[0].url,
+                price:product.price,
+                quantity:item.quantity
+            })
+          }
         } catch (error) {
           console.log('error'+ error);
         }
