@@ -28,22 +28,26 @@ exports.getMyCart=catchAsyncError(async(req,res,next)=>{
     if(cart.length==0){
         return next(new ErrorHandler('cart empty', 404))
     }
-    var myCart=await Promise.all(cart.map(async (item) => {
+    var myCart=[]
+    await Promise.all(cart.map(async (item) => {
         try {
           // here candidate data is inserted into  
           const product=await Product.findById(item.productId)
           // and response need to be added into final response array 
-          return {
-              _id:item._id,
-              product:item.productId,
-            checked:item.checked,
-            name:product.name,
-            image:product.images[0].url,
-            price:product.price,
-            quantity:item.quantity,
-            category:product.category,
-            total:Number (product.price*item.quantity)
-        }
+          if(product){
+            myCart.push( {
+                _id:item._id,
+                product:item.productId,
+              checked:item.checked,
+              name:product.name,
+              image:product.images[0].url,
+              price:product.price,
+              quantity:item.quantity,
+              category:product.category,
+              total:Number (product.price*item.quantity)
+          })
+          }
+          
         
         } catch (error) {
           console.log('error'+ error);

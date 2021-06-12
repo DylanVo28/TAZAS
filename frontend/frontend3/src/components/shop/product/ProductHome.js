@@ -50,7 +50,11 @@ const ProductHome = (props) => {
   const orderNow = () => {
     const cartItem = product;
     localStorage.setItem("cartItem", JSON.stringify(cartItem));
-
+    if(!localStorage.getItem("token")){
+      NotificationManager.error("Error", "Ban chua dang nhap")
+      window.location.href='/login'
+      return
+    }
     window.location.href = "/order/create-new";
   };
   const addToCart = () => {
