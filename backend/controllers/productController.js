@@ -8,6 +8,7 @@ const UserLogin = require('../models/userLogin');
 const User = require('../models/user');
 const Review = require('../models/review');
 const Inventory = require('../models/inventory');
+const Cart = require('../models/cart');
 //add new product
 exports.newProduct=catchAsyncError (async (req,res,next)=>{
     if(!checkUrlImage(req.body.data.image)){
@@ -142,6 +143,7 @@ exports.deleteProduct=catchAsyncError(async(req,res,next)=>{
     await product.remove()
     await Review.remove({productId:req.params.id})
     await Inventory.remove({productId:req.params.id})
+    await Cart.remove({productId:req.params.id})
     res.status(200).json({
         success:true,
         message:"Product is deleted"
