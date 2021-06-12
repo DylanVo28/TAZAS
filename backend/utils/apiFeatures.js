@@ -3,6 +3,10 @@ class APIFeatures{
         this.query=query
         this.queryStr=queryStr
     }
+    sort(){
+        this.query=this.query.find().sort({createdAt:-1})
+        return this
+    }
     search(){
         const keyword=this.queryStr.keyword?{
             name:{
@@ -12,8 +16,6 @@ class APIFeatures{
         }:{}
         this.query=this.query.find({...keyword})
         return this
-        
-        
     }
     filter(){
         //update comming

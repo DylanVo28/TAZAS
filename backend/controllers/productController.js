@@ -66,6 +66,7 @@ exports.getLengthProduct=catchAsyncError(async(req,res,next)=>{
 exports.getProducts=catchAsyncError(async (req,res,next)=>{
     const resPerPage=10
     const apiFeatures=new APIFeatures(Product.find(),req.query)
+    .sort()
     .search()
     .pagination(resPerPage)
     const products=await apiFeatures.query;
@@ -80,6 +81,7 @@ exports.getProductsHome=catchAsyncError(async (req,res,next)=>{
     const resPerPage=6
 
     const apiFeatures=new APIFeatures(Product.find(),req.query)
+    .sort()
     .search()
     .filter()
     .pagination(resPerPage)
