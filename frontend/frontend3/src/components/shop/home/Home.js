@@ -73,7 +73,7 @@ const Home =()=>{
           <button  type="submit">
               <i className="fa fa-search"></i>
           </button>
-          <div>
+          <div style={{display:'inline-block',float:'right'}}>
           <span>Filter Product</span>
           <span>
           <select className="form-select" aria-label="Default select example" onChange={(e)=>setCategory(e.target.value)}>
