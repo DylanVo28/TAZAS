@@ -99,7 +99,6 @@ exports.allOrders = catchAsyncError(async (req, res, next) => {
             totalPayment += order.totalPrice
         }
     })
-    orders.sort((a,b)=>b.createAt.getTime()-a.createAt.getTime())
     res.status(200).json({
         success: true,
         totalPayment,

@@ -643,25 +643,24 @@ exports.topSellingByProduct=catchAsyncError(async(req,res,next)=>{
             })
         }
     })})
-    const finalList=await Promise.all(topSell.map(async (item,index) => {
+    const finalList=[]
+    await Promise.all(topSell.map(async (item,index) => {
         try {
           // here candidate data is inserted into 
           const product=await Product.findById(item.product)
           // and response need to be added into final response array 
-  
-            return {
-                name:product.name,
-                product:item.product,
-                quantity:item.quantity
-              }
-          
-          
+            if(product){
+                finalList.push({
+                    name:product.name,
+                    product:item.product,
+                    quantity:item.quantity
+                  })
+            }
         } catch (error) {
           console.log('error'+ error);
         }
       }))
       finalList.sort(function(a,b){
-
         return b.quantity-a.quantity
     })
     finalList.slice(0,10)
@@ -761,15 +760,18 @@ exports.topSellingByUser=catchAsyncError(async(req,res,next)=>{
             })
         }
     })
-    const finalList=await Promise.all(topUser.map(async (item,index) => {
+    const finalList=[]
+    await Promise.all(topUser.map(async (item,index) => {
         try {
           // here candidate data is inserted into 
           const user=await User.findById(item.user)
           // and response need to be added into final response array 
-          return {
-            name:user.name,
-            user:item.user,
-            numOfOrders:item.numOfOrders
+          if(user){
+            finalList.push( {
+                name:user.name,
+                user:item.user,
+                numOfOrders:item.numOfOrders
+              })
           }
         } catch (error) {
           console.log('error'+ error);
