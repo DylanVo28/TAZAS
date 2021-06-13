@@ -161,7 +161,7 @@ const CartItems=(props)=>{
     return <tr >
       <td><input type="checkbox" defaultChecked={item.checked} onChange={handleChecked(index)}/></td>
   <td>{item.name}</td>
-  {item.images&&<td><img src={item.images[0].url}/></td> }
+  {item.images&&<td><img src={item.images[0].url} style={{height:'100px'}}/></td> }
   {item.image&&<td><Link to={`/product/${item.product}`}><img src={item.image}/></Link></td>}
   <td> <input defaultValue={item.quantity} type='Number' min={1} onChange={updateCartChanged(index)}/></td>
   <td>{item.price}</td>
