@@ -120,6 +120,18 @@ exports.orderSearch=catchAsyncError(async (req, res, next) => {
     })
 })
 
+exports.myOrderSearch=catchAsyncError(async (req, res, next) => {
+    const resPerPage=10
+    const apiFeatures=new APIFeatures(Order.find({user:req.user._id}),req.query)
+    .sortByOrder()
+    .pagination(resPerPage)
+    const ordersPage=await apiFeatures.query;
+    res.status(200).json({
+        success: true,
+        ordersPage
+    })
+})
+
 exports.updateOrder = catchAsyncError(async (req, res, next) => {
     const order = await Order.findById(req.params.id);
     if (!order) {

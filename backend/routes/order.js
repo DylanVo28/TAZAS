@@ -1,5 +1,5 @@
 const express = require('express')
-const { newOrder, getOderDetail, myOrders, allOrders, deleteOrder, updateOrder, deleteOrderBeforeDelivered ,orderSearch} = require('../controllers/oderController')
+const { newOrder, getOderDetail, myOrders, allOrders, deleteOrder, updateOrder, deleteOrderBeforeDelivered ,orderSearch, myOrderSearch} = require('../controllers/oderController')
 const { isAuthenticatedUser, authorizeRoles } = require('../middlewares/user')
 const router = express.Router()
 router.route('/order/create').post(
@@ -19,6 +19,9 @@ router.route('/admin/orders-search').get(
     isAuthenticatedUser,
     authorizeRoles('admin'),
     orderSearch)
+router.route('/admin/my-orders-search').get(
+    isAuthenticatedUser,
+    myOrderSearch)
 router.route('/admin/order/:id').delete(
     isAuthenticatedUser,
     authorizeRoles('admin'),

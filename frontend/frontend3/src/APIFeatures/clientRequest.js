@@ -87,7 +87,17 @@ class ClientRequest{
 
     getOrdersSearch(currentPage){
         return new Promise((resolve,reject)=>{
-            axios.get(`${DOMAIN}/api/v1/admin/orders-search`,{
+            axios.get(`${DOMAIN}/api/v1/admin/orders-search?page=${currentPage}`,{
+                params:{userToken}
+            }).then(result => {
+                resolve(result.data)
+            }, reject)
+        })
+    }
+
+    getMyOrdersSearch(currentPage){
+        return new Promise((resolve,reject)=>{
+            axios.get(`${DOMAIN}/api/v1/admin/my-orders-search?page=${currentPage}`,{
                 params:{userToken}
             }).then(result => {
                 resolve(result.data)

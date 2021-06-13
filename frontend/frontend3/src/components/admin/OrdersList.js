@@ -24,6 +24,9 @@ const OrdersList=(props)=>{
             })
     },[])
    useEffect(()=>{
+    props.match.path=='/order/me' && clientRequest.getMyOrdersSearch(sizePage.current).then(res=>{
+      setStOrders(res.ordersPage)
+    })
     props.match.path=='/admin/orders' && clientRequest.getOrdersSearch(sizePage.current).then(res=>{
       setStOrders(res.ordersPage)
     })
