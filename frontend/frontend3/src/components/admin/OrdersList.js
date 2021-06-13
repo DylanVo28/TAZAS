@@ -20,13 +20,14 @@ const OrdersList=(props)=>{
         })
       
       props.match.path=='/admin/orders' && clientRequest.getOrders().then(res=>{
-              setStOrders(res.orders)
               setSizePage({...sizePage,total:res.orders.length})
             })
-      
-      
     },[])
-   
+   useEffect(()=>{
+    props.match.path=='/admin/orders' && clientRequest.getOrdersSearch(sizePage.current).then(res=>{
+      setStOrders(res.ordersPage)
+    })
+   },[sizePage.current])
     const OrderRow=(order)=>{
         return <tr>
             
@@ -81,20 +82,20 @@ const OrdersList=(props)=>{
                   </tr>
                 </thead>
                 <tbody>
-                    {stOrders.map(item=>{return OrderRow(item)})}
+                    {stOrders&&stOrders.map(item=>{return OrderRow(item)})}
                  
                 </tbody>
   
               </table>
               <div>
-              {/* <Pagination
+              <Pagination
           activePage={sizePage.current}
           itemsCountPerPage={sizePage.count}
           totalItemsCount={sizePage.total}
           itemClass="page-item"
           linkClass="page-link"
           onChange={(e)=>handlePageChange(e)}
-        /> */}
+        />
               </div>
               
             </div>

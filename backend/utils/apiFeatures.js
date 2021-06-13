@@ -7,6 +7,10 @@ class APIFeatures{
         this.query=this.query.find().sort({createdAt:-1})
         return this
     }
+    sortByOrder(){
+        this.query=this.query.find().sort({createAt:-1})
+        return this
+    }
     search(){
         const keyword=this.queryStr.keyword?{
             name:{

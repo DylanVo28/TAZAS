@@ -85,6 +85,16 @@ class ClientRequest{
         })
     }
 
+    getOrdersSearch(currentPage){
+        return new Promise((resolve,reject)=>{
+            axios.get(`${DOMAIN}/api/v1/admin/orders-search`,{
+                params:{userToken}
+            }).then(result => {
+                resolve(result.data)
+            }, reject)
+        })
+    }
+
     getAllUser(){
         return new Promise((resolve,reject)=>{
             axios.get(`${DOMAIN}/api/v1/admin/all-user`,{
@@ -352,11 +362,10 @@ class ClientRequest{
         })
     }
 
-    getMyOrders(){
+    getMyOrders(currentPage){
         return new Promise((resolve,reject)=>{
-            axios.get(`${DOMAIN}/api/v1/orders/me`,{
+            axios.get(`${DOMAIN}/api/v1/orders/me?page=${currentPage}`,{
                 params:{userToken}
-                
             }).then(result => {
                     resolve(result.data)
                 }, reject)
