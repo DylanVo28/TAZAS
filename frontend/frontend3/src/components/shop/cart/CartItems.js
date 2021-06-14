@@ -177,7 +177,9 @@ const CartItems=(props)=>{
         </div>
         <div className="col-md-4">
         {user && <div className='user-cart-items'>
+          <div style={{height:"150px",width:"150px",borderRadius:"50%",overflow:"hidden",boxShadow:"1px 1px 10px #00000036"}}>
              <img src={user.avatar.url}/>
+             </div>
               <div className='row'>
                 <div className="col-md-4">Name</div>
                 <div className="col-md-8">{user.name}</div>
