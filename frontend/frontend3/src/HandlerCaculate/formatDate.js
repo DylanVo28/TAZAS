@@ -34,4 +34,14 @@ const compareValidDate=(date)=>{
     }
     return true
 }
-  export {getFormattedDate,checkURL,formattedDateFromParse,compareValidDate}
+const validatePhoneNumber=(phone)=>{
+  var phoneno = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im
+  if(phone.match(phoneno)) {
+    return true;
+  }
+  return false;
+}
+const validateCityOrPostalCode=(code)=>{
+  return /^([0-9]{5})$/.test(code);
+}
+  export {getFormattedDate,checkURL,formattedDateFromParse,compareValidDate,validatePhoneNumber,validateCityOrPostalCode}

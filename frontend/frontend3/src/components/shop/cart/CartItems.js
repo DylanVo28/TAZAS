@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { Table } from 'react-bootstrap';
 import { NotificationContainer, NotificationManager } from 'react-notifications';
 import '../cart/CartItems.css'
-import { compareValidDate } from '../../../HandlerCaculate/formatDate';
+import { compareValidDate, validateCityOrPostalCode, validatePhoneNumber } from '../../../HandlerCaculate/formatDate';
 import { Link } from 'react-router-dom';
 // import Cards from 'react-credit-cards';
 // import 'react-credit-cards/es/styles-compiled.css';
@@ -37,9 +37,8 @@ const CartItems=(props)=>{
         temp.product=temp._id
         list.push(temp)
         setCartItems(list)
-   
-
       }
+      
       else{
         
         const cart=await clientRequest.getCart();
@@ -60,9 +59,9 @@ const CartItems=(props)=>{
        return acc
   }, 0);
   var tax=total*0.1
-  setItemsPrice(total)
-  setTaxPrice(tax)
-  setTotalPrice(total+tax+shippingPrice)
+  setItemsPrice(Math.round((total + Number.EPSILON) * 100) / 100)
+  setTaxPrice(Math.round((tax + Number.EPSILON) * 100) / 100)
+  setTotalPrice(Math.round((total+tax+shippingPrice + Number.EPSILON) * 100) / 100)
   
     },[cartItems,stDiscount])
    
@@ -107,6 +106,14 @@ const CartItems=(props)=>{
         }
         if(!data.shippingInfo.address || !data.shippingInfo.city || !data.shippingInfo.phoneNo || !data.shippingInfo.postalCode || !data.shippingInfo.country){
           NotificationManager.error("Error","Vui lòng nhập thông tin đầy đủ")
+          return
+        }
+        if(!validatePhoneNumber(data.shippingInfo.phoneNo)){
+          NotificationManager.error("Error","Số điệnthoại không hợp lệ")
+          return
+        }
+        if(!validateCityOrPostalCode(data.shippingInfo.postalCode)){
+          NotificationManager.error("Error","Postal code không hợp lệ")
           return
         }
         if(data.orderItems.length==0){

@@ -52,7 +52,7 @@ const ProductsList=()=>{
                     <p className="text-xs font-weight-bold mb-0">{product.seller}</p>
                   </td>
                   <td className="align-middle text-center text-sm">
-                  <p className="text-xs font-weight-bold mb-0">{product.stock}</p>
+                  <p className="text-xs font-weight-bold mb-0" style={{color:product.stock<10?"red":""}}>{product.stock}</p>
 
                   </td>
                   <td className="align-middle text-center">
