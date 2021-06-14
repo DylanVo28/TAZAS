@@ -643,14 +643,14 @@ exports.topSellingByProduct=catchAsyncError(async(req,res,next)=>{
             })
         }
     })})
-    const finalList=[]
+    const listSell=[]
     await Promise.all(topSell.map(async (item,index) => {
         try {
           // here candidate data is inserted into 
           const product=await Product.findById(item.product)
           // and response need to be added into final response array 
             if(product){
-                finalList.push({
+                listSell.push({
                     name:product.name,
                     product:item.product,
                     quantity:item.quantity
@@ -660,10 +660,11 @@ exports.topSellingByProduct=catchAsyncError(async(req,res,next)=>{
           console.log('error'+ error);
         }
       }))
-      finalList.sort(function(a,b){
+      listSell.sort(function(a,b){
         return b.quantity-a.quantity
     })
-    finalList.slice(0,10)
+    const finalList=listSell.slice(0,10)
+    console.log(finalList)
     res.status(201).json({
         finalList
     })
@@ -702,7 +703,7 @@ exports.topSellingByReview=catchAsyncError(async(req,res,next)=>{
             })
         }
     })
-    const finalList=await Promise.all(topReview.map(async (item,index) => {
+    const listSell=await Promise.all(topReview.map(async (item,index) => {
         try {
           // here candidate data is inserted into 
           const product=await Product.findById(item.productId)
@@ -719,10 +720,10 @@ exports.topSellingByReview=catchAsyncError(async(req,res,next)=>{
           console.log('error'+ error);
         }
       }))
-      finalList.sort(function(a,b){
+      listSell.sort(function(a,b){
         return b.numOfReviews-a.numOfReviews
     })
-    finalList.slice(0,10)
+    const finalList=listSell.slice(0,10)
     res.status(201).json({
         finalList
     })
@@ -760,14 +761,14 @@ exports.topSellingByUser=catchAsyncError(async(req,res,next)=>{
             })
         }
     })
-    const finalList=[]
+    const listSell=[]
     await Promise.all(topUser.map(async (item,index) => {
         try {
           // here candidate data is inserted into 
           const user=await User.findById(item.user)
           // and response need to be added into final response array 
           if(user){
-            finalList.push( {
+            listSell.push( {
                 name:user.name,
                 user:item.user,
                 numOfOrders:item.numOfOrders
@@ -777,11 +778,11 @@ exports.topSellingByUser=catchAsyncError(async(req,res,next)=>{
           console.log('error'+ error);
         }
       }))
-      finalList.sort(function(a,b){
+      listSell.sort(function(a,b){
 
         return b.numOfOrders-a.numOfOrders
     })
-    finalList.slice(0,10)
+    const  finalList=listSell.slice(0,10)
     res.status(201).json({
         finalList
     })
