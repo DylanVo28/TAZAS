@@ -46,7 +46,7 @@ const Admin=(props)=>{
    },[])
     return (
         <Fragment>
-        <PrivateRoute exact  path={['/admin/*','/order/me/*','/order/me']} component={Sidebar} isAuthenticated={authenticated}/>
+        <PrivateRoute exact  path={['/admin/*','/order/me/*','/order/me','/discounts','/discount/*']} component={Sidebar} isAuthenticated={authenticated}/>
        
         <main className='main-content mt-1 border-radius-lg'>
         <PrivateRoute exact  path={['/admin/*','/order/me/*','/order/me']} component={Menu} avatar={"tada"} isAuthenticated={authenticated}/>
@@ -61,8 +61,8 @@ const Admin=(props)=>{
         <PrivateRoute exact path='/admin/users' component={UserList} isAuthenticated={authenticated}/>
         <PrivateRoute exact path='/admin/user/:id' component={UserDetail} isAuthenticated={authenticated}/>
         <PrivateRoute exact path='/order/me' component={OrdersList} isAuthenticated={authenticated}/>
-        <PrivateRoute exact path='/admin/discounts' component={DiscountList} isAuthenticated={authenticated}/>
-        <PrivateRoute exact path={['/admin/create-discount','/admin/discount/:id']} component={DiscountDetail} isAuthenticated={authenticated} />
+        <PrivateRoute exact path='/discounts' component={DiscountList} isAuthenticated={authenticated}/>
+        <PrivateRoute exact path={['/admin/create-discount','/discount/:id']} component={DiscountDetail} isAuthenticated={authenticated} />
         <PrivateRoute exact path='/admin/analytics' component={AnalyticsPage} isAuthenticated={authenticated}/>
 
         </main>

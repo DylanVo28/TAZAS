@@ -41,6 +41,11 @@ const ProductDetail=(props)=>{
   const submitHandler=(e)=>{
     e.preventDefault();
     if(props.match.path=='/admin/create-product'){
+      if(isNaN(document.getElementsByName('price')[0].value)
+          ||isNaN(document.getElementsByName('stock')[0].value)){
+        NotificationManager.error('Error', 'Định dạng sai')
+        return
+       }
       const data={
         name:document.getElementsByName('name')[0].value,
         price:Number(document.getElementsByName('price')[0].value),
@@ -50,10 +55,12 @@ const ProductDetail=(props)=>{
         stock:Number(document.getElementsByName('stock')[0].value),
         image:avatar
       }
+      console.log(data)
       if(!data.name|| !data.price || !data.description || !data.classify || !data.category || !data.stock || !data.image){
         NotificationManager.error('Error', 'Vui long nhap day du thong tin')
         return
       }
+    
     clientRequest.newProduct(data).then(res=>{NotificationManager.success('Success', 'Success')
     window.location.href=`/admin/product/${res.product._id}`
     })

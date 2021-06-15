@@ -8,6 +8,11 @@ import { NotificationContainer } from 'react-notifications';
 import clientRequest from '../../APIFeatures/clientRequest';
 const Login =()=>{
 const  [checkForgot,setCheckForgot]=useState(false)
+useEffect(()=>{
+  if(localStorage.getItem("token")){
+    window.location.href='/admin/dashboard'
+  }
+},[])
 const Menu =()=>{
     return (<nav className="navbar navbar-expand-lg  blur blur-rounded top-0  z-index-3 shadow position-absolute my-3 py-2 start-0 end-0 mx-4">
     <div className="container-fluid">
@@ -124,7 +129,7 @@ const Form=({history})=>{
         <div className="form-check form-switch">
           <input className="form-check-input" type="checkbox" id="rememberMe" defaultChecked />
           <label className="form-check-label" htmlFor="rememberMe">Remember me</label>
-          <span onClick={()=>setCheckForgot(!checkForgot)}>Forgot Password</span>
+          <span onClick={()=>setCheckForgot(!checkForgot)} style={{float:'right',color:"#21d4fd"}}>Forgot Password</span>
         </div>
         <div className="text-center">
           <button type="submit"  className="btn bg-gradient-info w-100 mt-4 mb-0">Sign in</button>

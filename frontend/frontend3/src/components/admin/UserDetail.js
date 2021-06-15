@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useState } from 'react';
 import clientRequest from '../../APIFeatures/clientRequest';
-import {getFormattedDate} from '../../HandlerCaculate/formatDate';
+import {compareValidDate, getFormattedDate, validateEmail, validateFullName, validatePhoneNumber} from '../../HandlerCaculate/formatDate';
 import Curved from '../../images/curved0.jpg'
 import { NotificationManager, NotificationContainer } from 'react-notifications';
 const UserDetail=(props)=>{
@@ -103,6 +103,22 @@ const UserDetail=(props)=>{
         dateOfBirth:document.getElementsByName('dateOfBirth')[0].value,
         placeOfBirth:document.getElementsByName('placeOfBirth')[0].value,
         phoneNumber:document.getElementsByName('phoneNumber')[0].value,
+      }
+      if(!validateFullName(data.name)){
+        NotificationManager.error('Error', 'Ho va tên không đúng dịnh dạng')
+        return
+      }
+      if(!validateEmail(data.emailUser)){
+        NotificationManager.error('Error', 'Email không đúng định dạng')
+        return
+      }
+      if(compareValidDate(data.dateOfBirth)){
+        NotificationManager.error('Error', 'Ngày sinh phải bé hơn ngày hiện tại')
+        return
+      }
+      if(!validatePhoneNumber(data.phoneNumber)){
+        NotificationManager.error('Error', 'Số  điện thoại không đúng định dạng')
+        return
       }
       if(props.match.path=='/admin/profile'){
         clientRequest.updateUser(data,avatarPr).then(NotificationManager.success('Success', 'Update success')).catch(err=>NotificationManager.error('error', 'Update failed'))

@@ -242,7 +242,7 @@ const CartItems=(props)=>{
               {stDiscount && <p style={{color:"green"}}>Áp dụng cho thể loại : {stDiscount.categoryProduct}</p>}
             </div>
            
-        <button className='btn' onClick={()=>handleSubmit()}>Order Now</button>
+        <button className='btn btn-primary' onClick={()=>handleSubmit()}>Order Now</button>
 
         </div>
         </div>

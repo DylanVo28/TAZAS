@@ -44,4 +44,11 @@ const validatePhoneNumber=(phone)=>{
 const validateCityOrPostalCode=(code)=>{
   return /^([0-9]{5})$/.test(code);
 }
-  export {getFormattedDate,checkURL,formattedDateFromParse,compareValidDate,validatePhoneNumber,validateCityOrPostalCode}
+const validateFullName=(name)=>{
+  return /^[a-z ,.'-]+$/i.test(name)
+}
+const validateEmail=(email)=> {
+  var re =  /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/
+  return re.test(email);
+}
+  export {getFormattedDate,checkURL,formattedDateFromParse,compareValidDate,validatePhoneNumber,validateCityOrPostalCode,validateFullName,validateEmail}

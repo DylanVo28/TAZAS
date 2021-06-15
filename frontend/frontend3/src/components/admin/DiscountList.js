@@ -49,7 +49,7 @@ const DiscountList=()=>{
                     <span className="text-secondary text-xs font-weight-bold">{getFormattedDate(discount.createAt)}</span>
                   </td>
                   <td className="align-middle">
-                    <Link  to={"/admin/discount/"+discount._id} className="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">
+                    <Link  to={"/discount/"+discount._id} className="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">
                       Info
                     </Link>
                   </td>
