@@ -207,6 +207,10 @@ const InputImage=()=>{
   )
 }
 const updateStock=async()=>{
+    if(document.getElementsByName('addStock')[0].value<=0){
+      NotificationManager.error('Error', 'Số lượng nhập không nhỏ hơn 0')
+      return
+    }
     const data={
       productId:stProduct._id,
       quantity:document.getElementsByName('addStock')[0].value
@@ -220,7 +224,7 @@ const ModalStock=()=>{
   >  <div  className='popup-tazas text-center'>
       <div style={{margin:'auto'}}> 
             <h6>Update stock</h6>
-            <input placeholder="Input quantity" name='addStock'/>
+            <input type="number" defaultValue={0} min={0} name='addStock'/>
                 <div className='btn-group btn'>
                      <button className='btn btn-success' onClick={()=>updateStock()}>
                       Update

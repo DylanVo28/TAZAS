@@ -84,8 +84,10 @@ const AnalyticsPage=()=>{
         </div>
 
       </div>
+      <br/>
      <div className='row'>
       <div className='col-md-4'>
+        <h6>Top sản phẩm bán chạy nhất</h6>
       <table className="table">
      
       <thead>
@@ -105,6 +107,7 @@ const AnalyticsPage=()=>{
       <div className='col-md-2'>
 </div>
       <div className='col-md-4'>
+        <h6>Top sản phẩm có nhiều lượt revew nhất</h6>
       <table className="table">
      
       <thead>
@@ -125,6 +128,7 @@ const AnalyticsPage=()=>{
      <div>
        <div className='row'>
          <div className='col-md-4'>
+           <h6>Top user đặt hàng nhiều nhất</h6>
          <table className="table">
      
      <thead>
