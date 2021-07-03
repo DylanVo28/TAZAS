@@ -224,6 +224,12 @@ const CartItems=(props)=>{
                 <span>{itemsPrice}$ {stDiscount&&<span>(-{stDiscount.value}%)</span>}</span>
             </div>
             <div>
+              <span>Discount Code</span>
+              <span><input placeholder='Nhập mã khuyến mãi' onChange={(e)=>setSearchDiscount(e.currentTarget.value)}/></span>
+              <span><button disabled={searchDiscount==''?true:false} onClick={()=>applyCode()}>Apply code</button></span>
+              {stDiscount && <p style={{color:"green"}}>Áp dụng cho thể loại : {stDiscount.categoryProduct}</p>}
+            </div>
+            <div>
                 <span>Shipping Price:</span>
                 <span>{shippingPrice}$</span>
             </div>
@@ -235,12 +241,7 @@ const CartItems=(props)=>{
                 <span>Total Price:</span>
                 <span>{totalPrice}$</span>
             </div>
-            <div>
-              <span>Discount Code</span>
-              <span><input placeholder='Nhập mã khuyến mãi' onChange={(e)=>setSearchDiscount(e.currentTarget.value)}/></span>
-              <span><button disabled={searchDiscount==''?true:false} onClick={()=>applyCode()}>Apply code</button></span>
-              {stDiscount && <p style={{color:"green"}}>Áp dụng cho thể loại : {stDiscount.categoryProduct}</p>}
-            </div>
+           
            
         <button className='btn btn-primary' onClick={()=>handleSubmit()}>Order Now</button>
 

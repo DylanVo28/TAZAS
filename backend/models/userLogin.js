@@ -31,9 +31,12 @@ userLoginSchema.pre('save',async function(next){
 })
 
 userLoginSchema.methods.getJwtToken=function(){
-    const token=jwt.sign({
-        id:this._id},
-        process.env.JWT_SECRET,{
+    const token=jwt.sign(
+        {
+            id:this._id
+        },
+        process.env.JWT_SECRET,
+        {
             expiresIn:process.env.JWT_EXPIRES_TIME
         }
     
