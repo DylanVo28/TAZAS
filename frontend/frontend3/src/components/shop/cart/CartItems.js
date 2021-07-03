@@ -191,7 +191,7 @@ const CartItems=(props)=>{
                 <div className="col-md-4">Name</div>
                 <div className="col-md-8">{user.name}</div>
                 <div className="col-md-4">Email</div>
-                <div className="col-md-8">{user.email}</div>
+                <div className="col-md-8">{user.emailUser}</div>
               </div>
              
 
