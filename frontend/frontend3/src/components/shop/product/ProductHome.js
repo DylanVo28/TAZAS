@@ -47,7 +47,7 @@ const ProductHome = (props) => {
     clientRequest
       .getReviewsByProduct(props.match.params.id)
       .then((res) =>{ setAllReviews(res.list)
-        if(res.averageReview){
+        if(res.averageReview!=null){
           setAverageReview(res.averageReview)
         }
       });

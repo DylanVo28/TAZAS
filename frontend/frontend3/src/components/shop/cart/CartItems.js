@@ -120,8 +120,10 @@ const CartItems=(props)=>{
           NotificationManager.error("Error","Giỏ hàng rỗng hoặc chưa có chọn sản phẩm nào")
           return
         }
-        clientRequest.postOrder(data).then(res=>{console.log(res)
+        clientRequest.postOrder(data).then(res=>{
         NotificationManager.success("Success","tao đơn thành công")
+        const link="/order/me/"+res.order._id
+        window.location.href=link
         }).catch(err=>NotificationManager.error("Error","Khong the tao duoc don hang"))
       }
      

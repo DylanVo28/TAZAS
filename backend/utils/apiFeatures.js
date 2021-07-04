@@ -29,6 +29,9 @@ class APIFeatures{
         if(queryCopy.category==''){
             delete queryCopy['category']
         }
+        if(queryCopy.classify==''){
+            delete queryCopy['classify']
+        }
        this.query=this.query.find(queryCopy)
        return this
     }
