@@ -96,6 +96,7 @@ const UserDetail=(props)=>{
         placeOfBirth:document.getElementsByName('placeOfBirth')[0].value,
         phoneNumber:document.getElementsByName('phoneNumber')[0].value,
       })
+      
       const data={
         name:document.getElementsByName('name')[0].value,
         emailUser:document.getElementsByName('emailUser')[0].value,
@@ -104,25 +105,24 @@ const UserDetail=(props)=>{
         placeOfBirth:document.getElementsByName('placeOfBirth')[0].value,
         phoneNumber:document.getElementsByName('phoneNumber')[0].value,
       }
-      if(!validateFullName(data.name)){
+      if(!validateFullName(data.name) && props.match.path=='/admin/profile'){
         NotificationManager.error('Error', 'Ho va tên không đúng dịnh dạng')
         return
       }
-      if(!validateEmail(data.emailUser)){
+      if(!validateEmail(data.emailUser)&& props.match.path=='/admin/profile'){
         NotificationManager.error('Error', 'Email không đúng định dạng')
         return
       }
-      if(compareValidDate(data.dateOfBirth)){
+      if(compareValidDate(data.dateOfBirth)&&props.match.path=='/admin/profile'){
         NotificationManager.error('Error', 'Ngày sinh phải bé hơn ngày hiện tại')
         return
       }
-      if(!validatePhoneNumber(data.phoneNumber)){
+      if(!validatePhoneNumber(data.phoneNumber)&&props.match.path=='/admin/profile'){
         NotificationManager.error('Error', 'Số  điện thoại không đúng định dạng')
         return
       }
       if(props.match.path=='/admin/profile'){
         clientRequest.updateUser(data,avatarPr).then(NotificationManager.success('Success', 'Update success')).catch(err=>NotificationManager.error('error', 'Update failed'))
-
       }
       else{
         clientRequest.updateUserDetail(props.match.params.id,data,avatarPr).then(NotificationManager.success('Success', 'Update success')).catch(err=>NotificationManager.error('error', 'Update failed'))
@@ -163,7 +163,7 @@ const UserDetail=(props)=>{
                     <button className='btn btn-primary' onClick={()=>saveUser()}>Save</button>
                   {props.match.path=='/admin/profile' &&<><button className='btn' 
                   onClick={()=>setChangePass(!changePass)}>Change Password</button></>}
-                  <button className='btn' onClick={()=>deleteUser()} >Delete</button>
+                  {props.match.path=='/admin/profile'&& <button className='btn' onClick={()=>deleteUser()} >Delete</button>}
                   </div>
                   )
                   } 

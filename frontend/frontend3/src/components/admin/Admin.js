@@ -49,7 +49,7 @@ const Admin=(props)=>{
         <PrivateRoute exact  path={['/admin/*','/order/me/*','/order/me','/discounts','/discount/*']} component={Sidebar} isAuthenticated={authenticated}/>
        
         <main className='main-content mt-1 border-radius-lg'>
-        <PrivateRoute exact  path={['/admin/*','/order/me/*','/order/me']} component={Menu} avatar={"tada"} isAuthenticated={authenticated}/>
+        <PrivateRoute exact  path={['/admin/*','/order/me/*','/order/me','/discounts','/discount/*']} component={Menu} avatar={"tada"} isAuthenticated={authenticated}/>
           {/* <Menu/> */}
           <PrivateRoute exact path='/admin/dashboard' component={Dashboard} isAuthenticated={authenticated}/>
         <ProtectedRoute exact path='/admin/products' component={ProductsList} isAuthenticated={authenticated}/>
