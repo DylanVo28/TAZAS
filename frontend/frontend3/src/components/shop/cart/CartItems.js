@@ -72,7 +72,7 @@ const CartItems=(props)=>{
       const updateCartChanged=(index)=>e=>{
         let newArr = [...cartItems];
         newArr[index].quantity =Number (e.target.value); 
-        newArr[index].total =Number (e.target.value*newArr[index].price); 
+        newArr[index].total =Number (Math.round((e.target.value*newArr[index].price + Number.EPSILON) * 100) / 100); 
         setCartItems(newArr)
       }
       const removeItem=(id)=>{
@@ -81,7 +81,7 @@ const CartItems=(props)=>{
         setCartItems(cartFilter)
       }
       const handleChecked=(index)=>e=>{
-        let newArr = [...cartItems];
+        let newArr = [...cartItems];  
         newArr[index].checked =e.currentTarget.checked; 
         setCartItems(newArr)
       }
