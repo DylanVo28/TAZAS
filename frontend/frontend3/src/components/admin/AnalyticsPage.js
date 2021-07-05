@@ -67,7 +67,6 @@ const AnalyticsPage=()=>{
         const totalOrder= res[2].data.datasets[0].data.reduce((b,c)=>b+c,0)
         const tPayment= res[6].data.datasets[0].data.reduce((b,c)=>b+c,0)
 
-        console.log(res[1].data)
         setStProduct(totalProduct)
         setStUser(totalUser)
         setStOrder(totalOrder)
@@ -82,6 +81,8 @@ const AnalyticsPage=()=>{
   <option value={'month'}>Filter By  Month</option>
   <option value={'year'}>Filter By Year</option>
 </select>
+<br/>
+<br/>
 <div className='row'>
         
       <CardItem title="Products" total={stProduct} icon="fas fa-archive"/>
@@ -111,7 +112,7 @@ const AnalyticsPage=()=>{
       <br/>
      <div className='row'>
       <div className='col-md-4'>
-        <h6>Top sản phẩm bán chạy nhất</h6>
+        <h6>Best - selling product</h6>
       <table className="table">
      
       <thead>
@@ -131,7 +132,7 @@ const AnalyticsPage=()=>{
       <div className='col-md-2'>
 </div>
       <div className='col-md-4'>
-        <h6>Top sản phẩm có nhiều lượt revew nhất</h6>
+        <h6>Top products with the most views </h6>
       <table className="table">
      
       <thead>
@@ -152,7 +153,7 @@ const AnalyticsPage=()=>{
      <div>
        <div className='row'>
          <div className='col-md-4'>
-           <h6>Top user đặt hàng nhiều nhất</h6>
+           <h6>Top users buy the most</h6>
          <table className="table">
      
      <thead>

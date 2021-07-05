@@ -32,18 +32,18 @@ const DiscountDetail=(props)=>{
         }
         console.log(data)
         if(!data.name || !data.categoryProduct || !data.validDate || !data.quantity || !data.value){
-          NotificationManager.error("Error","vui lòng nhập đầy đủ thông tin")
+          NotificationManager.error("Error","Please enter full information")
           return
         }
         
         const date=new Date()
         if(data.validDate<=date.getTime()){
-          NotificationManager.error("Error","Vui lòng nhập mã hết hạn sau ngày hiện tại")
+          NotificationManager.error("Error","Please enter the code that expires after the current date ")
           return
         }
         const list=await clientRequest.getListDiscount(document.getElementsByName('name')[0].value)
         if(list.discounts.length!=0){
-          NotificationManager.error("Error","Tên đã trùng, vui lòng đổi tên khác")
+          NotificationManager.error("Error","The name is already the same, please change the name ")
           return
         }
         await clientRequest.createDiscount(data).then(res=>NotificationManager.success("Success","Create Success"))

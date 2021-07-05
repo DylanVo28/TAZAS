@@ -105,44 +105,44 @@ const CartItems=(props)=>{
                 discountId: stDiscount?stDiscount._id:null
         }
         if(!data.shippingInfo.address || !data.shippingInfo.city || !data.shippingInfo.phoneNo || !data.shippingInfo.postalCode || !data.shippingInfo.country){
-          NotificationManager.error("Error","Vui lòng nhập thông tin đầy đủ")
+          NotificationManager.error("Error","Infor not empty")
           return
         }
         if(!validatePhoneNumber(data.shippingInfo.phoneNo)){
-          NotificationManager.error("Error","Số điệnthoại không hợp lệ")
+          NotificationManager.error("Error","The phone number invalid")
           return
         }
         if(!validateCityOrPostalCode(data.shippingInfo.postalCode)){
-          NotificationManager.error("Error","Postal code không hợp lệ")
+          NotificationManager.error("Error","Postal code invalid")
           return
         }
         if(data.orderItems.length==0){
-          NotificationManager.error("Error","Giỏ hàng rỗng hoặc chưa có chọn sản phẩm nào")
+          NotificationManager.error("Error","Products not marked")
           return
         }
         clientRequest.postOrder(data).then(res=>{
-        NotificationManager.success("Success","tao đơn thành công")
+        NotificationManager.success("Success","Create order complete")
         const link="/order/me/"+res.order._id
         window.location.href=link
-        }).catch(err=>NotificationManager.error("Error","Khong the tao duoc don hang"))
+        }).catch(err=>NotificationManager.error("Error","Cannot create order"))
       }
      
      const applyCode=async(e)=>{
-        const res=await clientRequest.getDiscount(searchDiscount).catch(err=>{ NotificationManager.error('error','Code không tồn tại hoặc đã sử dụng')
+        const res=await clientRequest.getDiscount(searchDiscount).catch(err=>{ NotificationManager.error('error','Discount code does not exist or has been used ')
         setStDiscount(null)})
         
         if(res){
           if(res.discount.quantity==0){
-            NotificationManager.error('error','Code đã sài hết')
+            NotificationManager.error('error','No more discount codes')
             setStDiscount(null)
             return
           }
           if(!compareValidDate(res.discount.validDate)){
-            NotificationManager.error('error','Code đã hết hạn')
+            NotificationManager.error('error','Code expired')
           setStDiscount(null)
             return
           }
-          NotificationManager.success('success','apply thành công')
+          NotificationManager.success('success','Apply success')
           setStDiscount(res.discount)
         }
        

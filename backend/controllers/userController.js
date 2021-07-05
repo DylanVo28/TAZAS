@@ -231,6 +231,9 @@ exports.updateUser=catchAsyncErrors(async(req,res,next)=>{
         runValidators:true,
         useFindAndModify:false
     })
+    if(!user){
+        return next(new ErrorHandler('User removed',404)) 
+    }
     res.status(200).json({
         success:true,
         user

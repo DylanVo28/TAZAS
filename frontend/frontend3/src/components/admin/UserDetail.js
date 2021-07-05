@@ -106,26 +106,26 @@ const UserDetail=(props)=>{
         phoneNumber:document.getElementsByName('phoneNumber')[0].value,
       }
       if(!validateFullName(data.name) && props.match.path=='/admin/profile'){
-        NotificationManager.error('Error', 'Ho va tên không đúng dịnh dạng')
+        NotificationManager.error('Error', 'Full name invalid')
         return
       }
       if(!validateEmail(data.emailUser)&& props.match.path=='/admin/profile'){
-        NotificationManager.error('Error', 'Email không đúng định dạng')
+        NotificationManager.error('Error', 'Email invalid')
         return
       }
       if(compareValidDate(data.dateOfBirth)&&props.match.path=='/admin/profile'){
-        NotificationManager.error('Error', 'Ngày sinh phải bé hơn ngày hiện tại')
+        NotificationManager.error('Error', 'Date of birth must be less than current ')
         return
       }
       if(!validatePhoneNumber(data.phoneNumber)&&props.match.path=='/admin/profile'){
-        NotificationManager.error('Error', 'Số  điện thoại không đúng định dạng')
+        NotificationManager.error('Error', 'Phone number invalid')
         return
       }
       if(props.match.path=='/admin/profile'){
         clientRequest.updateUser(data,avatarPr).then(NotificationManager.success('Success', 'Update success')).catch(err=>NotificationManager.error('error', 'Update failed'))
       }
       else{
-        clientRequest.updateUserDetail(props.match.params.id,data,avatarPr).then(NotificationManager.success('Success', 'Update success')).catch(err=>NotificationManager.error('error', 'Update failed'))
+        clientRequest.updateUserDetail(props.match.params.id,data,avatarPr).then(NotificationManager.success('Success', 'Update success')).catch(err=>NotificationManager.error('error', 'User deleted before'))
       }
       setEdit(true)
     }

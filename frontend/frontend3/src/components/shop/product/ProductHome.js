@@ -56,7 +56,7 @@ const ProductHome = (props) => {
     const cartItem = product;
     localStorage.setItem("cartItem", JSON.stringify(cartItem));
     if(!localStorage.getItem("token")){
-      NotificationManager.error("Error", "Ban chua dang nhap")
+      NotificationManager.error("Error", "You are not logged in")
       window.location.href='/login'
       return
     }
@@ -82,7 +82,10 @@ const ProductHome = (props) => {
   };
   const reviewProduct = () => {
     const comment = document.getElementsByName("inputReview")[0].value;
-
+    if(comment==""){
+      NotificationManager.error("Error", "Review not empty")
+      return 
+    }
     clientRequest
       .updateReviewProduct(rating, comment, product._id, user.avatar.url)
       .then((res) => {
@@ -106,8 +109,9 @@ const ProductHome = (props) => {
                     edit={false}
                     value={averageReview}
                   />
-                  <h6>{averageReview} average review</h6>
+                  
                   </>}
+                  <h6>{averageReview} average review</h6>
           <h3>{product.price}$</h3>
           <br></br>
           <p className="product-home_description">{product.description}</p>
@@ -115,11 +119,11 @@ const ProductHome = (props) => {
           <div style={{ display: "flex", justifyContent: "space-between" }}>
             {" "}
             <button className="btn-product-home btn-1" onClick={() => orderNow()}>
-          <a><span>Mua ngay</span>  </a> 
+          <a><span>Order now</span>  </a> 
             </button>
             <button className="btn-product-home btn-2" onClick={() => addToCart()}>
             
-            <a><span>Thêm vào giỏ</span>  </a> 
+            <a><span>Add to cart</span>  </a> 
             </button>
           </div>
         </div>

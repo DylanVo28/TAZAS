@@ -43,7 +43,7 @@ const ProductDetail=(props)=>{
     if(props.match.path=='/admin/create-product'){
       if(isNaN(document.getElementsByName('price')[0].value)
           ||isNaN(document.getElementsByName('stock')[0].value)){
-        NotificationManager.error('Error', 'Định dạng sai')
+        NotificationManager.error('Error', 'Wrong format')
         return
        }
       const data={
@@ -57,7 +57,7 @@ const ProductDetail=(props)=>{
       }
       console.log(data)
       if(!data.name|| !data.price || !data.description || !data.classify || !data.category || !data.stock || !data.image){
-        NotificationManager.error('Error', 'Vui long nhap day du thong tin')
+        NotificationManager.error('Error', 'Please enter full information')
         return
       }
     
@@ -87,7 +87,7 @@ const ProductDetail=(props)=>{
         image:avatar
       }
       if(!data.name|| !data.price || !data.description || !data.classify || !data.category || !data.stock || !data.image){
-        NotificationManager.error('Error', 'Vui long nhap day du thong tin')
+        NotificationManager.error('Error', 'Please full enter information')
         return
       }
 
@@ -208,7 +208,7 @@ const InputImage=()=>{
 }
 const updateStock=async()=>{
     if(document.getElementsByName('addStock')[0].value<=0){
-      NotificationManager.error('Error', 'Số lượng nhập không nhỏ hơn 0')
+      NotificationManager.error('Error', 'Input quantity is not less than 0 ')
       return
     }
     const data={
