@@ -67,9 +67,9 @@ class ClientRequest{
         })
     }
 
-    getSearchProductsHome(searchName,currentPage,category){
+    getSearchProductsHome(searchName,currentPage,category,classify){
         return new Promise( (resolve, reject) => {
-            axios.get(`${DOMAIN}/api/v1/products-home?keyword=${searchName}&page=${currentPage}&category=${category}`).then(result => {
+            axios.get(`${DOMAIN}/api/v1/products-home?keyword=${searchName}&page=${currentPage}&category=${category}&classify=${classify}`).then(result => {
                     resolve(result.data)
                 }, reject)
         })

@@ -52,14 +52,15 @@ const Home =()=>{
   const [products,setProducts]=useState([]);
   const [search,setSearch]=useState('')
   const [category,setCategory]=useState('')
+  const [classify,setClassify]=useState('')
   useEffect(()=>{
     clientRequest.getLengthAllProductsHome().then(res=>setSizePage({...sizePage,total:res.lengthProducts}))
-    clientRequest.getSearchProductsHome('',sizePage.current,'').then(res=>setProducts(res.products))
+    clientRequest.getSearchProductsHome('',sizePage.current,'','').then(res=>setProducts(res.products))
   },[])
   useEffect(()=>{
-    clientRequest.getSearchProductsHome(search,sizePage.current,category).then(res=>{setProducts(res.products)
+    clientRequest.getSearchProductsHome(search,sizePage.current,category,classify).then(res=>{setProducts(res.products)
     })
-  },[sizePage.current,search,category])
+  },[sizePage.current,search,category,classify])
   const handlePageChange=(e)=>{
     setSizePage({...sizePage,current:e})
   }
@@ -76,6 +77,16 @@ const Home =()=>{
           <div style={{display:'inline-block',float:'right'}}>
           <span>Filter Product</span>
           <span>
+          <select className="form-select" aria-label="Default select example" onChange={(e)=>setClassify(e.target.value)}>
+          <option selected value='' >All</option>
+          <option selected value={'Men'} >Men</option>
+          <option selected value={'Women'} >Women</option>
+          <option selected value={'Kid'} >Kid</option>
+
+</select>
+          </span>
+          <span>
+
           <select className="form-select" aria-label="Default select example" onChange={(e)=>setCategory(e.target.value)}>
         
         <option selected value='' >All</option>
