@@ -35,13 +35,22 @@ const analyticsByFilter=(arrayLabels,typeFilter,listData)=>{
         }
     })
 }
+
+const formatHoursDate=(dateNow,dateTime,count)=>{
+   
+    const datePrev=new Date(dateNow-dateTime*count)
+    datePrev.setDate(datePrev.getDate()+1)
+    datePrev.setHours(0,0,0,0)
+    
+    return datePrev.getTime()
+}
 exports.analyticsByProduct=catchAsyncError(async (req,res,next)=>{
     const products=await Product.find()
     const listData=[]
     products.map(item=>{
         const createdAt=new Date(item.createdAt)
         const dateNow=new Date();
-        if(req.query.filter=='week'&&createdAt.getTime()>(dateNow.getTime()-dayTime*7) && createdAt.getTime()<=dateNow.getTime()){
+        if(req.query.filter=='week'&&createdAt.getTime()>(formatHoursDate(dateNow.getTime(),dayTime,7)) && createdAt.getTime()<=dateNow.getTime()){
             listData.push(item)
         }
         if(req.query.filter=='month'&&createdAt.getTime()>(dateNow.getTime()-dayTime*30) && createdAt.getTime()<=dateNow.getTime()){
@@ -59,31 +68,31 @@ exports.analyticsByProduct=catchAsyncError(async (req,res,next)=>{
         const createdAt=new Date(item.createdAt)
         const dateNow=new Date();
         //ngay 7
-        if(createdAt.getTime()>(dateNow.getTime()-dayTime*7)&&createdAt.getTime()<=(dateNow.getTime()-dayTime*6)){
+        if(createdAt.getTime()>(formatHoursDate(dateNow.getTime(),dayTime,7))&&createdAt.getTime()<=(formatHoursDate(dateNow.getTime(),dayTime,6))){
             arrayWeek[0]++
         }
         //ngay 6
-        if(createdAt.getTime()>(dateNow.getTime()-dayTime*6)&&createdAt.getTime()<=(dateNow.getTime()-dayTime*5)){
+        if(createdAt.getTime()>(formatHoursDate(dateNow.getTime(),dayTime,6))&&createdAt.getTime()<=(formatHoursDate(dateNow.getTime(),dayTime,5))){
             arrayWeek[1]++
         }
         //ngay 5
-        if(createdAt.getTime()>(dateNow.getTime()-dayTime*5)&&createdAt.getTime()<=(dateNow.getTime()-dayTime*4)){
+        if(createdAt.getTime()>(formatHoursDate(dateNow.getTime(),dayTime,5))&&createdAt.getTime()<=(formatHoursDate(dateNow.getTime(),dayTime,4))){
             arrayWeek[2]++
         }
         //ngay 4
-        if(createdAt.getTime()>(dateNow.getTime()-dayTime*4)&&createdAt.getTime()<=(dateNow.getTime()-dayTime*3)){
+        if(createdAt.getTime()>(formatHoursDate(dateNow.getTime(),dayTime,4))&&createdAt.getTime()<=(formatHoursDate(dateNow.getTime(),dayTime,3))){
             arrayWeek[3]++
         }
         //ngay 3
-        if(createdAt.getTime()>(dateNow.getTime()-dayTime*3)&&createdAt.getTime()<=(dateNow.getTime()-dayTime*2)){
+        if(createdAt.getTime()>(formatHoursDate(dateNow.getTime(),dayTime,3))&&createdAt.getTime()<=(formatHoursDate(dateNow.getTime(),dayTime,2))){
             arrayWeek[4]++
         }
         //ngay 2
-        if(createdAt.getTime()>(dateNow.getTime()-dayTime*2)&&createdAt.getTime()<=(dateNow.getTime()-dayTime*1)){
+        if(createdAt.getTime()>(formatHoursDate(dateNow.getTime(),dayTime,2))&&createdAt.getTime()<=(formatHoursDate(dateNow.getTime(),dayTime,1))){
             arrayWeek[5]++
         }
         //ngay 1
-        if(createdAt.getTime()>(dateNow.getTime()-dayTime*1)&&createdAt.getTime()<=(dateNow.getTime())){
+        if(createdAt.getTime()>(formatHoursDate(dateNow.getTime(),dayTime,1))&&createdAt.getTime()<=(dateNow.getTime())){
             arrayWeek[6]++
         }
     })}
@@ -184,7 +193,7 @@ exports.analyticsByUser=catchAsyncError(async (req,res,next)=>{
     users.map(item=>{
         const createdAt=new Date(item.createAt)
         const dateNow=new Date();
-        if(req.query.filter=='week'&&createdAt.getTime()>(dateNow.getTime()-dayTime*7) && createdAt.getTime()<=dateNow.getTime()){
+        if(req.query.filter=='week'&&createdAt.getTime()>(formatHoursDate(dateNow.getTime(),dayTime,7)) && createdAt.getTime()<=dateNow.getTime()){
             listData.push(item)
         }
         if(req.query.filter=='month'&&createdAt.getTime()>(dateNow.getTime()-dayTime*30) && createdAt.getTime()<=dateNow.getTime()){
@@ -202,31 +211,31 @@ exports.analyticsByUser=catchAsyncError(async (req,res,next)=>{
         const createdAt=new Date(item.createAt)
         const dateNow=new Date();
         //ngay 7
-        if(createdAt.getTime()>(dateNow.getTime()-dayTime*7)&&createdAt.getTime()<=(dateNow.getTime()-dayTime*6)){
+        if(createdAt.getTime()>(formatHoursDate(dateNow.getTime(),dayTime,7))&&createdAt.getTime()<=(formatHoursDate(dateNow.getTime(),dayTime,6))){
             arrayWeek[0]++
         }
         //ngay 6
-        if(createdAt.getTime()>(dateNow.getTime()-dayTime*6)&&createdAt.getTime()<=(dateNow.getTime()-dayTime*5)){
+        if(createdAt.getTime()>(formatHoursDate(dateNow.getTime(),dayTime,6))&&createdAt.getTime()<=(formatHoursDate(dateNow.getTime(),dayTime,5))){
             arrayWeek[1]++
         }
         //ngay 5
-        if(createdAt.getTime()>(dateNow.getTime()-dayTime*5)&&createdAt.getTime()<=(dateNow.getTime()-dayTime*4)){
+        if(createdAt.getTime()>(formatHoursDate(dateNow.getTime(),dayTime,5))&&createdAt.getTime()<=(formatHoursDate(dateNow.getTime(),dayTime,4))){
             arrayWeek[2]++
         }
         //ngay 4
-        if(createdAt.getTime()>(dateNow.getTime()-dayTime*4)&&createdAt.getTime()<=(dateNow.getTime()-dayTime*3)){
+        if(createdAt.getTime()>(formatHoursDate(dateNow.getTime(),dayTime,4))&&createdAt.getTime()<=(formatHoursDate(dateNow.getTime(),dayTime,3))){
             arrayWeek[3]++
         }
         //ngay 3
-        if(createdAt.getTime()>(dateNow.getTime()-dayTime*3)&&createdAt.getTime()<=(dateNow.getTime()-dayTime*2)){
+        if(createdAt.getTime()>(formatHoursDate(dateNow.getTime(),dayTime,3))&&createdAt.getTime()<=(formatHoursDate(dateNow.getTime(),dayTime,2))){
             arrayWeek[4]++
         }
         //ngay 2
-        if(createdAt.getTime()>(dateNow.getTime()-dayTime*2)&&createdAt.getTime()<=(dateNow.getTime()-dayTime*1)){
+        if(createdAt.getTime()>(formatHoursDate(dateNow.getTime(),dayTime,2))&&createdAt.getTime()<=(formatHoursDate(dateNow.getTime(),dayTime,1))){
             arrayWeek[5]++
         }
         //ngay 1
-        if(createdAt.getTime()>(dateNow.getTime()-dayTime*1)&&createdAt.getTime()<=(dateNow.getTime())){
+        if(createdAt.getTime()>(formatHoursDate(dateNow.getTime(),dayTime,1))&&createdAt.getTime()<=(dateNow.getTime())){
             arrayWeek[6]++
         }
     })}
@@ -327,7 +336,7 @@ exports.analyticsByOrder=catchAsyncError(async (req,res,next)=>{
     orders.map(item=>{
         const createdAt=new Date(item.createAt)
         const dateNow=new Date();
-        if(req.query.filter=='week'&&createdAt.getTime()>(dateNow.getTime()-dayTime*7) && createdAt.getTime()<=dateNow.getTime()){
+        if(req.query.filter=='week'&&createdAt.getTime()>(formatHoursDate(dateNow.getTime()-dayTime*7)) && createdAt.getTime()<=dateNow.getTime()){
             listData.push(item)
         }
         if(req.query.filter=='month'&&createdAt.getTime()>(dateNow.getTime()-dayTime*30) && createdAt.getTime()<=dateNow.getTime()){
@@ -345,31 +354,31 @@ exports.analyticsByOrder=catchAsyncError(async (req,res,next)=>{
         const createdAt=new Date(item.createAt)
         const dateNow=new Date();
         //ngay 7
-        if(createdAt.getTime()>(dateNow.getTime()-dayTime*7)&&createdAt.getTime()<=(dateNow.getTime()-dayTime*6)){
+        if(createdAt.getTime()>(formatHoursDate(dateNow.getTime(),dayTime,7))&&createdAt.getTime()<=(formatHoursDate(dateNow.getTime(),dayTime,6))){
             arrayWeek[0]++
         }
         //ngay 6
-        if(createdAt.getTime()>(dateNow.getTime()-dayTime*6)&&createdAt.getTime()<=(dateNow.getTime()-dayTime*5)){
+        if(createdAt.getTime()>(formatHoursDate(dateNow.getTime(),dayTime,6))&&createdAt.getTime()<=(formatHoursDate(dateNow.getTime(),dayTime,5))){
             arrayWeek[1]++
         }
         //ngay 5
-        if(createdAt.getTime()>(dateNow.getTime()-dayTime*5)&&createdAt.getTime()<=(dateNow.getTime()-dayTime*4)){
+        if(createdAt.getTime()>(formatHoursDate(dateNow.getTime(),dayTime,5))&&createdAt.getTime()<=(formatHoursDate(dateNow.getTime(),dayTime,4))){
             arrayWeek[2]++
         }
         //ngay 4
-        if(createdAt.getTime()>(dateNow.getTime()-dayTime*4)&&createdAt.getTime()<=(dateNow.getTime()-dayTime*3)){
+        if(createdAt.getTime()>(formatHoursDate(dateNow.getTime(),dayTime,4))&&createdAt.getTime()<=(formatHoursDate(dateNow.getTime(),dayTime,3))){
             arrayWeek[3]++
         }
         //ngay 3
-        if(createdAt.getTime()>(dateNow.getTime()-dayTime*3)&&createdAt.getTime()<=(dateNow.getTime()-dayTime*2)){
+        if(createdAt.getTime()>(formatHoursDate(dateNow.getTime(),dayTime,3))&&createdAt.getTime()<=(formatHoursDate(dateNow.getTime(),dayTime,2))){
             arrayWeek[4]++
         }
         //ngay 2
-        if(createdAt.getTime()>(dateNow.getTime()-dayTime*2)&&createdAt.getTime()<=(dateNow.getTime()-dayTime*1)){
+        if(createdAt.getTime()>(formatHoursDate(dateNow.getTime(),dayTime,2))&&createdAt.getTime()<=(formatHoursDate(dateNow.getTime(),dayTime,1))){
             arrayWeek[5]++
         }
         //ngay 1
-        if(createdAt.getTime()>(dateNow.getTime()-dayTime*1)&&createdAt.getTime()<=(dateNow.getTime())){
+        if(createdAt.getTime()>(formatHoursDate(dateNow.getTime(),dayTime,1))&&createdAt.getTime()<=(dateNow.getTime())){
             arrayWeek[6]++
         }
     })}
@@ -471,7 +480,7 @@ exports.analyticsByTotalPayment=catchAsyncError(async (req,res,next)=>{
     orders.map(item=>{
         const createdAt=new Date(item.paidAt)
         const dateNow=new Date();
-        if(req.query.filter=='week'&&createdAt.getTime()>(dateNow.getTime()-dayTime*7) && createdAt.getTime()<=dateNow.getTime() && item.orderStatus=='Complete'){
+        if(req.query.filter=='week'&&createdAt.getTime()>(formatHoursDate(dateNow.getTime(),dayTime,7)) && createdAt.getTime()<=dateNow.getTime() && item.orderStatus=='Complete'){
             listData.push(item)
         }
         if(req.query.filter=='month'&&createdAt.getTime()>(dateNow.getTime()-dayTime*30) && createdAt.getTime()<=dateNow.getTime() && item.orderStatus=='Complete'){
@@ -489,31 +498,31 @@ exports.analyticsByTotalPayment=catchAsyncError(async (req,res,next)=>{
         const createdAt=new Date(item.paidAt)
         const dateNow=new Date();
         //ngay 7
-        if(createdAt.getTime()>(dateNow.getTime()-dayTime*7)&&createdAt.getTime()<=(dateNow.getTime()-dayTime*6)){
+        if(createdAt.getTime()>(formatHoursDate(dateNow.getTime(),dayTime,7))&&createdAt.getTime()<=(formatHoursDate(dateNow.getTime(),dayTime,6))){
             arrayWeek[0]+=item.totalPrice
         }
         //ngay 6
-        if(createdAt.getTime()>(dateNow.getTime()-dayTime*6)&&createdAt.getTime()<=(dateNow.getTime()-dayTime*5)){
+        if(createdAt.getTime()>(formatHoursDate(dateNow.getTime(),dayTime,6))&&createdAt.getTime()<=(formatHoursDate(dateNow.getTime(),dayTime,5))){
             arrayWeek[1]+=item.totalPrice
         }
         //ngay 5
-        if(createdAt.getTime()>(dateNow.getTime()-dayTime*5)&&createdAt.getTime()<=(dateNow.getTime()-dayTime*4)){
+        if(createdAt.getTime()>(formatHoursDate(dateNow.getTime(),dayTime,5))&&createdAt.getTime()<=(formatHoursDate(dateNow.getTime(),dayTime,4))){
             arrayWeek[2]+=item.totalPrice
         }
         //ngay 4
-        if(createdAt.getTime()>(dateNow.getTime()-dayTime*4)&&createdAt.getTime()<=(dateNow.getTime()-dayTime*3)){
+        if(createdAt.getTime()>(formatHoursDate(dateNow.getTime(),dayTime,4))&&createdAt.getTime()<=(formatHoursDate(dateNow.getTime(),dayTime,3))){
             arrayWeek[3]+=item.totalPrice
         }
         //ngay 3
-        if(createdAt.getTime()>(dateNow.getTime()-dayTime*3)&&createdAt.getTime()<=(dateNow.getTime()-dayTime*2)){
+        if(createdAt.getTime()>(formatHoursDate(dateNow.getTime(),dayTime,3))&&createdAt.getTime()<=(formatHoursDate(dateNow.getTime(),dayTime,2))){
             arrayWeek[4]+=item.totalPrice
         }
         //ngay 2
-        if(createdAt.getTime()>(dateNow.getTime()-dayTime*2)&&createdAt.getTime()<=(dateNow.getTime()-dayTime*1)){
+        if(createdAt.getTime()>(formatHoursDate(dateNow.getTime(),dayTime,2))&&createdAt.getTime()<=(formatHoursDate(dateNow.getTime(),dayTime,1))){
             arrayWeek[5]+=item.totalPrice
         }
         //ngay 1
-        if(createdAt.getTime()>(dateNow.getTime()-dayTime*1)&&createdAt.getTime()<=(dateNow.getTime())){
+        if(createdAt.getTime()>(formatHoursDate(dateNow.getTime(),dayTime,1))&&createdAt.getTime()<=(dateNow.getTime())){
             arrayWeek[6]+=item.totalPrice
         }
     })}
