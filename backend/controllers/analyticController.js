@@ -336,7 +336,7 @@ exports.analyticsByOrder=catchAsyncError(async (req,res,next)=>{
     orders.map(item=>{
         const createdAt=new Date(item.createAt)
         const dateNow=new Date();
-        if(req.query.filter=='week'&&createdAt.getTime()>(formatHoursDate(dateNow.getTime()-dayTime*7)) && createdAt.getTime()<=dateNow.getTime()){
+        if(req.query.filter=='week'&&createdAt.getTime()>(formatHoursDate(dateNow.getTime(),dayTime,7)) && createdAt.getTime()<=dateNow.getTime()){
             listData.push(item)
         }
         if(req.query.filter=='month'&&createdAt.getTime()>(dateNow.getTime()-dayTime*30) && createdAt.getTime()<=dateNow.getTime()){
