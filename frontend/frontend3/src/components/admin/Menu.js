@@ -23,12 +23,12 @@ const Menu =(props)=>{
       </div>
       <ul className="navbar-nav  justify-content-end">
         <li className="nav-item align-items-center">
-          <Link to="/admin/profile" className="nav-link font-weight-bold px-0 text-body avatar">
+          <Link to="/profile" className="nav-link font-weight-bold px-0 text-body avatar">
            <img src={avatar}/>
           </Link>
           <div className={'show-menu'}>
             <ul>
-              <li><Link to='/admin/profile'>Profile</Link></li>
+              <li><Link to='/profile'>Profile</Link></li>
               <li onClick={()=>logoutUser()}>Log out</li>
             </ul>
           </div>

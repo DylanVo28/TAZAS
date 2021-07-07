@@ -43,7 +43,7 @@ const MenuHome =()=>{
                                             </div></div></nav>
                                             <div className="header-meta d-flex clearfix justify-content-end">
                                                <div className="user-login-info">
-                                                    {user.avatar&&<Link to="/admin/profile">
+                                                    {user.avatar&&<Link to="/profile">
                                                     <img src={user.avatar.url} alt="" /></Link>
                                                     }
                                                     {!user.avatar&&<Link to="/login">

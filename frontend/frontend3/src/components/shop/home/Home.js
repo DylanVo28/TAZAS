@@ -79,9 +79,9 @@ const Home =()=>{
           <span>
           <select className="form-select" aria-label="Default select example" onChange={(e)=>setClassify(e.target.value)}>
           <option selected value='' >All</option>
-          <option selected value={'Men'} >Men</option>
-          <option selected value={'Women'} >Women</option>
-          <option selected value={'Kid'} >Kid</option>
+          <option  value={'Men'} >Men</option>
+          <option  value={'Women'} >Women</option>
+          <option  value={'Kid'} >Kid</option>
 
 </select>
           </span>

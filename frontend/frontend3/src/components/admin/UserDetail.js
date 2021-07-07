@@ -22,7 +22,7 @@ const UserDetail=(props)=>{
     const [changePass,setChangePass]=useState(false);
     const [disabledAvatar,setDisabledAvatar]=useState(true)
     useEffect(()=>{
-      if(props.match.path=='/admin/profile')
+      if(props.match.path=='/profile')
         clientRequest.getProfileMe().then(res=>{
           setUser(res.user)
           setAvatarPr(res.user.avatar.url)
@@ -105,33 +105,33 @@ const UserDetail=(props)=>{
         placeOfBirth:document.getElementsByName('placeOfBirth')[0].value,
         phoneNumber:document.getElementsByName('phoneNumber')[0].value,
       }
-      if(!validateFullName(data.name) && props.match.path=='/admin/profile'){
+      if(!validateFullName(data.name) && props.match.path=='/profile'){
         NotificationManager.error('Error', 'Full name invalid')
         return
       }
-      if(!validateEmail(data.emailUser)&& props.match.path=='/admin/profile'){
+      if(!validateEmail(data.emailUser)&& props.match.path=='/profile'){
         NotificationManager.error('Error', 'Email invalid')
         return
       }
-      if(compareValidDate(data.dateOfBirth)&&props.match.path=='/admin/profile'){
+      if(compareValidDate(data.dateOfBirth)&&props.match.path=='/profile'){
         NotificationManager.error('Error', 'Date of birth must be less than current ')
         return
       }
-      if(!validatePhoneNumber(data.phoneNumber)&&props.match.path=='/admin/profile'){
+      if(!validatePhoneNumber(data.phoneNumber)&&props.match.path=='/profile'){
         NotificationManager.error('Error', 'Phone number invalid')
         return
       }
-      if(props.match.path=='/admin/profile'){
-        clientRequest.updateUser(data,avatarPr).then(NotificationManager.success('Success', 'Update success')).catch(err=>NotificationManager.error('error', 'Update failed'))
+      if(props.match.path=='/profile'){
+        clientRequest.updateUser(data,avatarPr).then(res=>NotificationManager.success('Success', 'Update success')).catch(err=>NotificationManager.error('error', 'Update failed'))
       }
       else{
-        clientRequest.updateUserDetail(props.match.params.id,data,avatarPr).then(NotificationManager.success('Success', 'Update success')).catch(err=>NotificationManager.error('error', 'User deleted before'))
+        clientRequest.updateUserDetail(props.match.params.id,data,avatarPr).then(res=>NotificationManager.success('Success', 'Update success')).catch(err=>NotificationManager.error('error', 'User deleted before'))
       }
       setEdit(true)
     }
 
     const deleteUser=async()=>{
-      if(props.match.path=='/admin/profile'){
+      if(props.match.path=='/profile'){
         await clientRequest.deleteAccountMe().then(res=>{NotificationManager.success('Success', 'Update success')
         localStorage.removeItem("token");
         window.location.href='/login'
@@ -161,9 +161,9 @@ const UserDetail=(props)=>{
                   }} className="fas fa-user-edit text-secondary text-sm" data-bs-toggle="tooltip" data-bs-placement="top" title aria-hidden="true" data-bs-original-title="Edit Profile" aria-label="Edit Profile" />
                   :(<div className="btn-group">
                     <button className='btn btn-primary' onClick={()=>saveUser()}>Save</button>
-                  {props.match.path=='/admin/profile' &&<><button className='btn' 
+                  {props.match.path=='/profile' &&<><button className='btn' 
                   onClick={()=>setChangePass(!changePass)}>Change Password</button></>}
-                  {props.match.path=='/admin/profile'&& <button className='btn' onClick={()=>deleteUser()} >Delete</button>}
+                  {props.match.path=='/profile'&& <button className='btn' onClick={()=>deleteUser()} >Delete</button>}
                   </div>
                   )
                   } 
@@ -232,8 +232,8 @@ const UserDetail=(props)=>{
        
         </div>
         <div className="card-body p-3">
-          <input placeholder="Old Password" name='oldPassword'/>
-          <input placeholder="Password" name='password'/>
+          <input placeholder="Old Password" name='oldPassword' type='password'/>
+          <input placeholder="Password" name='password' type='password'/>
         </div>
       </div>
     </div>
@@ -244,7 +244,7 @@ const UserDetail=(props)=>{
         <div className="container-fluid py-4">
             <div className="row">
                 {!changePass &&<InfoUser/>}
-                {(changePass && props.match.path=='/admin/profile')&&<ChangePassUser/>}
+                {(changePass && props.match.path=='/profile')&&<ChangePassUser/>}
             </div>
         </div>
         <NotificationContainer/>

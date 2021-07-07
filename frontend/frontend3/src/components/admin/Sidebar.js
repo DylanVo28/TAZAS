@@ -36,7 +36,7 @@ const Sidebar=()=>{
       {user.role=='admin'&&<SidebarRow url={'/admin/products'} icon={'fas fa-archive'} title={'Products'}/>}
       {user.role=='admin'&&<SidebarRow url={'/admin/orders'} icon={"fas fa-shipping-fast"} title={'Orders'}/>}
       {user.role=='admin'&&<SidebarRow url={'/admin/users'} icon={"fas fa-users"} title={'Customer'}/>}
-      <SidebarRow url={'/admin/profile'} icon={"fas fa-user"} title={'Profile'}/>
+      <SidebarRow url={'/profile'} icon={"fas fa-user"} title={'Profile'}/>
       {user.role=='user'&&<SidebarRow url={'/order/me'} icon={"fas fa-shipping-fast"} title={'My orders'}/>}
       <SidebarRow url={'/discounts'} icon={"fas fa-badge-dollar"} title={'Discounts'}/>
       {user.role=='admin'&&<SidebarRow url={'/admin/analytics'} icon={"fas fa-chart-line"} title={'Analytics'}/>}

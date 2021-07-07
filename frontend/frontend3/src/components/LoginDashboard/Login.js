@@ -4,7 +4,7 @@ import { Link, Redirect } from 'react-router-dom';
 import {useDispatch,useSelector} from 'react-redux'
 import {useAlert} from 'react-alert'
 import {login,clearErrors, loadUser} from '../../actions/userActions'
-import { NotificationContainer } from 'react-notifications';
+import { NotificationContainer, NotificationManager } from 'react-notifications';
 import clientRequest from '../../APIFeatures/clientRequest';
 const Login =()=>{
 const  [checkForgot,setCheckForgot]=useState(false)
@@ -62,7 +62,7 @@ const Menu =()=>{
 const FormForgotPassword=()=>{
   const sendEmail=(e)=>{
     e.preventDefault()
-    clientRequest.forgotPassword({email:document.getElementsByName('email')[0].value}).then(res=>console.log(res))
+    clientRequest.forgotPassword({email:document.getElementsByName('email')[0].value}).then(res=>NotificationManager.success('Success','Send email complete')).catch(err=>NotificationManager.error('Error','Send email failed'))
   }
   return(<div className="card card-plain mt-8">
   <div className="card-header pb-0 text-left bg-transparent">

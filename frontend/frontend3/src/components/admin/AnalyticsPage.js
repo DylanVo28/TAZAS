@@ -116,7 +116,7 @@ const AnalyticsPage=()=>{
       <table className="table">
      
       <thead>
-      <th scope="col">STT</th>
+      <th scope="col">No</th>
       <th scope="col">Name</th>
       <th scope="col">Quantity</th>
       </thead>
@@ -136,7 +136,7 @@ const AnalyticsPage=()=>{
       <table className="table">
      
       <thead>
-      <th scope="col">STT</th>
+      <th scope="col">No</th>
       <th scope="col">Name</th>
       <th scope="col">Num of Review</th>
       </thead>
@@ -157,7 +157,7 @@ const AnalyticsPage=()=>{
          <table className="table">
      
      <thead>
-     <th scope="col">STT</th>
+     <th scope="col">No</th>
      <th scope="col">Name</th>
      <th scope="col">Num of Orders</th>
      </thead>
