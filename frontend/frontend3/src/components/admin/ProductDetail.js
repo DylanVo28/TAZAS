@@ -60,6 +60,20 @@ const ProductDetail=(props)=>{
         NotificationManager.error('Error', 'Please enter full information')
         return
       }
+      if(Number (data.price)<0){
+        NotificationManager.error('Error', 'Please enter price greater 0')
+        return
+      }
+      if(Number (data.stock)<0){
+        NotificationManager.error('Error', 'Please enter stock greater 0')
+        return
+      }
+      if(!Number.isInteger(data.stock)){
+        NotificationManager.error('Error', 'Wrong format stock')
+        return
+      }
+
+
     
     clientRequest.newProduct(data).then(res=>{NotificationManager.success('Success', 'Success')
     window.location.href=`/admin/product/${res.product._id}`
@@ -77,6 +91,11 @@ const ProductDetail=(props)=>{
       stock:Number(document.getElementsByName('stock')[0].value)
 
       })
+      if(isNaN(document.getElementsByName('price')[0].value)
+          ||isNaN(document.getElementsByName('stock')[0].value)){
+        NotificationManager.error('Error', 'Wrong format')
+        return
+       }
       const data={
         name:document.getElementsByName('name')[0].value,
         price:Number(document.getElementsByName('price')[0].value),
@@ -88,6 +107,18 @@ const ProductDetail=(props)=>{
       }
       if(!data.name|| !data.price || !data.description || !data.classify || !data.category || !data.stock || !data.image){
         NotificationManager.error('Error', 'Please full enter information')
+        return
+      }
+      if(Number (data.price)<0){
+        NotificationManager.error('Error', 'Please enter price greater 0')
+        return
+      }
+      if(Number (data.stock)<0){
+        NotificationManager.error('Error', 'Please enter stock greater 0')
+        return
+      }
+      if(!Number.isInteger(data.stock)){
+        NotificationManager.error('Error', 'Wrong format stock')
         return
       }
 
@@ -207,10 +238,10 @@ const InputImage=()=>{
   )
 }
 const updateStock=async()=>{
-    if(document.getElementsByName('addStock')[0].value<=0){
-      NotificationManager.error('Error', 'Input quantity is not less than 0 ')
-      return
-    }
+  if(!Number.isInteger(Number (document.getElementsByName('addStock')[0].value))){
+    NotificationManager.error('Error', 'Wrong format stock ')
+    return
+  }
     const data={
       productId:stProduct._id,
       quantity:document.getElementsByName('addStock')[0].value
@@ -224,7 +255,7 @@ const ModalStock=()=>{
   >  <div  className='popup-tazas text-center'>
       <div style={{margin:'auto'}}> 
             <h6>Update stock</h6>
-            <input type="number" defaultValue={0} min={0} name='addStock'/>
+            <input type="number" defaultValue={0}  name='addStock'/>
                 <div className='btn-group btn'>
                      <button className='btn btn-success' onClick={()=>updateStock()}>
                       Update
