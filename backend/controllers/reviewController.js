@@ -1,45 +1,61 @@
 const Review =require('../models/review')
 const User =require('../models/user')
+const Product =require('../models/product')
 
 const ErrorHandler=require('../utils/errorHandler')
 const catchAsyncError=require('../middlewares/catchAsyncError')
 const APIFeatures = require('../utils/apiFeatures')
 exports.addReview=catchAsyncError(async (req,res,next)=>{
+    
+   
     const {rating,comment,productId}=req.body
-    const review=await Review.findOneAndUpdate({productId,userId:req.user._id},{$set:{rating,comment}},{useFindAndModify: false})
-    if(!review){
-        await Review.create({
-            productId,
-            rating,
-            comment,
-            userId:req.user._id
+
+    var product=await Product.findOneAndUpdate({
+        _id:productId,
+        'reviews.userId':req.user._id
+    },{
+        $set:{
+            "reviews.$.rating":rating,
+            "reviews.$.comment":comment,
+        }
+    })
+
+    if(!product){
+        product = await Product.findOneAndUpdate({
+            _id:productId
+        },{
+            $push:{
+                "reviews":{
+                    rating:rating,
+                    comment:comment,
+                    userId:req.user._id
+                }
+            }
         })
-       
     }
+  
     res.status(200).json({
         success: true,
-        review
+        product
     })
 })
 exports.getAllReviewByProduct=catchAsyncError(async (req,res,next)=>{
-    const reviews=await Review.find({productId:req.query.id})
-    var list=await Promise.all(reviews.map(async (item) => {
-        try {
-          // here candidate data is inserted into  
-          const user=await User.findById(item.userId)
-          // and response need to be added into final response array 
-          return {
-            comment: item.comment,
-            rating:item.rating,
-            createAt:item.createAt,
-            image:user.avatar.url,
-            userName:user.name
-        }
-        
-        } catch (error) {
-          console.log('error'+ error);
-        }
-      }))
+    const product=await Product.findById(req.query.id)
+    var list=await Promise.all(product.reviews.map(async item=>{
+        try{
+            const user=await User.findById(item.userId)
+            return {
+                comment: item.comment,
+                rating:item.rating,
+                createAt:item.createAt,
+                image:user.avatar.url,
+                userName:user.name
+            }
+        }catch (error) {
+            console.log('error'+ error);
+          }
+    }))
+   
       let averageReview = list.reduce((a, b) =>a + Number (b.rating),0) / list.length;
     res.status(200).json({
         success: true,

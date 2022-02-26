@@ -8,22 +8,26 @@ exports.addStock=catchAsyncError(async(req,res,next)=>{
     const {productId,quantity}=req.body.data
     const data={
         userId:req.user._id,
-        productId:productId,
         quantity:quantity
     }
-    await Product.findByIdAndUpdate(productId,{$inc:{stock:+quantity}})
-    const inventory=await Inventory.create(data)
+    const product=await Product.findById(productId)
+    product.stock+=quantity;
+    product.updateStock.push(data)
+    await product.save()
+    // const inventory= product.updateStock
+    // await Product.findByIdAndUpdate(productId,{$inc:{stock:+quantity},updateStock:})
+    // const inventory=await Inventory.create(data)
     res.status(200).json({
         success:true,
-        inventory
+        
     })
 })
 exports.getInventoryByProduct=catchAsyncError(async(req,res,next)=>{
-   const inventories=await Inventory.find({productId:req.params.id})
+   const inventories=await Product.findOne({_id:req.params.id})
    if(!inventories){
     return (new ErrorHandler('inventory not found',404))
-}
-    const list=await Promise.all(inventories.map(async (item) => {
+}   
+    const list=await Promise.all(inventories.updateStock.map(async (item) => {
         try {
            
                 const user=await User.findById(item.userId)
@@ -38,7 +42,6 @@ exports.getInventoryByProduct=catchAsyncError(async(req,res,next)=>{
           console.log('error'+ error);
         }
       }))
-      console.log(list)
    
     res.status(200).json({
         success:true,

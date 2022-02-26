@@ -6,7 +6,7 @@ const config={
     }
 }
 const userToken=localStorage.getItem("token")
-const DOMAIN='https://tazas.herokuapp.com'
+const DOMAIN='http://localhost:4000'
 class ClientRequest{
    
     getProducts(){

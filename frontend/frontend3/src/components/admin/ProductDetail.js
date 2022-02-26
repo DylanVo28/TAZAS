@@ -27,7 +27,6 @@ const ProductDetail=(props)=>{
   const [inventories,setInventories]=useState()
   useEffect(async()=>{
     if(props.match.path=='/admin/create-product'){
-      console.log('CREATE_PRODUCT')
     }
     else if(props.match.path=='/admin/product/:id'){
       clientRequest.getProductDetailRoleAdmin(props.match.params.id).then(res=>{

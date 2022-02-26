@@ -4,32 +4,47 @@ const APIFeatures = require("../utils/apiFeatures");
 const ErrorHandler = require("../utils/errorHandler");
 const Product = require('../models/product');
 const Cart = require('../models/cart');
-
+const userLogin = require("../models/userLogin");
+var ObjectId = require('mongodb').ObjectID;
 exports.addToCart=catchAsyncError(async(req,res,next)=>{
-    
-    const cart=await Cart.find({userId:req.user._id,productId:req.body.data.product})
-    if(cart.length==0){
-        await Cart.create({
-            quantity:1,
-            userId:req.user._id,
-            productId:req.body.data.product
+    var user=await userLogin.findOneAndUpdate({
+        _id:req.user._id,
+        "cart.productId":req.body.data.product
+    },{
+        $inc:{
+            "cart.$.quantity":1
+        }
+    })
+    if(!user){
+        user= await userLogin.findByIdAndUpdate({
+            _id:req.user._id,
+           
+        },{
+            $push:{
+               
+                "cart":{
+                    quantity:1,
+                    productId:req.body.data.product
+                }
+            }
         })
     }
-    else{
-        await Cart.updateOne({userId:req.user._id,productId:req.body.data.product},{$inc:{quantity:+1}})
-    }
+
     res.status(200).json({
-        success:true
+        success:true,
+        user
     })
    
 })
 exports.getMyCart=catchAsyncError(async(req,res,next)=>{
-    const cart=await Cart.find({userId:req.user._id})
-    if(cart.length==0){
+    const user=await userLogin.findById(req.user._id)
+    if(user.cart.length==0){
         return next(new ErrorHandler('cart empty', 404))
     }
+   
+
     var myCart=[]
-    await Promise.all(cart.map(async (item) => {
+    await Promise.all(user.cart.map(async (item) => {
         try {
           // here candidate data is inserted into  
           const product=await Product.findById(item.productId)
@@ -59,11 +74,23 @@ exports.getMyCart=catchAsyncError(async(req,res,next)=>{
     })
 })
 exports.updateToCart=catchAsyncError(async(req,res,next)=>{
-    const cart=await Cart.findByIdAndDelete(req.body.data)
-    if(!cart){
+    const user=await userLogin.findByIdAndUpdate({
+        '_id':ObjectId(req.user._id),
+    },      
+    {
+        $pull:{
+            "cart":{
+                "_id":ObjectId(req.body.data)
+            }
+        }
+    },
+    {multi:true})
+    // const cart=await Cart.findByIdAndDelete(req.body.data)
+    if(!user){
         return next(new ErrorHandler('dont delete item in cart', 404))
     }
     res.status(200).json({
         success:true,
+        user
     })
 })

@@ -673,7 +673,6 @@ exports.topSellingByProduct=catchAsyncError(async(req,res,next)=>{
         return b.quantity-a.quantity
     })
     const finalList=listSell.slice(0,10)
-    console.log(finalList)
     res.status(201).json({
         finalList
     })

@@ -20,6 +20,34 @@ const userLoginSchema=new mongoose.Schema({
         type:String,
         default:'user'
     },
+    cart:[
+        {
+            checked:{
+                type:Boolean,
+                default:true
+            },
+            quantity:{
+                type:Number,
+                required:true,
+            },
+            
+            productId:{
+                type:mongoose.Schema.Types.ObjectId,
+                required:true,
+                ref:'Product'
+            }
+        }
+    ],
+    discounts:[
+        {
+           
+            _id:{
+                type:mongoose.Schema.Types.ObjectId,
+                required:true,
+                ref:'Discount'
+            }
+        }
+    ],
     resetPasswordToken:String,
     resetPasswordExpire:Date
 })

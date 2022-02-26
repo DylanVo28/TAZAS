@@ -52,7 +52,6 @@ const OrderHome=()=>{
             }
             clientRequest.postOrder(data).then(res=>NotificationManager.success('success',"Tạo đơn thành công")).catch(err=>NotificationManager.error('error','tao đơn không thành công'))
         } catch (error) {
-            console.log("Aaa");
         }
         
 

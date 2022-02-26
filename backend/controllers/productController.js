@@ -143,9 +143,7 @@ exports.deleteProduct=catchAsyncError(async(req,res,next)=>{
         return next(new ErrorHandler('Product not found',404));
     }
     await product.remove()
-    await Review.remove({productId:req.params.id})
-    await Inventory.remove({productId:req.params.id})
-    await Cart.remove({productId:req.params.id})
+  
     res.status(200).json({
         success:true,
         message:"Product is deleted"
