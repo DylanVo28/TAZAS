@@ -15,7 +15,7 @@ const OrdersList=(props)=>{
       })
     useEffect( ()=>{
       props.match.path=='/order/me' && clientRequest.getMyOrders().then(res=>{
-          setStOrders(res.orders)
+          // setStOrders(res.orders)
           setSizePage({...sizePage,total:res.orders.length})
         })
       

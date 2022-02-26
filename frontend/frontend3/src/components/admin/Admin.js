@@ -46,10 +46,10 @@ const Admin=(props)=>{
    },[])
     return (
         <Fragment>
-        <PrivateRoute exact  path={['/admin/*','/order/me/*','/order/me']} component={Sidebar} isAuthenticated={authenticated}/>
+        <PrivateRoute exact  path={['/admin/*','/order/me/*','/order/me','/discounts','/discount/*','/profile']} component={Sidebar} isAuthenticated={authenticated}/>
        
         <main className='main-content mt-1 border-radius-lg'>
-        <PrivateRoute exact  path={['/admin/*','/order/me/*','/order/me']} component={Menu} avatar={"tada"} isAuthenticated={authenticated}/>
+        <PrivateRoute exact  path={['/admin/*','/order/me/*','/order/me','/discounts','/discount/*','/profile']} component={Menu} avatar={"tada"} isAuthenticated={authenticated}/>
           {/* <Menu/> */}
           <PrivateRoute exact path='/admin/dashboard' component={Dashboard} isAuthenticated={authenticated}/>
         <ProtectedRoute exact path='/admin/products' component={ProductsList} isAuthenticated={authenticated}/>
@@ -57,12 +57,12 @@ const Admin=(props)=>{
         <PrivateRoute exact path='/admin/product/:id' component={ProductDetail} isAuthenticated={authenticated}/>
         <PrivateRoute exact path='/admin/orders' component={OrdersList} isAuthenticated={authenticated}/>
         <PrivateRoute exact path={['/admin/order/:id','/order/me/:id']} component={OrderDetail} isAuthenticated={authenticated}/>
-        <PrivateRoute exact path='/admin/profile' component={UserDetail} isAuthenticated={authenticated}/>
+        <PrivateRoute exact path='/profile' component={UserDetail} isAuthenticated={authenticated}/>
         <PrivateRoute exact path='/admin/users' component={UserList} isAuthenticated={authenticated}/>
         <PrivateRoute exact path='/admin/user/:id' component={UserDetail} isAuthenticated={authenticated}/>
         <PrivateRoute exact path='/order/me' component={OrdersList} isAuthenticated={authenticated}/>
-        <PrivateRoute exact path='/admin/discounts' component={DiscountList} isAuthenticated={authenticated}/>
-        <PrivateRoute exact path={['/admin/create-discount','/admin/discount/:id']} component={DiscountDetail} isAuthenticated={authenticated} />
+        <PrivateRoute exact path='/discounts' component={DiscountList} isAuthenticated={authenticated}/>
+        <PrivateRoute exact path={['/admin/create-discount','/discount/:id']} component={DiscountDetail} isAuthenticated={authenticated} />
         <PrivateRoute exact path='/admin/analytics' component={AnalyticsPage} isAuthenticated={authenticated}/>
 
         </main>

@@ -20,6 +20,34 @@ const userLoginSchema=new mongoose.Schema({
         type:String,
         default:'user'
     },
+    cart:[
+        {
+            checked:{
+                type:Boolean,
+                default:true
+            },
+            quantity:{
+                type:Number,
+                required:true,
+            },
+            
+            productId:{
+                type:mongoose.Schema.Types.ObjectId,
+                required:true,
+                ref:'Product'
+            }
+        }
+    ],
+    discounts:[
+        {
+           
+            _id:{
+                type:mongoose.Schema.Types.ObjectId,
+                required:true,
+                ref:'Discount'
+            }
+        }
+    ],
     resetPasswordToken:String,
     resetPasswordExpire:Date
 })
@@ -31,9 +59,12 @@ userLoginSchema.pre('save',async function(next){
 })
 
 userLoginSchema.methods.getJwtToken=function(){
-    const token=jwt.sign({
-        id:this._id},
-        process.env.JWT_SECRET,{
+    const token=jwt.sign(
+        {
+            id:this._id
+        },
+        process.env.JWT_SECRET,
+        {
             expiresIn:process.env.JWT_EXPIRES_TIME
         }
     

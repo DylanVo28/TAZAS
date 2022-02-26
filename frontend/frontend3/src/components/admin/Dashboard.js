@@ -32,7 +32,9 @@ const Dashboard=()=>{
                     <CardItem title="Products" total={stProducts} icon="fas fa-archive"/>
                     <CardItem title="Orders" total={stOrders.orders.length} icon="fas fa-shipping-fast"/>
                     <CardItem title="User" total={stUsers} icon="fas fa-user"/>
-                    <CardItem title="Total Payment" total={stOrders.totalPayment} icon="fas fa-dollar-sign"/>
+                    <CardItem title="Total Payment" total={
+                        Math.round((stOrders.totalPayment + Number.EPSILON) * 100) / 100
+                        } icon="fas fa-dollar-sign"/>
                     </div>
                 </div>
 

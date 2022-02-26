@@ -83,7 +83,48 @@ const productSchema=new mongoose.Schema({
         type:mongoose.Schema.ObjectId,
         ref:'User',
         required:true
-    }
+    },
+    updateStock:[
+        {
+            userId:{
+                type:mongoose.Schema.Types.ObjectId,
+                ref:'User',
+                require:true
+            },
+            
+            quantity:{
+                type:Number,
+                require:true
+            },
+            updateDate:{
+                type:Date,
+                default:Date.now()
+            }
+        
+        }
+    ],
+    reviews:[
+        {
+    
+            userId:{
+                type:mongoose.Schema.ObjectId,
+                ref:'User'
+            },
+            
+            comment:{
+                type:String,
+                require:true
+            },
+            rating:{
+                type:Number,
+                require:true
+            },
+            createAt:{
+                type:Date,
+                default:Date.now()
+            }
+        }
+    ]
     //add value 
 
 })

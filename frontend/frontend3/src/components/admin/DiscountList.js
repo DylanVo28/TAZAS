@@ -45,11 +45,15 @@ const DiscountList=()=>{
                   <p className="text-xs font-weight-bold mb-0">{discount.quantity}</p>
 
                   </td>
+                  <td className="align-middle text-center text-sm">
+                  <p className="text-xs font-weight-bold mb-0" style={{color:'red'}}>{discount.used?"Used":""}</p>
+
+                  </td>
                   <td className="align-middle text-center">
                     <span className="text-secondary text-xs font-weight-bold">{getFormattedDate(discount.createAt)}</span>
                   </td>
                   <td className="align-middle">
-                    <Link  to={"/admin/discount/"+discount._id} className="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">
+                    <Link  to={"/discount/"+discount._id} className="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">
                       Info
                     </Link>
                   </td>
@@ -77,6 +81,8 @@ const DiscountList=()=>{
                     <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Name</th>
                     <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Valid</th>
                     <th className="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Quantity    </th>
+                    <th className="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">    </th>
+
                     <th className="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">CreatedAt</th>
                     <th className="text-secondary opacity-7" />
                   </tr>

@@ -38,11 +38,25 @@ exports.getDiscountByName=catchAsyncError(async(req,res,next)=>{
     const apiFeatures=new APIFeatures(Discount.find(),req.query)
     .search()
     .pagination(resPerPage)
-    const discounts=await apiFeatures.query;
+    const list=await apiFeatures.query;
+    const discounts=await Promise.all(list.map(async (item) => {
+        try {
+           
+            const discountUsed=await DiscountUsed.findOne({discountId:item._id,userId:req.user._id})
+            if(discountUsed){
+                return {...item.toObject(),used:true}
+            }
+            return {...item.toObject(),used:false}
+            
+        }
+         catch (error) {
+          console.log('error'+ error);
+        }
+      }))
     discounts.sort((a,b)=>b.createAt.getTime()-a.createAt.getTime())
     res.status(200).json({
         success:true,
-        discounts
+        discounts,
     })
 })
 

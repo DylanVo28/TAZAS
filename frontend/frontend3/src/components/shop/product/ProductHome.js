@@ -38,6 +38,7 @@ const ProductHome = (props) => {
   const [user, setUser] = useState();
   const [rating, setRating] = useState(0);
   const [allReviews, setAllReviews] = useState();
+  const [averageReview,setAverageReview]=useState(0)
   useEffect(() => {
     clientRequest
       .getProductDetail(props.match.params.id)
@@ -45,13 +46,17 @@ const ProductHome = (props) => {
     clientRequest.getProfileMe().then((res) => setUser(res.user));
     clientRequest
       .getReviewsByProduct(props.match.params.id)
-      .then((res) => setAllReviews(res.list));
+      .then((res) =>{ setAllReviews(res.list)
+        if(res.averageReview!=null){
+          setAverageReview(res.averageReview)
+        }
+      });
   }, []);
   const orderNow = () => {
     const cartItem = product;
     localStorage.setItem("cartItem", JSON.stringify(cartItem));
     if(!localStorage.getItem("token")){
-      NotificationManager.error("Error", "Ban chua dang nhap")
+      NotificationManager.error("Error", "You are not logged in")
       window.location.href='/login'
       return
     }
@@ -77,7 +82,10 @@ const ProductHome = (props) => {
   };
   const reviewProduct = () => {
     const comment = document.getElementsByName("inputReview")[0].value;
-
+    if(comment==""){
+      NotificationManager.error("Error", "Review not empty")
+      return 
+    }
     clientRequest
       .updateReviewProduct(rating, comment, product._id, user.avatar.url)
       .then((res) => {
@@ -91,18 +99,31 @@ const ProductHome = (props) => {
       <div className="row product-home" style={{ position: "relative" }}>
         <div className="product-home_right">
           <h1 className="product-home_title">{product.name}</h1>
-          <h3>${product.price}</h3>
+          {averageReview&&<><ReactStars
+                    count={5}
+                    size={35}
+                    isHalf={true}
+                    emptyIcon={<i className="far fa-star"></i>}
+                    halfIcon={<i className="fa fa-star-half-alt"></i>}
+                    fullIcon={<i className="fa fa-star"></i>}
+                    edit={false}
+                    value={averageReview}
+                  />
+                  
+                  </>}
+                  <h6>{averageReview} average review</h6>
+          <h3>{product.price}$</h3>
           <br></br>
           <p className="product-home_description">{product.description}</p>
           <br></br>
           <div style={{ display: "flex", justifyContent: "space-between" }}>
             {" "}
             <button className="btn-product-home btn-1" onClick={() => orderNow()}>
-          <a><span>Mua ngay</span>  </a> 
+          <a><span>Order now</span>  </a> 
             </button>
             <button className="btn-product-home btn-2" onClick={() => addToCart()}>
             
-            <a><span>Thêm vào giỏ</span>  </a> 
+            <a><span>Add to cart</span>  </a> 
             </button>
           </div>
         </div>
@@ -165,6 +186,7 @@ const ProductHome = (props) => {
                   {/* <span>{user.name}</span> */}
                 </div>
                 <div className="col-md-9">
+                  <h6 style={{margin:'0'}}>{item.userName}</h6>
                   <ReactStars
                     count={5}
                     size={35}

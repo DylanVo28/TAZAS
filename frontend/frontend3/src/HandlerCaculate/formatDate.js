@@ -34,4 +34,36 @@ const compareValidDate=(date)=>{
     }
     return true
 }
-  export {getFormattedDate,checkURL,formattedDateFromParse,compareValidDate}
+const validatePhoneNumber=(phone)=>{
+  var phoneno = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im
+  if(phone.match(phoneno)) {
+    return true;
+  }
+  return false;
+}
+const validateCityOrPostalCode=(code)=>{
+  return /^([0-9]{5})$/.test(code);
+}
+const validateFullName=(name)=>{
+  
+  var re = /^[a-zA-Z ]{2,}$/g;// regex here
+    return re.test(removeAscent(name))
+}
+const removeAscent= (str)=> {
+  if (str === null || str === undefined) return str;
+  str = str.toLowerCase();
+  str = str.replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, "a");
+  str = str.replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g, "e");
+  str = str.replace(/ì|í|ị|ỉ|ĩ/g, "i");
+  str = str.replace(/ò|ó|ọ|ỏ|õ|ô|ồ|ố|ộ|ổ|ỗ|ơ|ờ|ớ|ợ|ở|ỡ/g, "o");
+  str = str.replace(/ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ/g, "u");
+  str = str.replace(/ỳ|ý|ỵ|ỷ|ỹ/g, "y");
+  str = str.replace(/đ/g, "d");
+  return str;
+}
+
+const validateEmail=(email)=> {
+  var re =  /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/
+  return re.test(email);
+}
+  export {getFormattedDate,checkURL,formattedDateFromParse,compareValidDate,validatePhoneNumber,validateCityOrPostalCode,validateFullName,validateEmail}

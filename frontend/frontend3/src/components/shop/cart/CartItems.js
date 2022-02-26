@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { Table } from 'react-bootstrap';
 import { NotificationContainer, NotificationManager } from 'react-notifications';
 import '../cart/CartItems.css'
-import { compareValidDate } from '../../../HandlerCaculate/formatDate';
+import { compareValidDate, validateCityOrPostalCode, validatePhoneNumber } from '../../../HandlerCaculate/formatDate';
 import { Link } from 'react-router-dom';
 // import Cards from 'react-credit-cards';
 // import 'react-credit-cards/es/styles-compiled.css';
@@ -37,9 +37,8 @@ const CartItems=(props)=>{
         temp.product=temp._id
         list.push(temp)
         setCartItems(list)
-   
-
       }
+      
       else{
         
         const cart=await clientRequest.getCart();
@@ -60,9 +59,9 @@ const CartItems=(props)=>{
        return acc
   }, 0);
   var tax=total*0.1
-  setItemsPrice(total)
-  setTaxPrice(tax)
-  setTotalPrice(total+tax+shippingPrice)
+  setItemsPrice(Math.round((total + Number.EPSILON) * 100) / 100)
+  setTaxPrice(Math.round((tax + Number.EPSILON) * 100) / 100)
+  setTotalPrice(Math.round((total+tax+shippingPrice + Number.EPSILON) * 100) / 100)
   
     },[cartItems,stDiscount])
    
@@ -73,7 +72,7 @@ const CartItems=(props)=>{
       const updateCartChanged=(index)=>e=>{
         let newArr = [...cartItems];
         newArr[index].quantity =Number (e.target.value); 
-        newArr[index].total =Number (e.target.value*newArr[index].price); 
+        newArr[index].total =Number (Math.round((e.target.value*newArr[index].price + Number.EPSILON) * 100) / 100); 
         setCartItems(newArr)
       }
       const removeItem=(id)=>{
@@ -82,7 +81,7 @@ const CartItems=(props)=>{
         setCartItems(cartFilter)
       }
       const handleChecked=(index)=>e=>{
-        let newArr = [...cartItems];
+        let newArr = [...cartItems];  
         newArr[index].checked =e.currentTarget.checked; 
         setCartItems(newArr)
       }
@@ -106,34 +105,44 @@ const CartItems=(props)=>{
                 discountId: stDiscount?stDiscount._id:null
         }
         if(!data.shippingInfo.address || !data.shippingInfo.city || !data.shippingInfo.phoneNo || !data.shippingInfo.postalCode || !data.shippingInfo.country){
-          NotificationManager.error("Error","Vui lòng nhập thông tin đầy đủ")
+          NotificationManager.error("Error","Infor not empty")
+          return
+        }
+        if(!validatePhoneNumber(data.shippingInfo.phoneNo)){
+          NotificationManager.error("Error","The phone number invalid")
+          return
+        }
+        if(!validateCityOrPostalCode(data.shippingInfo.postalCode)){
+          NotificationManager.error("Error","Postal code invalid")
           return
         }
         if(data.orderItems.length==0){
-          NotificationManager.error("Error","Giỏ hàng rỗng hoặc chưa có chọn sản phẩm nào")
+          NotificationManager.error("Error","Products not marked")
           return
         }
-        clientRequest.postOrder(data).then(res=>{console.log(res)
-        NotificationManager.success("Success","tao đơn thành công")
-        }).catch(err=>NotificationManager.error("Error","Khong the tao duoc don hang"))
+        clientRequest.postOrder(data).then(res=>{
+        NotificationManager.success("Success","Create order complete")
+        const link="/order/me/"+res.order._id
+        window.location.href=link
+        }).catch(err=>NotificationManager.error("Error","Cannot create order"))
       }
      
      const applyCode=async(e)=>{
-        const res=await clientRequest.getDiscount(searchDiscount).catch(err=>{ NotificationManager.error('error','Code không tồn tại hoặc đã sử dụng')
+        const res=await clientRequest.getDiscount(searchDiscount).catch(err=>{ NotificationManager.error('error','Discount code does not exist or has been used ')
         setStDiscount(null)})
         
         if(res){
           if(res.discount.quantity==0){
-            NotificationManager.error('error','Code đã sài hết')
+            NotificationManager.error('error','No more discount codes')
             setStDiscount(null)
             return
           }
           if(!compareValidDate(res.discount.validDate)){
-            NotificationManager.error('error','Code đã hết hạn')
+            NotificationManager.error('error','Code expired')
           setStDiscount(null)
             return
           }
-          NotificationManager.success('success','apply thành công')
+          NotificationManager.success('success','Apply success')
           setStDiscount(res.discount)
         }
        
@@ -177,12 +186,14 @@ const CartItems=(props)=>{
         </div>
         <div className="col-md-4">
         {user && <div className='user-cart-items'>
+          <div style={{height:"150px",width:"150px",borderRadius:"50%",overflow:"hidden",boxShadow:"1px 1px 10px #00000036"}}>
              <img src={user.avatar.url}/>
+             </div>
               <div className='row'>
                 <div className="col-md-4">Name</div>
                 <div className="col-md-8">{user.name}</div>
                 <div className="col-md-4">Email</div>
-                <div className="col-md-8">{user.email}</div>
+                <div className="col-md-8">{user.emailUser}</div>
               </div>
              
 
@@ -215,6 +226,12 @@ const CartItems=(props)=>{
                 <span>{itemsPrice}$ {stDiscount&&<span>(-{stDiscount.value}%)</span>}</span>
             </div>
             <div>
+              <span>Discount Code</span>
+              <span><input placeholder='Nhập mã khuyến mãi' onChange={(e)=>setSearchDiscount(e.currentTarget.value)}/></span>
+              <span><button disabled={searchDiscount==''?true:false} onClick={()=>applyCode()}>Apply code</button></span>
+              {stDiscount && <p style={{color:"green"}}>Áp dụng cho thể loại : {stDiscount.categoryProduct}</p>}
+            </div>
+            <div>
                 <span>Shipping Price:</span>
                 <span>{shippingPrice}$</span>
             </div>
@@ -226,14 +243,9 @@ const CartItems=(props)=>{
                 <span>Total Price:</span>
                 <span>{totalPrice}$</span>
             </div>
-            <div>
-              <span>Discount Code</span>
-              <span><input placeholder='Nhập mã khuyến mãi' onChange={(e)=>setSearchDiscount(e.currentTarget.value)}/></span>
-              <span><button disabled={searchDiscount==''?true:false} onClick={()=>applyCode()}>Apply code</button></span>
-              {stDiscount && <p style={{color:"green"}}>Áp dụng cho thể loại : {stDiscount.categoryProduct}</p>}
-            </div>
            
-        <button className='btn' onClick={()=>handleSubmit()}>Order Now</button>
+           
+        <button className='btn btn-primary' onClick={()=>handleSubmit()}>Order Now</button>
 
         </div>
         </div>

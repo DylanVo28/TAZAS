@@ -6,10 +6,11 @@ const Product = require('../models/product');
 const User = require("../models/user");
 const Discount = require("../models/discount");
 const DiscountUsed = require("../models/discountUsed");
+var ObjectId = require('mongodb').ObjectID;
 
 exports.newOrder = catchAsyncError(async (req, res, next) => {
 
-    const {
+    var {
         orderItems,
         shippingInfo,
         paymentInfo,
@@ -20,16 +21,41 @@ exports.newOrder = catchAsyncError(async (req, res, next) => {
         shippingPrice,
         discountId
     } = req.body.data;
+    var discount={}
     if(discountId){
-        await Discount.findByIdAndUpdate(discountId,{$inc:{
+        const discountModel=await Discount.findByIdAndUpdate(discountId,{$inc:{
             quantity:-1
         }})
-        const discountUsed=await DiscountUsed.findOne({discountId:discountId,userId:req.user._id})
-        if(discountUsed){
+        const order=await Order.findOne({
+            "user":ObjectId(req.user._id),
+            'discount.id':ObjectId(discountId)
+        })
+        // const discountUsed=await DiscountUsed.findOne({discountId:discountId,userId:req.user._id})
+        if(order){
             return next(new ErrorHandler('Code discount used', 500))
         }
-        await DiscountUsed.create({discountId:discountId,userId:req.user._id})
+        
+        discount={
+            ...discount,
+            id:discountModel.id,
+            name:discountModel.name,
+            categoryProduct:discountModel.categoryProduct,
+            value:discountModel.value
+        }
     }
+    orderItems=await Promise.all(
+        orderItems.map(async item=>{
+            const product=await Product.findById(item.product)
+            return {
+                ...item,
+                name:product.name,
+                price:product.price,
+                image:product.images[0].url
+            }
+           
+        })
+    )
+  
     const order = await Order.create({
         orderItems,
         shippingInfo,
@@ -40,7 +66,7 @@ exports.newOrder = catchAsyncError(async (req, res, next) => {
         orderStatus,
         shippingPrice,
         user: req.user.id,
-        discountId
+        discount
     })
     res.status(200).json({
         success: true,
@@ -52,36 +78,19 @@ exports.getOderDetail = catchAsyncError(async (req, res, next) => {
     if (!order) {
         return next(new ErrorHandler('order not found', 404))
     }
-    const discount=await Discount.findById(order.discountId)
+    // const discount=await Discount.findById(order.discountId)
     const user=await User.findById(order.user)
     if(!user){
         return next(new ErrorHandler('user not found', 404))
 
     }
-    var orderItems=[]
-    await Promise.all(order.orderItems.map(async (item) => {
-        try {
-          // here candidate data is inserted into  
-          const product=await Product.findById(item.product)
-          if(product!==null){
-            // and response need to be added into final response array 
-            orderItems.push({
-                name:product.name,
-                image:product.images[0].url,
-                price:product.price,
-                quantity:item.quantity
-            })
-          }
-        } catch (error) {
-          console.log('error'+ error);
-        }
-      }))
+    
     res.status(200).json({
         success: true,
         order,
-        orderItems,
+        orderItems:order.orderItems,
         user,
-        discount
+        discount:order.discount
     })
 })
 exports.myOrders = catchAsyncError(async (req, res, next) => {

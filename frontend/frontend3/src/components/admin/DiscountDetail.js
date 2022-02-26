@@ -8,7 +8,7 @@ const DiscountDetail=(props)=>{
   const  [discount,setDiscount]=useState()
   const [openModal,setOpenModal]=useState(false)
   useEffect( async ()=>{
-    if(props.match.path=="/admin/discount/:id"){
+    if(props.match.path=="/discount/:id"){
       const res=await clientRequest.getDiscountDetail(props.match.params.id)
       setDiscount(res.discount)
     }
@@ -32,18 +32,18 @@ const DiscountDetail=(props)=>{
         }
         console.log(data)
         if(!data.name || !data.categoryProduct || !data.validDate || !data.quantity || !data.value){
-          NotificationManager.error("Error","vui lòng nhập đầy đủ thông tin")
+          NotificationManager.error("Error","Please enter full information")
           return
         }
         
         const date=new Date()
         if(data.validDate<=date.getTime()){
-          NotificationManager.error("Error","Vui lòng nhập mã hết hạn sau ngày hiện tại")
+          NotificationManager.error("Error","Please enter the code that expires after the current date ")
           return
         }
         const list=await clientRequest.getListDiscount(document.getElementsByName('name')[0].value)
         if(list.discounts.length!=0){
-          NotificationManager.error("Error","Tên đã trùng, vui lòng đổi tên khác")
+          NotificationManager.error("Error","The name is already the same, please change the name ")
           return
         }
         await clientRequest.createDiscount(data).then(res=>NotificationManager.success("Success","Create Success"))
@@ -51,7 +51,7 @@ const DiscountDetail=(props)=>{
     const removeDiscountItem=async ()=>{
       await clientRequest.removeDiscount(discount._id).then(res=>{
         NotificationManager.success("Success","Remove Success")
-        window.location.href='/admin/discounts'
+        window.location.href='/discounts'
       }
         
         ).catch(err=>
@@ -93,11 +93,11 @@ const DiscountDetail=(props)=>{
         <form onSubmit={submitHanddler}>
   <div className="form-group">
     <label htmlFor="formGroupExampleInput">Name</label>
-    <input type="text" className="form-control" id="formGroupExampleInput" defaultValue={discount&&discount.name} name='name' disabled={props.match.path=="/admin/discount/:id"}/>
+    <input type="text" className="form-control" id="formGroupExampleInput" defaultValue={discount&&discount.name} name='name' disabled={props.match.path=="/discount/:id"}/>
   </div>
   <div className="form-group col-md-4">
             <label>Category</label>
-            <select disabled={props.match.path=="/admin/discount/:id"} className="form-control" name='category' value={discount&& discount.categoryProduct} name='categoryProduct'>
+            <select disabled={props.match.path=="/discount/:id"} className="form-control" name='category' value={discount&& discount.categoryProduct} name='categoryProduct'>
             <option value={'jacketsCoats'} selected>Jackets & Coats</option>
               <option  value={'hoodiesSweatshirts'}>Hoodies & Sweatshirts</option>
               <option value={'cardiganJumpers'}>Cardigan & Jumpers</option>
@@ -119,15 +119,15 @@ const DiscountDetail=(props)=>{
   <div className="form-group">
     <label htmlFor="formGroupExampleInput2">Valid Date</label>
    {props.match.path=='/admin/create-discount'&&<input type="date" id="start" name="validDate" defaultValue={Date.now()} min="2018-01-01" max="2099-12-31" />}
-    {discount&&props.match.path=="/admin/discount/:id"&&<span>{formattedDateFromParse(discount.validDate)}</span>}
+    {discount&&props.match.path=="/discount/:id"&&<span>{formattedDateFromParse(discount.validDate)}</span>}
   </div>
   <div className="form-group">
     <label htmlFor="formGroupExampleInput2">Quantity</label>
-    <input disabled={props.match.path=="/admin/discount/:id"} type="number" min={1} className="form-control" id="formGroupExampleInput2" defaultValue={discount&&discount.quantity} name='quantiy'/>
+    <input disabled={props.match.path=="/discount/:id"} type="number" min={1} className="form-control" id="formGroupExampleInput2" defaultValue={discount&&discount.quantity} name='quantiy'/>
   </div>
   <div className="form-group">
     <label htmlFor="formGroupExampleInput2">Value (%)</label>
-    <input disabled={props.match.path=="/admin/discount/:id"} type="number" min={1} max={100} className="form-control" id="formGroupExampleInput2" defaultValue={discount&&discount.value} name='value'/>
+    <input disabled={props.match.path=="/discount/:id"} type="number" min={1} max={100} className="form-control" id="formGroupExampleInput2" defaultValue={discount&&discount.value} name='value'/>
   </div>
   {props.match.path=="/admin/create-discount"&&<button type='submit'>Create Discount</button>}
 

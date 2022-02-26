@@ -1,4 +1,4 @@
-import { React, useState } from 'react';
+import { React, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import {register,clearErrors} from '../../actions/userActions'
@@ -125,6 +125,11 @@ const Form=()=>{
   )
 }
 const SignUp=()=>{
+  useEffect(()=>{
+    if(localStorage.getItem("token")){
+      window.location.href='/admin/dashboard'
+    }
+  },[])
     return (
         <div className={'g-sidenav-show  bg-gray-100'}>
             <MenuSignUp/>

@@ -1,4 +1,20 @@
 const mongoose=require('mongoose')
+const discount=new mongoose.Schema({
+    id:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:'Discount'
+    },
+    name:{
+        type:String,
+    },
+    categoryProduct:{
+        type:String,
+    },
+    value:{
+        type:Number,
+    },
+  
+})
 const orderSchema=mongoose.Schema({
     shippingInfo:{
         address:{
@@ -39,6 +55,15 @@ const orderSchema=mongoose.Schema({
                 type:mongoose.Schema.Types.ObjectId,
                 required:true,
                 ref:'Product'
+            },
+            name:{
+                type:String
+            },
+            price:{
+                type:Number
+            },
+            image:{
+                type:String
             }
 
         }
@@ -82,10 +107,8 @@ const orderSchema=mongoose.Schema({
         type:Date,
         default:Date.now
     },
-    discountId:{
-        type:mongoose.Schema.Types.ObjectId,
-        ref:'Discount'
-    }
+    discount: discount
+   
 
 })
 module.exports=mongoose.model('Order',orderSchema)

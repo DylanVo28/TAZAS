@@ -26,7 +26,7 @@ export const login=(email,password)=>async(dispatch)=>{
         })
         NotificationManager.success('Success', 'Login success');
         
-        window.location.href = '/admin/dashboard';
+        window.location.href = '/profile';
 
     }
     catch(error){
