@@ -6,7 +6,7 @@ const config={
     }
 }
 const userToken=localStorage.getItem("token")
-const DOMAIN='http://localhost:4000'
+const DOMAIN='https://deskita-ecommerce.herokuapp.com'
 class ClientRequest{
    
     getProducts(){
