@@ -8,13 +8,7 @@ const bodyParser=require('body-parser')
 const cloudinary=require('cloudinary')
 const fileUpload=require('express-fileupload')
 var cors = require('cors')
-var corsOptions = {
-    origin: 'http://localhost:3000',
-    credentials:true,
-    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-    preflightContinue: false,
-    optionsSuccessStatus: 204
-}
+
 const path=require('path')
 
 
@@ -43,6 +37,9 @@ const inventory=require('./routes/inventory')
 const discount=require('./routes/discount')
 const analytic=require('./routes/analytic')
 const discountUsed=require('./routes/discountUsed')
+
+
+
 app.use('/api/v1',products)
 app.use('/api/v1',user)
 app.use('/api/v1',order)
@@ -54,10 +51,16 @@ app.use('/api/v1',discount)
 app.use('/api/v1',analytic)
 app.use('/api/v1',discountUsed)
 app.use(errorMiddleware)
+
+
+
+
+
 if(process.env.NODE_ENV==='PRODUCTION'){
     app.use(express.static(path.join(__dirname,'../frontend/frontend3/build')))
     app.get('*',(req,res)=>{
         res.sendFile(path.join(__dirname,'../frontend/frontend3/build/index.html'))
     })
 }
+
 module.exports=app

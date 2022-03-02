@@ -6,7 +6,7 @@ const config={
     }
 }
 const userToken=localStorage.getItem("token")
-const DOMAIN='https://deskita-ecommerce.herokuapp.com'
+const DOMAIN='http://localhost:4000'
 class ClientRequest{
    
     getProducts(){
@@ -62,6 +62,14 @@ class ClientRequest{
             axios.get(`${DOMAIN}/api/v1/admin/products?keyword=${searchName}&page=${currentPage}`,{
                 params:{userToken}
             }).then(result => {
+                    resolve(result.data)
+                }, reject)
+        })
+    }
+
+    getRandomProduct(){
+        return new Promise( (resolve, reject) => {
+            axios.get(`${DOMAIN}/api/v1/random-products`).then(result => {
                     resolve(result.data)
                 }, reject)
         })

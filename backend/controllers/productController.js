@@ -76,17 +76,30 @@ exports.getProducts=catchAsyncError(async (req,res,next)=>{
     })
 })
 
+
 //get all product {{DOMAIN}}/api/v1/products?keyword=?
 exports.getProductsHome=catchAsyncError(async (req,res,next)=>{
     const resPerPage=6
-
+    
+  
     const apiFeatures=new APIFeatures(Product.find(),req.query)
+    
     .sort()
     .search()
     .filter()
-    .pagination(resPerPage)
+    // .random()
+    // .pagination(resPerPage)
     const products=await apiFeatures.query;
     
+    res.status(200).json({
+        success:true,
+        products
+    })
+})
+
+exports.getRandomProduct=catchAsyncError(async (req,res,next)=>{
+    const products=await Product.aggregate([{ $sample: { size: 10 } }])
+
     res.status(200).json({
         success:true,
         products

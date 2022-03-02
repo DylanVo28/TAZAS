@@ -53,14 +53,27 @@ const Home =()=>{
   const [search,setSearch]=useState('')
   const [category,setCategory]=useState('')
   const [classify,setClassify]=useState('')
+  // useEffect(()=>{
+
+  // },[sizePage.current,search,category,classify])
   useEffect(()=>{
-    clientRequest.getLengthAllProductsHome().then(res=>setSizePage({...sizePage,total:res.lengthProducts}))
-    clientRequest.getSearchProductsHome('',sizePage.current,'','').then(res=>setProducts(res.products))
-  },[])
-  useEffect(()=>{
-    clientRequest.getSearchProductsHome(search,sizePage.current,category,classify).then(res=>{setProducts(res.products)
-    })
-  },[sizePage.current,search,category,classify])
+    // clientRequest.getLengthAllProductsHome().then(res=>setSizePage({...sizePage,total:res.lengthProducts}))
+    if(search===''&& category===''&&classify==''){
+      clientRequest.getRandomProduct().then(res=>setProducts(res.products))
+    }
+    else{
+   clientRequest.getSearchProductsHome(search,sizePage.current,category,classify).then(res=>{setProducts(res.products)})
+    }
+  },[search,category,classify])
+
+   
+  const loadMoreItem=()=>{
+    if(search===''&& category===''&&classify==''){
+    clientRequest.getRandomProduct().then(res=>{
+      setProducts(oldArray => [...oldArray, ...res.products])
+     })
+    }
+  }
   const handlePageChange=(e)=>{
     setSizePage({...sizePage,current:e})
   }
@@ -139,15 +152,17 @@ const Home =()=>{
 </div>)}
           
         </div>
-        <Pagination
+        {/* <Pagination
          activePage={sizePage.current}
          itemsCountPerPage={sizePage.count}
          totalItemsCount={sizePage.total}
          itemClass="page-item"
          linkClass="page-link"
-         onChange={(e)=>handlePageChange(e)}/>
-        </div>
+         onChange={(e)=>handlePageChange(e)}/> */}
         
+
+        </div>
+        <div style={{textAlign:'center'}}><button name="" id="" class="btn create-button" role="button" onClick={()=>loadMoreItem()}>Load More</button></div>
        </>
        
     )

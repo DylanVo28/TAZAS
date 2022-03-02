@@ -3,6 +3,10 @@ class APIFeatures{
         this.query=query
         this.queryStr=queryStr
     }
+    random(){
+        this.query=this.query.find().limit(-1).skip(10).next()
+        return this
+    }
     sort(){
         this.query=this.query.find().sort({createdAt:-1})
         return this

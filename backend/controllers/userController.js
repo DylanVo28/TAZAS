@@ -10,19 +10,7 @@ const checkUrlImage = require('../utils/checkUrlImage')
 const UserLogin = require('../models/userLogin')
 const Product=require('../models/product')
 exports.registerUser=catchAsyncErrors(async(req,res,next)=>{
-    // var avatar
-    // if(!checkUrlImage(req.body.avatar)){
-    //     const result=await cloudinary.v2.uploader.upload(req.body.avatar,{
-    //         folder:'tazas'
-    //     })
-    //     if(result){
-    //         avatar={
-    //             public_id:result.secure_url,
-    //             url:result.secure_url
-
-    //         }
-    //     }
-    // }
+   
     const {email,password}=req.body
     const userLogin=await UserLogin.create({
         email,
