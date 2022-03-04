@@ -14,10 +14,7 @@ router.route('/admin/products').get(
         authorizeRoles('admin'),
         getProducts)
 
-router.route('/admin/all-products').get(
-            isAuthenticatedUser,
-            authorizeRoles('admin'),
-            getAllProducts)
+router.route('/all-products').get(getAllProducts)
 
 router.route('/random-products').get(getRandomProduct)
 
