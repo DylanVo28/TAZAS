@@ -76,6 +76,16 @@ exports.getProducts=catchAsyncError(async (req,res,next)=>{
     })
 })
 
+exports.getAllProducts=catchAsyncError(async (req,res,next)=>{
+    const apiFeatures=new APIFeatures(Product.find(),req.query)
+    .sort()
+    .search()
+    const products=await apiFeatures.query;
+    res.status(200).json({
+        success:true,
+        products
+    })
+})
 
 //get all product {{DOMAIN}}/api/v1/products?keyword=?
 exports.getProductsHome=catchAsyncError(async (req,res,next)=>{

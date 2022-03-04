@@ -62,7 +62,7 @@ const Home =()=>{
       clientRequest.getRandomProduct().then(res=>setProducts(res.products))
     }
     else{
-   clientRequest.getSearchProductsHome(search,sizePage.current,category,classify).then(res=>{setProducts(res.products)})
+    clientRequest.getSearchProductsHome(search,sizePage.current,category,classify).then(res=>{setProducts(res.products)})
     }
   },[search,category,classify])
 
