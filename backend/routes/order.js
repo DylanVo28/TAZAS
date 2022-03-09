@@ -38,6 +38,8 @@ router.route('/admin/order/:id').put(
     updateOrder
 
 )
-
+//for mobile
+router.route('/all/orders').get(
+    allOrders)
 
 module.exports = router
