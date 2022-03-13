@@ -90,7 +90,7 @@ const ProductHome = (props) => {
       .updateReviewProduct(rating, comment, product._id, user.avatar.url)
       .then((res) => {
         NotificationManager.success("Success", "Review success");
-        // window.location.reload();
+        window.location.reload();
       })
       .catch((err) => NotificationManager.error("Error", "Review error"));
   };

@@ -12,7 +12,7 @@ exports.addToCart=catchAsyncError(async(req,res,next)=>{
         "cart.productId":req.body.data.product
     },{
         $inc:{
-            "cart.$.quantity":1
+            "cart.$.quantity":req.body.data.quantity
         }
     })
     if(!user){
@@ -23,7 +23,7 @@ exports.addToCart=catchAsyncError(async(req,res,next)=>{
             $push:{
                
                 "cart":{
-                    quantity:1,
+                    quantity:req.body.data.quantity,
                     productId:req.body.data.product
                 }
             }

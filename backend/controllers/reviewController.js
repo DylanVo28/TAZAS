@@ -1,7 +1,7 @@
 const Review =require('../models/review')
 const User =require('../models/user')
 const Product =require('../models/product')
-
+const Order =require('../models/order')
 const ErrorHandler=require('../utils/errorHandler')
 const catchAsyncError=require('../middlewares/catchAsyncError')
 const APIFeatures = require('../utils/apiFeatures')
@@ -21,6 +21,14 @@ exports.addReview=catchAsyncError(async (req,res,next)=>{
     })
 
     if(!product){
+        const order=await Order.findOne({
+            user:req.user._id,
+            'orderItems.$.product':productId,
+            orderStatus:'Complete'
+        });
+        if(!order){
+            return next(new ErrorHandler('Not found', 404))
+        }
         product = await Product.findOneAndUpdate({
             _id:productId
         },{
