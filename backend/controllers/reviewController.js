@@ -23,7 +23,7 @@ exports.addReview=catchAsyncError(async (req,res,next)=>{
     if(!product){
         const order=await Order.findOne({
             user:req.user._id,
-            'orderItems.$.product':productId,
+            'orderItems.product':productId,
             orderStatus:'Complete'
         });
         if(!order){
