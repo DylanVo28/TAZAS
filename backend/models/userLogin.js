@@ -48,6 +48,7 @@ const userLoginSchema=new mongoose.Schema({
             }
         }
     ],
+    numberToken:Number,
     resetPasswordToken:String,
     resetPasswordExpire:Date
 })
@@ -81,4 +82,10 @@ userLoginSchema.methods.getResetPasswordToken=function(){
     this.resetPasswordExpire=Date.now()+30*60*1000
     return resetToken
 }
+
+userLoginSchema.methods.getRandomNumberBetween=function(max,min){
+    this.numberToken=Math.floor(Math.random() * (max - min + 1) + min)
+    return this.numberToken
+};
+
 module.exports=mongoose.model('UserLogin',userLoginSchema)

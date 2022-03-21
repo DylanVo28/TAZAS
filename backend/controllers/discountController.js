@@ -3,6 +3,8 @@ const APIFeatures = require("../utils/apiFeatures");
 const ErrorHandler = require("../utils/errorHandler");
 const Discount = require('../models/discount');
 const DiscountUsed = require("../models/discountUsed");
+const Order = require("../models/order");
+var ObjectId = require('mongodb').ObjectID;
 exports.createDiscount=catchAsyncError(async(req,res,next)=>{
     const {name,categoryProduct,validDate,quantity,value}=req.body.data
     await Discount.create({
@@ -41,9 +43,11 @@ exports.getDiscountByName=catchAsyncError(async(req,res,next)=>{
     const list=await apiFeatures.query;
     const discounts=await Promise.all(list.map(async (item) => {
         try {
-           
-            const discountUsed=await DiscountUsed.findOne({discountId:item._id,userId:req.user._id})
-            if(discountUsed){
+            const order=await Order.findOne({
+                "user":ObjectId(req.user._id),
+                'discount.id':ObjectId(item._id)
+            })
+            if(order){
                 return {...item.toObject(),used:true}
             }
             return {...item.toObject(),used:false}
@@ -79,10 +83,15 @@ exports.getDiscount=catchAsyncError(async(req,res,next)=>{
     if(!discount){
         return next(new ErrorHandler('discount not found',404))
     }
-    const discountUsed=await DiscountUsed.findOne({discountId:discount._id,userId:req.user._id})
-    if(discountUsed){
-        return next(new ErrorHandler('discount used',500))
+    const order=await Order.findOne({
+        "user":ObjectId(req.user._id),
+        'discount.id':ObjectId(discount._id)
+    })
+
+    if(order){
+        return next(new ErrorHandler('Code discount used', 500))
     }
+    
     
     res.status(201).json({
         discount

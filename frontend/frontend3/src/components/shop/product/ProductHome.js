@@ -69,6 +69,7 @@ const ProductHome = (props) => {
       image: product.images[0].url,
       price: product.price,
       checked: true,
+      quantity:1
     };
     clientRequest
       .addToCartItem(data)

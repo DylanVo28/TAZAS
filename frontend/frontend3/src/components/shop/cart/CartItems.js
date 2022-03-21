@@ -123,7 +123,7 @@ const CartItems=(props)=>{
         clientRequest.postOrder(data).then(res=>{
         NotificationManager.success("Success","Create order complete")
         const link="/order/me/"+res.order._id
-        window.location.href=link
+        // window.location.href=link
         }).catch(err=>NotificationManager.error("Error","Cannot create order"))
       }
      

@@ -6,12 +6,12 @@ const sendEmail=async options=>{
         service: 'gmail',
         host: 'smtp.gmail.com',
         auth: {
-          user: 'kedinhvo2000@gmail.com',
-          pass: 'Dinhvo280700'
+          user: 'dinhdeptrainhatvutruso7@gmail.com',
+          pass: 'dinhdeptraiquata'
         }
       }));
     const message={
-        from:`kedinhvo2000@gmail.com`,
+        from:`deskita@gmail.com`,
         to:options.email,
         subject: options.subject,
         text: options.message

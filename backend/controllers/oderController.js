@@ -7,6 +7,7 @@ const User = require("../models/user");
 const Discount = require("../models/discount");
 const DiscountUsed = require("../models/discountUsed");
 var ObjectId = require('mongodb').ObjectID;
+const UserLogin = require('../models/userLogin');
 
 exports.newOrder = catchAsyncError(async (req, res, next) => {
 
@@ -23,6 +24,8 @@ exports.newOrder = catchAsyncError(async (req, res, next) => {
     } = req.body.data;
     var discount={}
     if(discountId){
+
+       
         const discountModel=await Discount.findByIdAndUpdate(discountId,{$inc:{
             quantity:-1
         }})
@@ -30,7 +33,7 @@ exports.newOrder = catchAsyncError(async (req, res, next) => {
             "user":ObjectId(req.user._id),
             'discount.id':ObjectId(discountId)
         })
-        // const discountUsed=await DiscountUsed.findOne({discountId:discountId,userId:req.user._id})
+    
         if(order){
             return next(new ErrorHandler('Code discount used', 500))
         }
@@ -46,6 +49,16 @@ exports.newOrder = catchAsyncError(async (req, res, next) => {
     orderItems=await Promise.all(
         orderItems.map(async item=>{
             const product=await Product.findById(item.product)
+            await UserLogin.findOneAndUpdate({
+                _id:req.user._id,
+            },{$pull:{
+                'cart':{
+                    'productId':product._id
+                }
+            }}
+            
+            )
+            
             return {
                 ...item,
                 name:product.name,

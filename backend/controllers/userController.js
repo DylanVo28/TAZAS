@@ -73,13 +73,15 @@ exports.forgotPassword=catchAsyncErrors(async(req,res,next)=>{
         return next(new ErrorHandler('User not found with this email',404))
     }
     const resetToken=userLogin.getResetPasswordToken()
+    const numberToken=userLogin.getRandomNumberBetween(999999,100000)
     await userLogin.save({validateBeforeSave:false})
     const resetUrl=`${process.env.NODE_ENV!=='PRODUCTION'? process.env.FRONTEND_URL:'https://tazas.herokuapp.com'}/password/reset/${resetToken}`
-    const message =`Your password reset token is a follow: \n\n${resetUrl}\n\nIf you have not requested this email, then ignore it`
+    const message =`Your password reset token is a follow: \n\n${resetUrl}\n\nIf you have not requested this email, then ignore it
+    \n\n If you recovery with app mobile, code you app mobile: ${numberToken}`
     try {
         await sendEmail({
             email:userLogin.email,
-            subject :'TAZAS Password recovery',
+            subject :'Deskita Password recovery',
             message
         })
         res.status(200).json({
@@ -89,17 +91,31 @@ exports.forgotPassword=catchAsyncErrors(async(req,res,next)=>{
     } catch (error) {
         userLogin.resetPasswordToken=undefined,
         userLogin.resetPasswordExpire=undefined
+        userLogin.numberToken=undefined
         await userLogin.save({validateBeforeSave:false})
         return next(new ErrorHandler(error.message,500))
     }
 })
 
 exports.resetPassword=catchAsyncErrors(async(req,res,next)=>{
-    const resetPasswordToken=crypto.createHash('sha256').update(req.params.token).digest('hex');
-    const userLogin=await UserLogin.findOne({
-        resetPasswordToken,
-        resetPasswordExpire:{$gt:Date.now()}
-    })
+
+   
+    var userLogin
+    if(req.query.token){
+        const resetPasswordToken=crypto.createHash('sha256').update(req.query.token).digest('hex');
+        userLogin=await UserLogin.findOne({
+            resetPasswordToken,
+            resetPasswordExpire:{$gt:Date.now()}
+        })
+    }
+    else{
+        const numberToken=req.query.code
+        userLogin=await UserLogin.findOne({
+            numberToken,
+            resetPasswordExpire:{$gt:Date.now()}
+        })
+    }
+   
     if(!userLogin){
         return next(new ErrorHandler('Password reset token is invalid or has been expired',400))
     }
@@ -109,6 +125,7 @@ exports.resetPassword=catchAsyncErrors(async(req,res,next)=>{
     userLogin.password=req.body.password
     userLogin.resetPasswordToken=undefined
     userLogin.resetPasswordExpire=undefined
+    userLogin.numberToken=undefined
     await userLogin.save()
     sendToken(userLogin,200,res)
 })

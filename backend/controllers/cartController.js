@@ -7,7 +7,6 @@ const Cart = require('../models/cart');
 const userLogin = require("../models/userLogin");
 var ObjectId = require('mongodb').ObjectID;
 exports.addToCart=catchAsyncError(async(req,res,next)=>{
-    console.log(req.body)
     var user=await userLogin.findOneAndUpdate({
         _id:req.user._id,
         "cart.productId":req.body.data.product
@@ -16,7 +15,6 @@ exports.addToCart=catchAsyncError(async(req,res,next)=>{
             "cart.$.quantity":req.body.data.quantity
         }
     })
-    console.log(user)
     if(!user){
         user= await userLogin.findByIdAndUpdate({
             _id:req.user._id,

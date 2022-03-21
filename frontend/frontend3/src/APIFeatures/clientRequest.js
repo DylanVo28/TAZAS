@@ -6,7 +6,7 @@ const config={
     }
 }
 const userToken=localStorage.getItem("token")
-const DOMAIN='https://deskita-ecommerce.herokuapp.com'
+const DOMAIN='http://localhost:4000'
 class ClientRequest{
    
     getProducts(){
@@ -341,7 +341,7 @@ class ClientRequest{
 
     resetPassword(data,token){
         return new Promise((resolve,reject)=>{
-            axios.put(`${DOMAIN}/api/v1/user/password/reset/${token}`,data).then(result => {
+            axios.put(`${DOMAIN}/api/v1/user/password/reset?token=${token}`,data).then(result => {
                     resolve(result.data)
                 }, reject)
         })
