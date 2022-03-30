@@ -47,6 +47,20 @@ exports.newProduct=catchAsyncError (async (req,res,next)=>{
     })
 })
 
+exports.uploadImage=catchAsyncError(async (req,res,next)=>{
+    var result;
+    if(!checkUrlImage(req.body.image)){
+        result =await cloudinary.v2.uploader.upload(req.body.image,{
+            folder:'tazas'
+        })
+        
+    }
+    res.status(201).json({
+        success:true,
+        result
+    })
+})
+
 exports.getAllProduct=catchAsyncError(async (req,res,next)=>{
     const products= await Product.find()
     res.status(201).json({
