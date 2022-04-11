@@ -14,7 +14,7 @@ router.route('/admin/products').get(
         authorizeRoles('admin'),
         getProducts)
 
-router.route('/upload-image').post(uploadImage)
+// router.route('/upload-image').post(uploadImage)
 
 router.route('/all-products').get(getAllProducts)
 
