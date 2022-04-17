@@ -304,3 +304,15 @@ exports.changeRoleUser=catchAsyncErrors(async(req,res,next)=>{
         success:true
     })
 })
+
+
+//for mobile
+exports.getAllUsers=catchAsyncErrors(async(req,res,next)=>{
+    const userLogins=await UserLogin.find({role:req.query.type})
+    const userIds=userLogins.map(userLogin=> ""+userLogin._id)
+    const user=await User.find({_id:{$in:userIds}}).sort({createAt:-1})
+    res.status(200).json({
+        success:true,
+        user
+    })
+})
