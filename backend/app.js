@@ -10,7 +10,10 @@ const fileUpload=require('express-fileupload')
 var cors = require('cors')
 
 // const redis=require('redis')
-// const client=redis.createClient()
+// const client=redis.createClient({
+//     host: 'redis-server',
+//     port: 6379
+// })
 
 const path=require('path')
 

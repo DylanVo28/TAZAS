@@ -229,7 +229,7 @@ exports.getUserDetail=catchAsyncErrors(async(req,res,next)=>{
     })
 })
 exports.updateUser=catchAsyncErrors(async(req,res,next)=>{
-    const {role}=req.body.data
+    const {role}=req.body.data?req.body.data:req.body
     
     const user=await UserLogin.findByIdAndUpdate(req.params.id,{$set:{role:role}},{
         new:true,
