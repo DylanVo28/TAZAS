@@ -795,3 +795,76 @@ exports.topSellingByUser=catchAsyncError(async(req,res,next)=>{
         finalList
     })
 })
+Date.prototype.addDays = function(days) {
+    var date = new Date(this.valueOf());
+    date.setDate(date.getDate() + days);
+    return date;
+}
+
+function getDates(startDate, stopDate) {
+    var dateArray = new Array();
+    var currentDate = startDate;
+    while (currentDate <= stopDate) {
+        dateArray.push(new Date (currentDate));
+        currentDate = currentDate.addDays(1);
+    }
+    return dateArray;
+}
+exports.analyticsByDate=catchAsyncError(async(req,res,next)=>{
+    const {type,dateStart,dateEnd}=req.query
+    const dateStartToDate=new Date(dateStart)
+    const dateEndToDate=new Date(dateEnd)
+    let models=[]
+    const dateArray=getDates(dateStartToDate,dateEndToDate)
+   
+    var resultArray=[]
+    await Promise.all( dateArray.map(async (date,index)=>{
+        var startDate=new Date(dateArray[index])
+        // startDate.setUTCHours(0,0,0,0)
+        var endDate=new Date(startDate)
+        endDate.setHours(23,59,59,999)
+        if(type=='product'){
+            models=await Product.find(
+                {
+                createdAt:{
+                    $gte:startDate,
+                    $lt:endDate
+                    
+                }
+            })
+        }
+        else if(type=='order'){
+           
+            models=await Order.find(
+                {
+                createAt:{
+                    $gte:startDate,
+                    $lt:endDate
+                    
+                }
+            })
+        }
+         
+
+            // var i2=(index+1)*10+'f'
+            var res2=models.length
+
+
+                resultArray.push(
+                     res2
+                 )
+           
+        }
+       
+      
+    ))
+        
+    
+
+
+    res.status(201).json({
+        type,
+        resultArray,
+        dateArray
+    })
+})
