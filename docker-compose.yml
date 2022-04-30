@@ -4,5 +4,6 @@ services:
     image: 'redis'
   node-app:
     build: .
+    image: 'deskita'
     ports:
     - "8080:4000"

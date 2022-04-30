@@ -818,9 +818,9 @@ exports.analyticsByDate=catchAsyncError(async(req,res,next)=>{
     const dateArray=getDates(dateStartToDate,dateEndToDate)
    
     var resultArray=[]
-    await Promise.all( dateArray.map(async (date,index)=>{
-        var startDate=new Date(dateArray[index])
-        // startDate.setUTCHours(0,0,0,0)
+
+    for (const date of dateArray) {
+        var startDate=new Date(date)
         var endDate=new Date(startDate)
         endDate.setHours(23,59,59,999)
         if(type=='product'){
@@ -844,27 +844,46 @@ exports.analyticsByDate=catchAsyncError(async(req,res,next)=>{
                 }
             })
         }
-         
-
-            // var i2=(index+1)*10+'f'
-            var res2=models.length
-
-
-                resultArray.push(
-                     res2
-                 )
-           
+        else if(type=='customer'){
+            models=await User.find(
+                {
+                createAt:{
+                    $gte:startDate,
+                    $lt:endDate
+                    
+                }
+            })
+        }
+        else if(type=='total'){
+            models=await Order.find(
+                {
+                createAt:{
+                    $gte:startDate,
+                    $lt:endDate
+                    
+                },
+                orderStatus:"Complete"
+            })
+        }
+        var res2
+        if(type=='total'){
+            res2=models.reduce((n,{totalPrice})=>n+totalPrice,0)
+        }
+        else{
+            res2=models.length
         }
        
-      
-    ))
-        
+
+        resultArray.push(
+             res2
+         )
+      }
+      var total=resultArray.reduce((a,b)=>a+b,0)
+
     
-
-
     res.status(201).json({
         type,
         resultArray,
-        dateArray
+        total
     })
 })
