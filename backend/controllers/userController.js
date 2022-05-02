@@ -316,3 +316,25 @@ exports.getAllUsers=catchAsyncErrors(async(req,res,next)=>{
         user
     })
 })
+
+exports.loginAdmin=catchAsyncErrors(async (req,res,next)=>{
+    const {email,password}=req.body
+    //check email or password entered
+    if(!email||!password){
+        return next(new ErrorHandler('Please enter email or password',400))
+    }
+    //finding user in database
+    const userLogin=await UserLogin.findOne({email,role:'admin'}).select('+password')
+
+    if(!userLogin){
+        return next(new ErrorHandler('Invalid email or password',401))
+    }
+    //check password correct or not
+    const isPasswordMatched=await userLogin.comparePassword(password)
+
+    if(!isPasswordMatched){
+        return next(new ErrorHandler('Invalid email or password',401))
+    }
+    
+    sendToken(userLogin,200,res)
+})

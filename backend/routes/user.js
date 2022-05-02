@@ -15,7 +15,8 @@ const {
     deleteUser,
     getUsersSearch,
     getAllUsers,
-    deleteUserLoginMe}=require('../controllers/userController')
+    deleteUserLoginMe,
+    loginAdmin}=require('../controllers/userController')
 const { isAuthenticatedUser ,authorizeRoles} = require('../middlewares/user')
 
 router.route('/user/create').post(registerUser)
@@ -46,5 +47,5 @@ router.route('/admin/user/:id')
 
 //for mobile
 router.route('/mobile/admin/user').get(isAuthenticatedUser,authorizeRoles('admin'),getAllUsers)
-
+router.route('/admin/login').post(loginAdmin)
 module.exports=router;
