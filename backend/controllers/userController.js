@@ -79,7 +79,7 @@ exports.forgotPassword=catchAsyncErrors(async(req,res,next)=>{
     const message =`Your password reset token is a follow: \n\n${resetUrl}\n\nIf you have not requested this email, then ignore it
     \n\n If you recovery with app mobile, code you app mobile: ${numberToken}`
     try {
-        sendEmail({
+        await sendEmail({
             email:userLogin.email,
             subject :'Deskita Password recovery',
             message
