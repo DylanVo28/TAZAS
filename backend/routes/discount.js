@@ -9,4 +9,6 @@ router.route('/admin/discount/:id').get(getDiscountDetail)
 .delete(isAuthenticatedUser,authorizeRoles('admin'),removeDiscount)
 .put(isAuthenticatedUser,authorizeRoles('admin'),updateStock)
 router.route('/discount/:name').get(isAuthenticatedUser,getDiscount)
+router.route('/discounts').get(getDiscountByName)
+
 module.exports=router;
