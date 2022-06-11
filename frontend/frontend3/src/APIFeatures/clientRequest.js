@@ -614,6 +614,14 @@ class ClientRequest{
                 }, reject)
         })  
     }
+
+    getCryptoCompare(){
+        return new Promise((resolve,reject)=>{
+            axios.get(`https://min-api.cryptocompare.com/data/price?fsym=ETH&tsyms=BTC,USD,EUR,ETH`).then(result => {
+                    resolve(result.data)
+                }, reject)
+        })  
+    }
 }
 const clientRequest = new ClientRequest();
 export default clientRequest;

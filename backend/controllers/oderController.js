@@ -209,3 +209,19 @@ exports.deleteOrder = catchAsyncError(async (req, res, next) => {
         success: true
     })
 })
+
+exports.payUsingEthereum=catchAsyncError(async (req,res,next)=>{
+    const order=await Order.findById(req.params.id)
+    if (!order) {
+        return next(new ErrorHandler('Order not found', 404))
+    }
+    const {amount,orderETH}=req.body
+    if(amount<orderETH){
+        return next(new ErrorHandler('amount must > orderETH', 404))
+    }
+    order.paymentMethod='ETH'
+    await order.save()
+    res.status(200).json({
+        success: true
+    })
+})

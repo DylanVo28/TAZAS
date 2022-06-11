@@ -39,6 +39,9 @@
     "validator": "^13.5.2"
   },
   "devDependencies": {
+    "@nomiclabs/hardhat-waffle": "^2.0.3",
+    "ethereum-waffle": "^3.4.4",
+    "hardhat": "^2.9.7",
     "nodemon": "^2.0.7"
   },
   "proxy": "http://localhost:4000"

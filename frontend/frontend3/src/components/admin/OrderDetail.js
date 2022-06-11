@@ -1,17 +1,30 @@
 import axios from 'axios';
+import { useContext } from 'react';
 import { useEffect } from 'react';
 import { useState } from 'react';
 import { NotificationManager, NotificationContainer } from 'react-notifications';
 import clientRequest from '../../APIFeatures/clientRequest';
+import { TransactionContext } from '../../context/TransactionContext';
+import ModalComponent from '../shared/ModalComponent';
 import {getFormattedDate} from './../../HandlerCaculate/formatDate';
 import ModalPopup from './../shared/ModalPopup';
 
 const OrderDetail=(props)=>{
+  const {connectWallet,currentAccount,formData,setFormData,handleChange,sendTransaction} =useContext(TransactionContext)
+
     const [order,setOrder]=useState({})
     const [user,setUser]=useState({})
     const [showModal,setShowModal]=useState(false)
+    const [openFormETH,setOpenFormETH]=useState(false)
+
     const [tableItems,setTableItems]=useState()
     const [discount,setDiscount]=useState()
+    const [crypto,setCrypto]=useState({
+        BTC:0,
+        ETH:0,
+        EUR:0,
+        USD:0
+    })
     useEffect(() => {
         if(props.match.path=='/order/me/:id'){
             async function fetchMyAPI() {
@@ -20,6 +33,9 @@ const OrderDetail=(props)=>{
                     setTableItems(res.orderItems)
                     setUser(res.user)
                     setDiscount(res.discount)
+                })
+                clientRequest.getCryptoCompare().then(res=>{
+                    setCrypto({...res})
                 })
             }
             fetchMyAPI()
@@ -97,6 +113,17 @@ const OrderDetail=(props)=>{
                 }
          </>
     }
+    const FormEthereum=()=>{
+        return <>
+            <input placeholder='Address To' name="address" onChange={(e)=>handleChange(e,"address")}></input>
+            <input placeholder='Amount (ETH)' name="amount" onChange={(e)=>handleChange(e,"amount")}></input>
+            <input placeholder='Keyword (Gif)' name="keyword" onChange={(e)=>handleChange(e,"keyword")}></input>
+            <input placeholder='Enter Message' name="message" onChange={(e)=>handleChange(e,"message")}></input>
+        </>
+    }
+    const changeUSDToETH=()=>{
+        return Math.round((order.totalPrice/crypto.USD)*crypto.ETH*100)/100
+    }
     const FormTotal=()=>{
         return <>
                 <h4>Total</h4>
@@ -113,26 +140,19 @@ const OrderDetail=(props)=>{
     <div className='col-8'>{order.shippingPrice}</div>
     <div className='col-4'>Total Price:</div>
     <div className='col-8'>{order.totalPrice}</div>
+    <div className='col-4'>ETH:</div>
+    <div className='col-8'>{changeUSDToETH()}</div>
     <div className='col-4'>Order Status:</div>
     <div className='col-8'>{order.orderStatus}</div>
     <div className='col-4'>Created At:</div>
     <div className='col-8'>{getFormattedDate(order.createAt)}</div>
     <div className='col-4'>Discount code:</div>
     {discount&&<div className='col-8'>{discount.name}</div>}
+
 </div>
         </>
     }
-    const deleteItem=()=>{
-        props.match.path=='/admin/order/:id'  && clientRequest.deleteOrder(order._id).then(res=>{
-            NotificationManager.success('Success', 'Delete success');
-            window.location.href = '/admin/orders';
-        })
-        props.match.path=='/order/me/:id' && clientRequest.deleteMyOrder(order._id).then(res=>{
-       NotificationManager.success('Success', 'Delete success');
-            window.location.href = '/order/me';
-            
-        } ).catch(err=>NotificationManager.error('Error', 'Cannot delete order'))
-    }
+   
     const updateOrderStatus=(status)=>{
         clientRequest.updateOrder(order._id,status).then(res=>{setOrder({...order,orderStatus:res.order.orderStatus})
         NotificationManager.success('Success', 'success');
@@ -160,6 +180,11 @@ const OrderDetail=(props)=>{
                 <FormTotal/>
             </div>
         </div>
+        <div className='row'>
+            {!currentAccount &&  <button onClick={()=>connectWallet()}>Connect metamask</button> }
+            <button onClick={()=>{connectWallet()
+            setOpenFormETH(!openFormETH)}}>Thanh toán qua ethereum</button>
+        </div>
        <NotificationContainer/>
         <div className='btn-group'>
         {(order.orderStatus=='Processing' && props.match.path=='/admin/order/:id')&&<button className='btn' 
@@ -170,7 +195,13 @@ const OrderDetail=(props)=>{
         onClick={(status)=>updateOrderStatus('Complete')}>Has Received</button>}
          {(order.orderStatus=='Processing'&& props.match.path=='/order/me/:id')&&<button className='btn' 
         onClick={(status)=>updateOrderStatus('Cancel')}>Cancel Order</button>}
-        
+        <ModalComponent 
+            open={openFormETH}
+            submit={()=>sendTransaction()}
+            form={FormEthereum()}
+        >
+
+        </ModalComponent>
         <ModalPopup
          open={showModal}
          handleChange={()=>setShowModal(!showModal)}
