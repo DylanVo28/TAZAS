@@ -1,8 +1,9 @@
 import { React, useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import {register,clearErrors} from '../../actions/userActions'
 import {NotificationContainer, NotificationManager} from 'react-notifications';
+import clientRequest from '../../APIFeatures/clientRequest';
 const MenuSignUp=()=>{
     return (<nav className="navbar navbar-expand-lg position-absolute top-0 z-index-3 w-100 shadow-none my-3  navbar-transparent mt-4">
     <div className="container">
@@ -65,7 +66,12 @@ const Form=()=>{
     const [avatarPreview,setAvatarPreview]=useState('')
     const [avatar,setAvatar]=useState('')
     const dispatch=useDispatch()
-    const submitRegister=(e)=>{
+    const [isRedirect,setIsRedirect]=useState(false)
+    const delay = (ms) => new Promise(resolve =>
+      setTimeout(resolve, ms)
+    );
+    const submitRegister= async (e)=>{
+      try{
         e.preventDefault();
         
         const userData={
@@ -74,7 +80,15 @@ const Form=()=>{
             "password":password,
             // "avatar":avatar
         }
-        dispatch(register(userData))
+        await clientRequest.createUser(userData).then(res=>{
+          NotificationManager.success('Success message', 'Account successfully created')
+          setIsRedirect(!isRedirect)
+      })
+       
+      }catch{
+
+      }
+       
         
     }
     const onChangeAvatar=(e)=>{
@@ -88,32 +102,23 @@ const Form=()=>{
       
       reader.readAsDataURL(e.target.files[0])
     }
-    return (<div className="card z-index-0">
+    return (<>
+    {isRedirect && <Redirect to="/login"/>}
+    <div className="card z-index-0">
     <div className="card-header text-center pt-4">
       <h5>Register</h5>
     </div>
     
     <div className="card-body">
       <form role="form text-left" onSubmit={submitRegister}>
-        {/* <div className="mb-3">
-          <input onChange={(e)=>setName(e.currentTarget.value)} type="text" className="form-control" placeholder="Name" aria-label="Name" aria-describedby="email-addon" />
-        </div> */}
+       
         <div className="mb-3">
           <input onChange={(e)=>setEmail(e.currentTarget.value)} type="email" className="form-control" placeholder="Email" aria-label="Email" aria-describedby="email-addon" />
         </div>
         <div className="mb-3">
           <input onChange={(e)=>setPassword(e.currentTarget.value)} type="password" className="form-control" placeholder="Password" aria-label="Password" aria-describedby="password-addon" />
         </div>
-        {/* <div className="mb-3">
-          <input 
-          type='file'
-          name='avatar'
-          className='custom-file-input'
-          accept='images/*'
-          onChange={(e)=>onChangeAvatar(e)}
-          />
-          <img className={'avatar-preview'} src={avatar}/>
-        </div> */}
+      
        
         <div className="text-center">
           <button type="submit" className="btn bg-gradient-dark w-100 my-4 mb-2">Sign up</button>
@@ -122,6 +127,7 @@ const Form=()=>{
       </form>
     </div>
   </div>
+  </>
   )
 }
 const SignUp=()=>{

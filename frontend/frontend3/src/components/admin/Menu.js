@@ -1,19 +1,31 @@
 import { React, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { useEffect } from 'react';
 import axios from 'axios';
 import clientRequest from './../../APIFeatures/clientRequest';
+import { logoutUser } from './../../actions/userActions';
+import { useDispatch } from 'react-redux';
 const Menu =(props)=>{
   const [avatar,setAvatar]=useState('')
+  const dispatch=useDispatch()
+  const [redirect, setRedirect]=useState(false)
   useEffect(()=>{
   clientRequest.getProfileMe().then(res=>setAvatar(res.user.avatar.url))
   
   },[])
-  const logoutUser=()=>{
-    localStorage.removeItem("token");
-    window.location.href='/login'
+  const logoutUser1=()=>{
+    try {
+      dispatch(logoutUser())
+      setRedirect(!redirect)
+  
+    } catch (error) {
+      
+    }
+  
+    
   }
-    return (
+    return (<>
+    {redirect &&  <Redirect to="/login" />}
         <nav className="navbar navbar-main navbar-expand-lg px-0 mx-4 border-radius-xl shadow-none" id="navbarBlur" navbar-scroll="true">
   <div className="container-fluid py-1 px-3">
     
@@ -29,7 +41,7 @@ const Menu =(props)=>{
           <div className={'show-menu'}>
             <ul>
               <li><Link to='/profile'>Profile</Link></li>
-              <li onClick={()=>logoutUser()}>Log out</li>
+              <li onClick={()=>logoutUser1()}>Log out</li>
             </ul>
           </div>
         </li>
@@ -49,6 +61,7 @@ const Menu =(props)=>{
   </div>
 </nav>
 
+</>
     )
 }
 export default Menu

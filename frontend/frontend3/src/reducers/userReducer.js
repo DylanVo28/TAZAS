@@ -8,11 +8,24 @@ import {
     REGISTER_USER_SUCCESS, 
     LOAD_USER_REQUEST,
     LOAD_USER_FAIL,
-    LOAD_USER_SUCCESS} from './../constants/userConstants';
+    LOAD_USER_SUCCESS,
+    LOGOUT_USER} from './../constants/userConstants';
 export const authReducer=(state={user:{}},action)=>{
     switch(action.type){
-        
+        case LOGOUT_USER:
+            delete state['loading']
+            delete state['isAuthenticated']
+            delete state['user']
+            return {
+                ...state
+            }
         case LOAD_USER_REQUEST:
+            return {
+                ...state,
+                loading:false,
+                isAuthenticated:true,
+                user:action.payload
+            }
         case LOGIN_REQUEST:
         case REGISTER_USER_REQUEST:
             return{
@@ -22,6 +35,12 @@ export const authReducer=(state={user:{}},action)=>{
 
         case LOAD_USER_SUCCESS:
         case LOGIN_SUCCESS:
+            return {
+                ...state,
+                loading:false,
+                isAuthenticated:true,
+                user:action.payload
+            }
         case REGISTER_USER_SUCCESS:
             return {
                 ...state,

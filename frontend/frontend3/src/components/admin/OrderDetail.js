@@ -1,216 +1,294 @@
-import axios from 'axios';
-import { useContext } from 'react';
-import { useEffect } from 'react';
-import { useState } from 'react';
-import { NotificationManager, NotificationContainer } from 'react-notifications';
-import clientRequest from '../../APIFeatures/clientRequest';
-import { TransactionContext } from '../../context/TransactionContext';
-import ModalComponent from '../shared/ModalComponent';
-import {getFormattedDate} from './../../HandlerCaculate/formatDate';
-import ModalPopup from './../shared/ModalPopup';
+import axios from "axios";
+import { useContext } from "react";
+import { useEffect } from "react";
+import { useState } from "react";
+import {
+  NotificationManager,
+  NotificationContainer,
+} from "react-notifications";
+import clientRequest from "../../APIFeatures/clientRequest";
+import { TransactionContext } from "../../context/TransactionContext";
+import ModalComponent from "../shared/ModalComponent";
+import { getFormattedDate } from "./../../HandlerCaculate/formatDate";
+import ModalPopup from "./../shared/ModalPopup";
 
-const OrderDetail=(props)=>{
-  const {connectWallet,currentAccount,formData,setFormData,handleChange,sendTransaction} =useContext(TransactionContext)
+const OrderDetail = (props) => {
+  const {
+    connectWallet,
+    currentAccount,
+    formData,
+    setFormData,
+    handleChange,
+    sendTransaction,
+  } = useContext(TransactionContext);
 
-    const [order,setOrder]=useState({})
-    const [user,setUser]=useState({})
-    const [showModal,setShowModal]=useState(false)
-    const [openFormETH,setOpenFormETH]=useState(false)
+  const [order, setOrder] = useState({});
+  const [user, setUser] = useState({});
+  const [showModal, setShowModal] = useState(false);
+  const [openFormETH, setOpenFormETH] = useState(false);
 
-    const [tableItems,setTableItems]=useState()
-    const [discount,setDiscount]=useState()
-    const [crypto,setCrypto]=useState({
-        BTC:0,
-        ETH:0,
-        EUR:0,
-        USD:0
-    })
-    useEffect(() => {
-        if(props.match.path=='/order/me/:id'){
-            async function fetchMyAPI() {
-                clientRequest.getOrder(props.match.params.id).then(res=>{
-                    setOrder(res.order)
-                    setTableItems(res.orderItems)
-                    setUser(res.user)
-                    setDiscount(res.discount)
-                })
-                clientRequest.getCryptoCompare().then(res=>{
-                    setCrypto({...res})
-                })
-            }
-            fetchMyAPI()
-        }
-        if(props.match.path=='/admin/order/:id'){
-            async function fetchMyAPIRoleAdmin() {
-                clientRequest.getOrderRoleAdmin(props.match.params.id).then(res=>{
-                    setOrder(res.order)
-                    setTableItems(res.orderItems)
-                    setUser(res.user)
-                    setDiscount(res.discount)
-                })
-            }
-            fetchMyAPIRoleAdmin()
-        }
-       
-      }, [])
-   const FormUser=()=>{
-                return (<>
-                <h4>Customer</h4>
-                {user._id&&<div className='row form-user'>
-                    <div className='col-12'>
-                        <div className="avatar">
-                        <img src={user.avatar.url}/>
-
-                        </div>
-                    </div>
-                <div className='col-3'>Email:</div>
-    <div className='col-9'>{user.emailUser}</div>
-    <div className='col-3'>Name:</div>
-    <div className='col-9'>{user.name}</div>
-
-                    </div>}
-       </>)
-   }
-    const FormShippingInfo=()=>{
-        return (<>
-        <h4>Shipping Info</h4>{order.shippingInfo&&
-                <div className={'row'}>
-
-                    <div className='col-3'>Address:</div>
-    <div className='col-9'>{order.shippingInfo.address}</div>
-    <div className='col-3'>City:</div>
-    <div className='col-9'>{order.shippingInfo.city}</div>
-    <div className='col-3'>Phone Num:</div>
-    <div className='col-9'>{order.shippingInfo.phoneNo}</div>
-    <div className='col-3'>Postal Code:</div>
-    <div className='col-9'>{order.shippingInfo.postalCode}</div>
-    <div className='col-3'>Country:</div>
-    <div className='col-9'>{order.shippingInfo.country}</div>
-    
-
-</div>}</>)
+  const [tableItems, setTableItems] = useState();
+  const [discount, setDiscount] = useState();
+  const [crypto, setCrypto] = useState({
+    BTC: 0,
+    ETH: 0,
+    EUR: 0,
+    USD: 0,
+  });
+  useEffect(() => {
+    if (props.match.path == "/order/me/:id") {
+      async function fetchMyAPI() {
+        clientRequest.getOrder(props.match.params.id).then((res) => {
+          setOrder(res.order);
+          setTableItems(res.orderItems);
+          setUser(res.user);
+          setDiscount(res.discount);
+        });
+        clientRequest.getCryptoCompare().then((res) => {
+          setCrypto({ ...res });
+        });
+      }
+      fetchMyAPI();
     }
-    const FormItems=()=>{
-        return <>
-            <h4>Order Items</h4>{order.orderItems&&<>
-              <div className='row'>
-                <div className='col-3'>Name</div>
-                <div className='col-3'>Quantity</div>
-                <div className='col-3'>Image</div>
-                <div className='col-3'>Price</div>
-
-
+    if (props.match.path == "/admin/order/:id") {
+      async function fetchMyAPIRoleAdmin() {
+        clientRequest.getOrderRoleAdmin(props.match.params.id).then((res) => {
+          setOrder(res.order);
+          setTableItems(res.orderItems);
+          setUser(res.user);
+          setDiscount(res.discount);
+        });
+      }
+      fetchMyAPIRoleAdmin();
+    }
+  }, []);
+  const FormUser = () => {
+    return (
+      <>
+        <h4>Customer</h4>
+        {user._id && (
+          <div className="row form-user">
+            <div className="col-12">
+              <div className="avatar">
+                <img src={user.avatar.url} />
               </div>
-              {tableItems&&tableItems.map(item=><div className='row'>
-              <div className='col-3'>{item.name}</div>
-                <div className='col-3'>{item.quantity}</div>
-                <div className='col-3'>
-                    <img src={item.image} style={{width:'40px'}}/>
-                    </div>
-                <div className='col-3'>{item.price}</div>
-              </div>)}
-              </>
-                }
-         </>
-    }
-    const FormEthereum=()=>{
-        return <>
-            <input placeholder='Address To' name="address" onChange={(e)=>handleChange(e,"address")}></input>
-            <input placeholder='Amount (ETH)' name="amount" onChange={(e)=>handleChange(e,"amount")}></input>
-            <input placeholder='Keyword (Gif)' name="keyword" onChange={(e)=>handleChange(e,"keyword")}></input>
-            <input placeholder='Enter Message' name="message" onChange={(e)=>handleChange(e,"message")}></input>
-        </>
-    }
-    const changeUSDToETH=()=>{
-        return Math.round((order.totalPrice/crypto.USD)*crypto.ETH*100)/100
-    }
-    const FormTotal=()=>{
-        return <>
-                <h4>Total</h4>
-                <div className={'row'}>
-    <div className='col-4'>Payment method:</div>
-    <div className='col-8'>{order.paymentMethod}</div>
-    <div className='col-4'>Paid At:</div>
-    <div className='col-8'>{order.paidAt?getFormattedDate(order.paidAt):""}</div>
-    <div className='col-4'>Items Price:</div>
-    <div className='col-8'>{order.itemsPrice}</div>
-    <div className='col-4'>Tax Price:</div>
-    <div className='col-8'>{order.taxPrice}</div>
-    <div className='col-4'>Shipping Price:</div>
-    <div className='col-8'>{order.shippingPrice}</div>
-    <div className='col-4'>Total Price:</div>
-    <div className='col-8'>{order.totalPrice}</div>
-    <div className='col-4'>ETH:</div>
-    <div className='col-8'>{changeUSDToETH()}</div>
-    <div className='col-4'>Order Status:</div>
-    <div className='col-8'>{order.orderStatus}</div>
-    <div className='col-4'>Created At:</div>
-    <div className='col-8'>{getFormattedDate(order.createAt)}</div>
-    <div className='col-4'>Discount code:</div>
-    {discount&&<div className='col-8'>{discount.name}</div>}
+            </div>
+            <div className="col-3">Email:</div>
+            <div className="col-9">{user.emailUser}</div>
+            <div className="col-3">Name:</div>
+            <div className="col-9">{user.name}</div>
+          </div>
+        )}
+      </>
+    );
+  };
+  const FormShippingInfo = () => {
+    return (
+      <>
+        <h4>Shipping Info</h4>
+        {order.shippingInfo && (
+          <div className={"row"}>
+            <div className="col-3">Address:</div>
+            <div className="col-9">{order.shippingInfo.address}</div>
+            <div className="col-3">City:</div>
+            <div className="col-9">{order.shippingInfo.city}</div>
+            <div className="col-3">Phone Num:</div>
+            <div className="col-9">{order.shippingInfo.phoneNo}</div>
+            <div className="col-3">Postal Code:</div>
+            <div className="col-9">{order.shippingInfo.postalCode}</div>
+            <div className="col-3">Country:</div>
+            <div className="col-9">{order.shippingInfo.country}</div>
+          </div>
+        )}
+      </>
+    );
+  };
+  const FormItems = () => {
+    return (
+      <>
+        <h4>Order Items</h4>
+        {order.orderItems && (
+          <>
+            <div className="row">
+              <div className="col-3">Name</div>
+              <div className="col-3">Quantity</div>
+              <div className="col-3">Image</div>
+              <div className="col-3">Price</div>
+            </div>
+            {tableItems &&
+              tableItems.map((item) => (
+                <div className="row">
+                  <div className="col-3">{item.name}</div>
+                  <div className="col-3">{item.quantity}</div>
+                  <div className="col-3">
+                    <img src={item.image} style={{ width: "40px" }} />
+                  </div>
+                  <div className="col-3">{item.price}</div>
+                </div>
+              ))}
+          </>
+        )}
+      </>
+    );
+  };
+  const FormEthereum = () => {
+    return (
+      <>
+        <input
+          placeholder="Address To"
+          name="address"
+          onChange={(e) => handleChange(e, "address")}
+        ></input>
+        <input
+          placeholder="Amount (ETH)"
+          name="amount"
+          onChange={(e) => handleChange(e, "amount")}
+        ></input>
+        <input
+          placeholder="Keyword (Gif)"
+          name="keyword"
+          onChange={(e) => handleChange(e, "keyword")}
+        ></input>
+        <input
+          placeholder="Enter Message"
+          name="message"
+          onChange={(e) => handleChange(e, "message")}
+        ></input>
+      </>
+    );
+  };
+  const changeUSDToETH = () => {
+    return Math.round((order.totalPrice / crypto.USD) * crypto.ETH * 100) / 100;
+  };
+  const FormTotal = () => {
+    return (
+      <>
+        <h4>Total</h4>
+        <div className={"row"}>
+          <div className="col-4">Payment method:</div>
+          <div className="col-8">{order.paymentMethod}</div>
+          <div className="col-4">Paid At:</div>
+          <div className="col-8">
+            {order.paidAt ? getFormattedDate(order.paidAt) : ""}
+          </div>
+          <div className="col-4">Items Price:</div>
+          <div className="col-8">{order.itemsPrice}</div>
+          <div className="col-4">Tax Price:</div>
+          <div className="col-8">{order.taxPrice}</div>
+          <div className="col-4">Shipping Price:</div>
+          <div className="col-8">{order.shippingPrice}</div>
+          <div className="col-4">Total Price:</div>
+          <div className="col-8">{order.totalPrice}</div>
+          <div className="col-4">ETH:</div>
+          <div className="col-8">{changeUSDToETH()}</div>
+          <div className="col-4">Order Status:</div>
+          <div className="col-8">{order.orderStatus}</div>
+          <div className="col-4">Created At:</div>
+          <div className="col-8">{getFormattedDate(order.createAt)}</div>
+          <div className="col-4">Discount code:</div>
+          {discount && <div className="col-8">{discount.name}</div>}
+        </div>
+      </>
+    );
+  };
 
-</div>
-        </>
-    }
-   
-    const updateOrderStatus=(status)=>{
-        clientRequest.updateOrder(order._id,status).then(res=>{setOrder({...order,orderStatus:res.order.orderStatus})
-        NotificationManager.success('Success', 'success');
-    }).catch(err=>NotificationManager.error('Success', 'error'))
-    }
+  const updateOrderStatus = (status) => {
+    clientRequest
+      .updateOrder(order._id, status)
+      .then((res) => {
+        setOrder({ ...order, orderStatus: res.order.orderStatus });
+        NotificationManager.success("Success", "success");
+      })
+      .catch((err) => NotificationManager.error("Success", "error"));
+  };
 
-    return (        <div className="container-fluid py-4 order-detail">
-        <div className="row">
-            <div className="col-md-5 frame">
-                <FormShippingInfo/>
-            </div>
-            <div className="col-md-2"></div>
-            
-            <div className="col-md-5 frame">
-                <FormUser/>
-            </div>
+  return (
+    <div className="container-fluid py-4 order-detail">
+      <div className="row">
+        <div className="col-md-5 frame">
+          <FormShippingInfo />
         </div>
-        <br></br>
-        <div className="row">
-            <div className="col-md-6 frame">
-                <FormItems/>
-            </div>
-            <div className="col-md-2"></div>
-            <div className="col-md-4 frame">
-                <FormTotal/>
-            </div>
+        <div className="col-md-2"></div>
+
+        <div className="col-md-5 frame">
+          <FormUser />
         </div>
-        <div className='row'>
-            {!currentAccount &&  <button onClick={()=>connectWallet()}>Connect metamask</button> }
-            <button onClick={()=>{connectWallet()
-            setOpenFormETH(!openFormETH)}}>Thanh toán qua ethereum</button>
+      </div>
+      <br></br>
+      <div className="row">
+        <div className="col-md-6 frame">
+          <FormItems />
         </div>
-       <NotificationContainer/>
-        <div className='btn-group'>
-        {(order.orderStatus=='Processing' && props.match.path=='/admin/order/:id')&&<button className='btn' 
-        onClick={(status)=>updateOrderStatus('Confirmed')}>Confirm Order</button>}
-        {(order.orderStatus=='Confirmed'&& props.match.path=='/admin/order/:id')&&<button className='btn' 
-        onClick={(status)=>updateOrderStatus('Delivered')}>Delivered</button>}
-        {(order.orderStatus=='Delivered'&& props.match.path=='/order/me/:id')&&<button className='btn' 
-        onClick={(status)=>updateOrderStatus('Complete')}>Has Received</button>}
-         {(order.orderStatus=='Processing'&& props.match.path=='/order/me/:id')&&<button className='btn' 
-        onClick={(status)=>updateOrderStatus('Cancel')}>Cancel Order</button>}
-        <ModalComponent 
-            open={openFormETH}
-            submit={()=>sendTransaction()}
-            form={FormEthereum()}
+        <div className="col-md-2"></div>
+        <div className="col-md-4 frame">
+          <FormTotal />
+        </div>
+      </div>
+      <div className="row">
+        {!currentAccount && (
+          <button onClick={() => connectWallet()}>Connect metamask</button>
+        )}
+        <button
+          onClick={() => {
+            connectWallet();
+            setOpenFormETH(!openFormETH);
+          }}
         >
-
-        </ModalComponent>
+          Thanh toán qua ethereum
+        </button>
+      </div>
+      <NotificationContainer />
+      <div className="btn-group">
+        {order.orderStatus == "Processing" &&
+          props.match.path == "/admin/order/:id" && (
+            <button
+              className="btn"
+              onClick={(status) => updateOrderStatus("Confirmed")}
+            >
+              Confirm Order
+            </button>
+          )}
+        {order.orderStatus == "Confirmed" &&
+          props.match.path == "/admin/order/:id" && (
+            <button
+              className="btn"
+              onClick={(status) => updateOrderStatus("Delivered")}
+            >
+              Delivered
+            </button>
+          )}
+        {order.orderStatus == "Delivered" &&
+          props.match.path == "/order/me/:id" && (
+            <button
+              className="btn"
+              onClick={(status) => updateOrderStatus("Complete")}
+            >
+              Has Received
+            </button>
+          )}
+        {order.orderStatus == "Processing" &&
+          props.match.path == "/order/me/:id" && (
+            <button
+              className="btn"
+              onClick={(status) => updateOrderStatus("Cancel")}
+            >
+              Cancel Order
+            </button>
+          )}
+        <ModalComponent
+          open={openFormETH}
+          submit={() => sendTransaction()}
+          form={FormEthereum()}
+        ></ModalComponent>
         <ModalPopup
-         open={showModal}
-         handleChange={()=>setShowModal(!showModal)}
-         title={"Product delivered, doesn't delete"}
-        //  linkTo={'/login'}
-        //  titleLinkTo={'Login'}
+          open={showModal}
+          handleChange={() => setShowModal(!showModal)}
+          title={"Product delivered, doesn't delete"}
+          //  linkTo={'/login'}
+          //  titleLinkTo={'Login'}
         />
-        </div>
+      </div>
     </div>
-    )
-}
-export default OrderDetail
+  );
+};
+export default OrderDetail;

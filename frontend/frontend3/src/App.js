@@ -22,10 +22,10 @@ import MenuHome from './components/shop/MenuHome';
 import CartItems from './components/shop/cart/CartItems';
 import 'reactjs-popup/dist/index.css';
 import clientRequest from "./APIFeatures/clientRequest";
-// import {loadStripe} from '@stripe/stripe-js';
-// import {Elements} from '@stripe/react-stripe-js';
+import { useDispatch } from "react-redux";
+import { LOAD_USER_REQUEST } from "./constants/userConstants";
+import { getCryptoCurrency } from './actions/etherActions';
 
-// const stripePromise = loadStripe('pk_test_51It4PvLgUSTDjbyWTlRELXx6IQ2Bj9G8W3xaZboFziEHqkyqAzvWJyV05ay6gXGHfNZ4L2KshB0aIp3Xu62FTy4k000LIG8GRA');
 const ProtectedRoute = ({ component: Component, ...rest }) => {
   return (
     <Route {...rest} render={
@@ -42,6 +42,7 @@ const PrivateRoute = ({ component: Component, handleLogout, isAuthenticated, ...
 );
 function App() {
   const [authenticated,setAuthenticated]=useState(true)
+  let dispatch = useDispatch();
   useEffect(async()=>{
     if(!localStorage.getItem("token")){
       setAuthenticated(false)
@@ -49,6 +50,8 @@ function App() {
     else{
       setAuthenticated(true)
     }
+    dispatch(loadUser());
+    dispatch(getCryptoCurrency())
   },[])
   
   return (

@@ -4,7 +4,11 @@ import clientRequest from '../../APIFeatures/clientRequest';
 import {compareValidDate, getFormattedDate, validateEmail, validateFullName, validatePhoneNumber} from '../../HandlerCaculate/formatDate';
 import Curved from '../../images/curved0.jpg'
 import { NotificationManager, NotificationContainer } from 'react-notifications';
+import { useDispatch, useSelector } from 'react-redux';
+import { getUser } from '../../slice/UserSlice';
 const UserDetail=(props)=>{
+    let profile = useSelector(getUser);
+    let dispatch = useDispatch();
     const [user,setUser]=useState({
         name:"",
         url:'',
@@ -33,6 +37,7 @@ const UserDetail=(props)=>{
             setAvatarPr(res.user.avatar.url)
           })
         }
+        
     },[])
     const onChangeAvatar=(e)=>{
       const reader=new FileReader()
