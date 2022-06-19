@@ -225,10 +225,11 @@ const OrderDetail = (props) => {
         </div>
       </div>
       <div className="row">
-        {!currentAccount && (
+        {(!currentAccount && order.paymentMethod!=='ETH') && (
           <button onClick={() => connectWallet()}>Connect metamask</button>
         )}
-        <button
+        { order.paymentMethod!=='ETH'&&
+          <button
           onClick={() => {
             connectWallet();
             setOpenFormETH(!openFormETH);
@@ -236,6 +237,7 @@ const OrderDetail = (props) => {
         >
           Thanh toán qua ethereum
         </button>
+        }
       </div>
       <NotificationContainer />
       <div className="btn-group">
