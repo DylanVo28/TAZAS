@@ -225,10 +225,10 @@ const OrderDetail = (props) => {
         </div>
       </div>
       <div className="row">
-        {(!currentAccount && order.paymentMethod!=='ETH') && (
+        {(!currentAccount && order.paymentMethod!=='ETH' && order.orderStatus!=='Complete') && (
           <button onClick={() => connectWallet()}>Connect metamask</button>
         )}
-        { order.paymentMethod!=='ETH'&&
+        { (order.paymentMethod!=='ETH' && order.orderStatus!=='Complete')&&
           <button
           onClick={() => {
             connectWallet();
