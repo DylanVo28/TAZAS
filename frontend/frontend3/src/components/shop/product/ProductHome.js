@@ -13,7 +13,7 @@ import {
 } from 'react-notifications';
 import ReactStars from 'react-rating-stars-component';
 import { getFormattedDate } from '../../../HandlerCaculate/formatDate';
-
+import { formatterMoney } from '../../../HandlerCaculate/formatDate';
 const ProductHome = (props) => {
   const [product, setProduct] = useState({
     name: '',
@@ -114,7 +114,7 @@ const ProductHome = (props) => {
             </>
           )}
           <h6>{averageReview} average review</h6>
-          <h3>{product.price}$</h3>
+          <h3>{formatterMoney.format(product.price)}$</h3>
           <br></br>
           <p className='product-home_description'>{product.description}</p>
           <br></br>

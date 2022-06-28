@@ -11,6 +11,7 @@ import MenuHome from '../MenuHome';
 import { Popup } from 'reactjs-popup';
 import ModalPopup from '../../shared/ModalPopup';
 import { set } from 'mongoose';
+import { formatterMoney } from '../../../HandlerCaculate/formatDate';
 
 
 const CaroselHome=()=>{
@@ -145,7 +146,7 @@ const Home =()=>{
 
         <div className="product-info" style={{display:'flex',justifyContent:'space-between'}}>
             <span>{item.name}</span>
-            <span>{item.price}$</span>
+            <span>{formatterMoney.format(item.price)}</span>
           </div>
           </div>
         </Link>

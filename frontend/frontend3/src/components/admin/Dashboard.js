@@ -8,6 +8,7 @@ import Sidebar from "./Sidebar";
 import { loadUser } from "../../actions/userActions";
 import clientRequest from "../../APIFeatures/clientRequest";
 import { useDispatch, useSelector } from "react-redux";
+import { formatterMoney } from "../../HandlerCaculate/formatDate";
 
 const Dashboard = () => {
   const [stProducts, setStProducts] = useState(0);
@@ -42,7 +43,7 @@ const Dashboard = () => {
         <CardItem
           title="Total Payment"
           total={
-            Math.round((stOrders.totalPayment + Number.EPSILON) * 100) / 100
+            formatterMoney.format(Math.round((stOrders.totalPayment + Number.EPSILON) * 100) / 100)
           }
           icon="fas fa-dollar-sign"
         />

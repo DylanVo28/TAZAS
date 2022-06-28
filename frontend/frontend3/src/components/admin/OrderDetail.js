@@ -9,7 +9,7 @@ import {
 import clientRequest from "../../APIFeatures/clientRequest";
 import { TransactionContext } from "../../context/TransactionContext";
 import ModalComponent from "../shared/ModalComponent";
-import { getFormattedDate } from "./../../HandlerCaculate/formatDate";
+import { formatterMoney, getFormattedDate } from "./../../HandlerCaculate/formatDate";
 import ModalPopup from "./../shared/ModalPopup";
 
 const OrderDetail = (props) => {
@@ -158,7 +158,8 @@ const OrderDetail = (props) => {
     );
   };
   const changeUSDToETH = () => {
-    return Math.round((order.totalPrice / crypto.USD) * crypto.ETH * 100) / 100;
+    // return (order.totalPrice / crypto.USD) * crypto.ETH * 100 / 100;
+    return crypto.USD
   };
   const FormTotal = () => {
     return (
@@ -172,13 +173,13 @@ const OrderDetail = (props) => {
             {order.paidAt ? getFormattedDate(order.paidAt) : ""}
           </div>
           <div className="col-4">Items Price:</div>
-          <div className="col-8">{order.itemsPrice}</div>
+          <div className="col-8">{formatterMoney.format(order.itemsPrice)}</div>
           <div className="col-4">Tax Price:</div>
-          <div className="col-8">{order.taxPrice}</div>
+          <div className="col-8">{formatterMoney.format(order.taxPrice)}</div>
           <div className="col-4">Shipping Price:</div>
-          <div className="col-8">{order.shippingPrice}</div>
+          <div className="col-8">{formatterMoney.format(order.shippingPrice)}</div>
           <div className="col-4">Total Price:</div>
-          <div className="col-8">{order.totalPrice}</div>
+          <div className="col-8">{formatterMoney.format(order.totalPrice)}</div>
           <div className="col-4">ETH:</div>
           <div className="col-8">{changeUSDToETH()}</div>
           <div className="col-4">Order Status:</div>
