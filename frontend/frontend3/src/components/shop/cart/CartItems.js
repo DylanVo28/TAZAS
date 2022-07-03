@@ -30,7 +30,7 @@ const CartItems = (props) => {
   const [shippingPrice, setShippingPrice] = useState(2);
   const [order, setOrder] = useState({});
   const [openFormETH, setOpenFormETH] = useState(false);
-
+  const [isConnectWallet,setIsConnectWallet]=useState(false)
   const [creditInput, setCreditInput] = useState({
     cvc: "",
     expiry: "",
@@ -51,6 +51,7 @@ const CartItems = (props) => {
     setFormData,
     handleChange,
     sendTransaction,
+    connectSmartContract
   } = useContext(TransactionContext);
   const [searchDiscount, setSearchDiscount] = useState("");
   const [stDiscount, setStDiscount] = useState();
@@ -70,6 +71,7 @@ const CartItems = (props) => {
       const cart = await clientRequest.getCart();
       setCartItems(cart.myCart);
     }
+    setIsConnectWallet(connectWallet())
   }, []);
   useEffect(() => {
     var total = cartItems.reduce(function (acc, item) {
@@ -203,7 +205,7 @@ const CartItems = (props) => {
   };
 
   function renderButton() {
-    if ((!currentAccount && order.paymentMethod!=='ETH' && order.orderStatus!=='Complete')) {
+    if (!isConnectWallet) {
       return (
         <button
           style={{
@@ -214,7 +216,7 @@ const CartItems = (props) => {
             color: "#fff",
           }}
           className="btn btn-success  mt-2"
-          onClick={() => connectWallet()}
+          onClick={() => setIsConnectWallet(connectWallet()) }
         >
           connect Wallet
         </button>
@@ -231,8 +233,8 @@ const CartItems = (props) => {
           }}
           className="btn btn-success  mt-2"
           onClick={() => {
-            connectWallet();
             setOpenFormETH(!openFormETH);
+            connectSmartContract()
           }}
         >
           Thanh toán qua ethereum

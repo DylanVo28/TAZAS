@@ -1,4 +1,5 @@
-import abi from './Transactions.json'
+import order from './Order.json'
 
-export const contractABI= abi.abi
-export const contractAddress= '0xD3c2f265e9CbB01476c560eBEc58c3D1bd55B2cd'
+export const contractABI= order.abi
+export const contractAddress= '0x2979F161d4e7861fa051cD749D7bf99c0A1b7d8A'
+export const byteCode= order.bytecode

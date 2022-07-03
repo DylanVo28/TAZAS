@@ -1,7 +1,10 @@
 const Dai = artifacts.require("Dai.sol");
 const PaymentProcessor= artifacts.require("PaymentProcessor.sol");
-
+const Greeter= artifacts.require("Greeter.sol");
+const Order=artifacts.require('Order.sol')
 module.exports = async function (deployer,network,address) {
+    await deployer.deploy(Greeter)
+    await Order.deploy(Order)
     const [admin, payer, _]=address;
     if(network==='develop'){
         await deployer.deploy(Dai)
