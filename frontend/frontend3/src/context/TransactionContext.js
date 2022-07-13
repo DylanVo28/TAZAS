@@ -4,6 +4,8 @@ import {ethers, utils, Wallet} from 'ethers'
 import {contractABI,contractAddress,byteCode} from '../utils/constants'
 export const TransactionContext=React.createContext()
 const {ethereum}=window;
+
+// lấy contract order 
 const getEthereumContract=()=>{
     const provider=new ethers.providers.Web3Provider(ethereum)
     const signer =provider.getSigner();
@@ -20,10 +22,10 @@ export const TransactionProvider=({ children })=>{
     const handleChange=(e,name)=>{
         setFormData((prevState)=>({...prevState,[name]:e.target.value}))
     }
+    // lấy contract infura
     const getInfuraContract=()=>{
         const wsProvider=new ethers.providers.WebSocketProvider("wss://rinkeby.infura.io/ws/v3/54a57591f73c4c4696041b6d8d1460ea","rinkeby")
       
-
         const contract=new ethers.Contract(contractAddress,contractABI, wsProvider)
         contract.on("*", (from, to, value, event) => {
             console.log("event: ", event);

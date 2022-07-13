@@ -9,9 +9,12 @@ import {
 import clientRequest from "../../APIFeatures/clientRequest";
 import { TransactionContext } from "../../context/TransactionContext";
 import ModalComponent from "../shared/ModalComponent";
-import { formatterMoney, getFormattedDate } from "./../../HandlerCaculate/formatDate";
+import {
+  formatterMoney,
+  getFormattedDate,
+} from "./../../HandlerCaculate/formatDate";
 import ModalPopup from "./../shared/ModalPopup";
-
+import "../../css/Detail.css";
 const OrderDetail = (props) => {
   const {
     connectWallet,
@@ -159,7 +162,7 @@ const OrderDetail = (props) => {
   };
   const changeUSDToETH = () => {
     // return (order.totalPrice / crypto.USD) * crypto.ETH * 100 / 100;
-    return crypto.USD
+    return crypto.USD;
   };
   const FormTotal = () => {
     return (
@@ -177,7 +180,9 @@ const OrderDetail = (props) => {
           <div className="col-4">Tax Price:</div>
           <div className="col-8">{formatterMoney.format(order.taxPrice)}</div>
           <div className="col-4">Shipping Price:</div>
-          <div className="col-8">{formatterMoney.format(order.shippingPrice)}</div>
+          <div className="col-8">
+            {formatterMoney.format(order.shippingPrice)}
+          </div>
           <div className="col-4">Total Price:</div>
           <div className="col-8">{formatterMoney.format(order.totalPrice)}</div>
           <div className="col-4">ETH:</div>
@@ -204,93 +209,39 @@ const OrderDetail = (props) => {
   };
 
   return (
-    <div className="container-fluid py-4 order-detail">
-      <div className="row">
-        <div className="col-md-5 frame">
-          <FormShippingInfo />
+    <div className="container py-4 order-detail">
+      <div className="order-Confirm">
+        <div className="order-Confirm--header d-flex justify-content-between">
+          <h3>Order Confirmation</h3>
+          <div className="d-flex align-items-center">
+            <span>Order Total: </span> <h3> $3255.85</h3>{" "}
+            <button type="button" class="btn btn-order">
+              Place Order
+            </button>
+          </div>
         </div>
-        <div className="col-md-2"></div>
+        <div className="order-Confirm--body">
+          <div className="order-Confirm--block row">
+          <div className="col-6">
+            <h4 className="header-detail">Your information</h4>
+            <span className="row">
+              <label>Min Peng</label>
+              <span>nhathk2410@gmail.com</span>
+            </span>
+          </div>
+          <div className="col-6">
+            <h4 className="header-detail">Shipping Address</h4>
+            <span className="row">
+              <label>Min Peng</label>
+              <span>nhathk2410@gmail.com</span>
+            </span>
+          </div>
+          </div>
+         
+        </div>
+      </div>
 
-        <div className="col-md-5 frame">
-          <FormUser />
-        </div>
-      </div>
-      <br></br>
-      <div className="row">
-        <div className="col-md-6 frame">
-          <FormItems />
-        </div>
-        <div className="col-md-2"></div>
-        <div className="col-md-4 frame">
-          <FormTotal />
-        </div>
-      </div>
-      <div className="row">
-        {(!currentAccount && order.paymentMethod!=='ETH' && order.orderStatus!=='Complete') && (
-          <button onClick={() => connectWallet()}>Connect metamask</button>
-        )}
-        { (order.paymentMethod!=='ETH' && order.orderStatus!=='Complete')&&
-          <button
-          onClick={() => {
-            connectWallet();
-            setOpenFormETH(!openFormETH);
-          }}
-        >
-          Thanh toán qua ethereum
-        </button>
-        }
-      </div>
-      <NotificationContainer />
-      <div className="btn-group">
-        {order.orderStatus == "Processing" &&
-          props.match.path == "/admin/order/:id" && (
-            <button
-              className="btn"
-              onClick={(status) => updateOrderStatus("Confirmed")}
-            >
-              Confirm Order
-            </button>
-          )}
-        {order.orderStatus == "Confirmed" &&
-          props.match.path == "/admin/order/:id" && (
-            <button
-              className="btn"
-              onClick={(status) => updateOrderStatus("Delivered")}
-            >
-              Delivered
-            </button>
-          )}
-        {order.orderStatus == "Delivered" &&
-          props.match.path == "/order/me/:id" && (
-            <button
-              className="btn"
-              onClick={(status) => updateOrderStatus("Complete")}
-            >
-              Has Received
-            </button>
-          )}
-        {order.orderStatus == "Processing" &&
-          props.match.path == "/order/me/:id" && (
-            <button
-              className="btn"
-              onClick={(status) => updateOrderStatus("Cancel")}
-            >
-              Cancel Order
-            </button>
-          )}
-        <ModalComponent
-          open={openFormETH}
-          submit={() => sendTransaction()}
-          form={FormEthereum()}
-        ></ModalComponent>
-        <ModalPopup
-          open={showModal}
-          handleChange={() => setShowModal(!showModal)}
-          title={"Product delivered, doesn't delete"}
-          //  linkTo={'/login'}
-          //  titleLinkTo={'Login'}
-        />
-      </div>
+      <div className="order-DetailTable"></div>
     </div>
   );
 };
