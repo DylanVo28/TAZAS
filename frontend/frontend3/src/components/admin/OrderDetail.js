@@ -88,8 +88,77 @@ const OrderDetail = (props) => {
   const FormShippingInfo = () => {
     return (
       <>
-        <h4>Shipping Info</h4>
-        {order.shippingInfo && (
+      {
+        
+       ( 
+        order.shippingInfo &&
+        <div className="order-Confirm">
+        <div className="order-Confirm--header d-flex justify-content-between">
+          <h3>Order Confirmation</h3>
+          <div className="d-flex align-items-center">
+            <span>Order Total: </span> <h3> {formatterMoney.format(order.totalPrice)}</h3>{" "}
+            <button type="button" class="btn btn-order">
+              Place Order
+            </button>
+          </div>
+        </div>
+        <div className="order-Confirm--body">
+          <div className="order-Confirm--block row">
+            <div className="col-6">
+              <h4 className="header-detail">Your information</h4>
+              <span className="row">
+                <label className="label--CustomerName">{user.name}</label>
+                <span>{user.emailUser}</span>
+              </span>
+            </div>
+            <div className="col-6">
+              <h4 className="header-detail">Shipping Address</h4>
+              <span className="row">
+                <label className="label--CustomerName">{user.name}</label>
+                <span>{order.shippingInfo.address}</span>
+                <span>{order.shippingInfo.city}</span>
+                <span>{order.shippingInfo.country}</span>
+                <span>{order.shippingInfo.postalCode}</span>
+                <span>{order.shippingInfo.phoneNo}</span>
+
+
+              </span>
+            </div>
+          </div>
+
+          <div className="order-Confirm--block row">
+            <div className="col-6">
+              <h4 className="header-detail">Payment</h4>
+              <span className="row">
+                <img
+                  className="img-Payment"
+                  style={{ width: "110px", height: "50px" }}
+                  src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Visa_Inc._logo.svg/800px-Visa_Inc._logo.svg.png?20170118154621"
+                ></img>
+                <span style={{ marginLeft: "2%" }}>Visa card ending 1234</span>
+              </span>
+            </div>
+            <div className="col-6">
+              <h4 className="header-detail">Billing Address</h4>
+              <span className="row">
+                <label className="label--CustomerName">{user.name}</label>
+                <span>{order.shippingInfo.address}</span>
+                <span>{order.shippingInfo.city}</span>
+                <span>{order.shippingInfo.country}</span>
+                <span>{order.shippingInfo.postalCode}</span>
+                <span>{order.shippingInfo.phoneNo}</span>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+        )
+      }
+      
+
+      
+        {/* <h4>Shipping Info</h4>
+        { (
           <div className={"row"}>
             <div className="col-3">Address:</div>
             <div className="col-9">{order.shippingInfo.address}</div>
@@ -102,33 +171,36 @@ const OrderDetail = (props) => {
             <div className="col-3">Country:</div>
             <div className="col-9">{order.shippingInfo.country}</div>
           </div>
-        )}
+        )} */}
       </>
     );
   };
   const FormItems = () => {
     return (
       <>
-        <h4>Order Items</h4>
         {order.orderItems && (
           <>
-            <div className="row">
-              <div className="col-3">Name</div>
-              <div className="col-3">Quantity</div>
-              <div className="col-3">Image</div>
-              <div className="col-3">Price</div>
-            </div>
-            {tableItems &&
-              tableItems.map((item) => (
-                <div className="row">
-                  <div className="col-3">{item.name}</div>
-                  <div className="col-3">{item.quantity}</div>
-                  <div className="col-3">
-                    <img src={item.image} style={{ width: "40px" }} />
-                  </div>
-                  <div className="col-3">{item.price}</div>
-                </div>
-              ))}
+            <table class="table">
+              <thead className="headerTb-Order">
+                <tr>
+                  <th>Item</th>
+                  <th>Quantity</th>
+                  <th>Image</th>
+                  <th>Price</th>
+                </tr>
+              </thead>
+              <tbody>
+                {tableItems &&
+                  tableItems.map((item) => (
+                    <tr>
+                      <td>{item.name}</td>
+                      <td>{item.quantity}</td>
+                      <img src={item.image} style={{ width: "60px",height:"50px" }} />
+                      <td>{item.price}</td>
+                    </tr>
+                  ))}
+              </tbody>
+            </table>
           </>
         )}
       </>
@@ -167,7 +239,37 @@ const OrderDetail = (props) => {
   const FormTotal = () => {
     return (
       <>
-        <h4>Total</h4>
+        <div
+          className="Order-Detail--footer"
+          style={{ minWidth: "255px", minHeight: "200px", float: "right" }}
+        >
+          <span className="d-flex justify-content-between">
+            <label className="label-pay">Subtotal: </label>
+            <label>{formatterMoney.format(order.itemsPrice)}</label>
+          </span>
+          <span className="d-flex justify-content-between">
+            <label className="label-pay">Shipping: </label>
+            <label>{formatterMoney.format(order.shippingPrice)}</label>
+          </span>
+          <span className="d-flex justify-content-between">
+            <label className="label-pay">Tax: </label>
+            <label>{formatterMoney.format(order.taxPrice)}</label>
+          </span>
+          <span className="d-flex justify-content-between">
+            <label className="" style={{ fontSize: "15px" }}>
+              Total:{" "}
+            </label>
+            <h4>{formatterMoney.format(order.totalPrice)}</h4>
+          </span>
+          <button
+            type="button"
+            class="btn btn-order"
+            style={{ width: "100%", marginLeft: "0", marginTop: "5%" }}
+          >
+            Place Order
+          </button>
+        </div>
+        {/* <h4>Total</h4>
         <div className={"row"}>
           <div className="col-4">Payment method:</div>
           <div className="col-8">{order.paymentMethod}</div>
@@ -193,7 +295,7 @@ const OrderDetail = (props) => {
           <div className="col-8">{getFormattedDate(order.createAt)}</div>
           <div className="col-4">Discount code:</div>
           {discount && <div className="col-8">{discount.name}</div>}
-        </div>
+        </div> */}
       </>
     );
   };
@@ -210,38 +312,13 @@ const OrderDetail = (props) => {
 
   return (
     <div className="container py-4 order-detail">
-      <div className="order-Confirm">
-        <div className="order-Confirm--header d-flex justify-content-between">
-          <h3>Order Confirmation</h3>
-          <div className="d-flex align-items-center">
-            <span>Order Total: </span> <h3> $3255.85</h3>{" "}
-            <button type="button" class="btn btn-order">
-              Place Order
-            </button>
-          </div>
-        </div>
-        <div className="order-Confirm--body">
-          <div className="order-Confirm--block row">
-          <div className="col-6">
-            <h4 className="header-detail">Your information</h4>
-            <span className="row">
-              <label>Min Peng</label>
-              <span>nhathk2410@gmail.com</span>
-            </span>
-          </div>
-          <div className="col-6">
-            <h4 className="header-detail">Shipping Address</h4>
-            <span className="row">
-              <label>Min Peng</label>
-              <span>nhathk2410@gmail.com</span>
-            </span>
-          </div>
-          </div>
-         
-        </div>
+      
+      <FormShippingInfo/>
+      <div className="order-DetailTable">
+        <FormItems />
       </div>
 
-      <div className="order-DetailTable"></div>
+      <FormTotal />
     </div>
   );
 };
