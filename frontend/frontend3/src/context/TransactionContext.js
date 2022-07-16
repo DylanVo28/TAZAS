@@ -30,7 +30,7 @@ export const TransactionProvider = ({ children }) => {
   }, []);
 
   const handleChange = (e, name) => {
-    setFormData((prevState) => ({ ...prevState, [name]: e.target.value }));
+    setFormData({...formData,[name]:e.target.value});
   };
   // lấy contract infura
   const getInfuraContract = () => {
@@ -76,10 +76,11 @@ export const TransactionProvider = ({ children }) => {
         const accounts = await ethereum.request({
           method: "eth_requestAccounts",
         });
+
         setCurrentAccount(accounts[0]);
       }
     } catch (error) {
-      throw new Error("No ethereum object.");
+      throw new Error(error.message);
     }
 
     return true;

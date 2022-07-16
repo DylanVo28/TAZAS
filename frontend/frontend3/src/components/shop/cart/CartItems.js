@@ -18,10 +18,12 @@ import {
 } from "../../../HandlerCaculate/formatDate";
 import { Link } from "react-router-dom";
 import { connect } from "mongoose";
+import ModalComponent from "../../shared/ModalComponent";
 // import Cards from 'react-credit-cards';
 // import 'react-credit-cards/es/styles-compiled.css';
 // import { useStripe,useElements,CardElement,CardNumberElement} from '@stripe/react-stripe-js';
 const CartItems = (props) => {
+  const [isShowModal,setIsShowModal]=useState(false)
   const [cartItems, setCartItems] = useState([]);
   const [user, setUser] = useState(null);
   const [itemsPrice, setItemsPrice] = useState(0);
@@ -178,7 +180,37 @@ const CartItems = (props) => {
         NotificationManager.error("Error", "Cannot create order")
       );
   };
-
+  const [address,setAddress]=useState("")
+  const FormEthereum = () => {
+    return (
+      <>
+        <input
+          placeholder="Address To"
+          name="address"
+          defaultValue={formData.address}
+          onBlur={(e) => handleChange(e, "address")}
+        ></input>
+        <input
+          placeholder="Amount (ETH)"
+          name="amount"
+          defaultValue={formData.amount}
+          onBlur={(e) => handleChange(e, "amount")}
+        ></input>
+        <input
+          placeholder="Keyword (Gif)"
+          name="keyword"
+          defaultValue={formData.keyword}
+          onBlur={(e) => handleChange(e, "keyword")}
+        ></input>
+        <input
+          placeholder="Enter Message"
+          name="message"
+          defaultValue={formData.message}
+          onBlur={(e) => handleChange(e, "message")}
+        ></input>
+      </>
+    );
+  };
   const applyCode = async (e) => {
     const res = await clientRequest.getDiscount(searchDiscount).catch((err) => {
       NotificationManager.error(
@@ -233,8 +265,8 @@ const CartItems = (props) => {
           }}
           className="btn btn-success  mt-2"
           onClick={() => {
-            setOpenFormETH(!openFormETH);
-            connectSmartContract()
+            setIsShowModal(!isShowModal);
+            // connectSmartContract()
           }}
         >
           Thanh toán qua ethereum
@@ -461,7 +493,11 @@ const CartItems = (props) => {
             </div>
           </div>
         </div>
-
+        <ModalComponent
+        open={isShowModal}
+        form={<FormEthereum/>}
+        submit={sendTransaction}
+      />
         <NotificationContainer />
       </div>
     </>

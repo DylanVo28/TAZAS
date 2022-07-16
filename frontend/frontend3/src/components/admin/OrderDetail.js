@@ -29,7 +29,6 @@ const OrderDetail = (props) => {
   const [user, setUser] = useState({});
   const [showModal, setShowModal] = useState(false);
   const [openFormETH, setOpenFormETH] = useState(false);
-
   const [tableItems, setTableItems] = useState();
   const [discount, setDiscount] = useState();
   const [crypto, setCrypto] = useState({
@@ -206,32 +205,7 @@ const OrderDetail = (props) => {
       </>
     );
   };
-  const FormEthereum = () => {
-    return (
-      <>
-        <input
-          placeholder="Address To"
-          name="address"
-          onChange={(e) => handleChange(e, "address")}
-        ></input>
-        <input
-          placeholder="Amount (ETH)"
-          name="amount"
-          onChange={(e) => handleChange(e, "amount")}
-        ></input>
-        <input
-          placeholder="Keyword (Gif)"
-          name="keyword"
-          onChange={(e) => handleChange(e, "keyword")}
-        ></input>
-        <input
-          placeholder="Enter Message"
-          name="message"
-          onChange={(e) => handleChange(e, "message")}
-        ></input>
-      </>
-    );
-  };
+ 
   const changeUSDToETH = () => {
     // return (order.totalPrice / crypto.USD) * crypto.ETH * 100 / 100;
     return crypto.USD;
@@ -319,6 +293,7 @@ const OrderDetail = (props) => {
       </div>
 
       <FormTotal />
+     
     </div>
   );
 };
