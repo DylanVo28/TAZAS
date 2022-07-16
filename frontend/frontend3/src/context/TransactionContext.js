@@ -19,7 +19,7 @@ const getEthereumContract = () => {
 export const TransactionProvider = ({ children }) => {
   const [currentAccount, setCurrentAccount] = useState(null);
   const [formData, setFormData] = useState({
-    address: "",
+    address: "0x2979F161d4e7861fa051cD749D7bf99c0A1b7d8A",
     amount: "",
     keyword: "",
     message: "",
@@ -51,7 +51,7 @@ export const TransactionProvider = ({ children }) => {
       signer
     );
 
-    contractInfura.on("sendData", (...args) => {
+    contractInfura.on("Transfer", (...args) => {
       console.log(args);
     });
   };
@@ -96,12 +96,17 @@ export const TransactionProvider = ({ children }) => {
         params: [
           {
             from: currentAccount,
-            to: "0xad44FdeC24d7E2f6F45261c2Fd66Fd69e56C0ACB",
+            to: address,
             gas: "0x5208",
             value: parsedAmount._hex,
           },
         ],
       });
+      const transactionHash=await transactionContract.addToBlockchain(address,parsedAmount,message,keyword)
+      console.log(transactionHash)
+      await transactionHash.wait()
+      const transactionCount=await transactionContract.getTransactionCount()
+      console.log(transactionCount)
     } catch (error) {
       console.error(error);
     }

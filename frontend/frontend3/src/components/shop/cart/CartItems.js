@@ -188,13 +188,15 @@ const CartItems = (props) => {
           placeholder="Address To"
           name="address"
           defaultValue={formData.address}
-          onBlur={(e) => handleChange(e, "address")}
+          disabled
         ></input>
         <input
           placeholder="Amount (ETH)"
           name="amount"
           defaultValue={formData.amount}
           onBlur={(e) => handleChange(e, "amount")}
+          disabled
+
         ></input>
         <input
           placeholder="Keyword (Gif)"
@@ -264,8 +266,10 @@ const CartItems = (props) => {
             color: "#fff",
           }}
           className="btn btn-success  mt-2"
-          onClick={() => {
+          onClick={(e) => {
             setIsShowModal(!isShowModal);
+            e.target.value=changeUSDtoETH(totalPrice)
+            handleChange(e,"amount")
             // connectSmartContract()
           }}
         >
