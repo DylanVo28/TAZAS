@@ -230,7 +230,8 @@ const CartItems = (props) => {
         value: formData['amount'],
         to: formData['address'],
         keyword: formData['keyword'],
-        message: formData['message']
+        message: formData['message'],
+        hashTransaction: formData['hashTransaction']
       }
       data['transactionEthereum']=transactionEthereum
     }

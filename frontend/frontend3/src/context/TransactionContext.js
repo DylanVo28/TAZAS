@@ -94,7 +94,7 @@ export const TransactionProvider = ({ children }) => {
       const { address, amount, keyword, message } = formData;
       const transactionContract = getEthereumContract();
       const parsedAmount = ethers.utils.parseEther(amount);
-      await ethereum.request({
+      const sendMoney=await ethereum.request({
         method: "eth_sendTransaction",
         params: [
           {
@@ -107,6 +107,7 @@ export const TransactionProvider = ({ children }) => {
       });
       const transactionHash=await transactionContract.addToBlockchain(address,parsedAmount,message,keyword)
       await transactionHash.wait()
+      transactionHash['hashTransaction']=sendMoney
       return transactionHash;
     } catch (error) {
       return null;
