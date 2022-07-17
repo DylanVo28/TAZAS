@@ -174,12 +174,82 @@ const CartItems = (props) => {
       .then((res) => {
         NotificationManager.success("Success", "Create order complete");
         const link = "/order/me/" + res.order._id;
-        // window.location.href=link
+        window.location.href=link
       })
       .catch((err) =>
         NotificationManager.error("Error", "Cannot create order")
       );
   };
+  const checkValid= async ()=>{
+    const orderItems = cartItems.filter((item) => item.checked);
+    const data = {
+      shippingInfo: {
+        address: document.getElementsByName("address")[0].value,
+        city: document.getElementsByName("city")[0].value,
+        phoneNo: document.getElementsByName("phoneNo")[0].value,
+        postalCode: document.getElementsByName("postalCode")[0].value,
+        country: document.getElementsByName("country")[0].value,
+      },
+      user: user._id,
+      orderItems,
+      itemsPrice: Number(itemsPrice),
+      totalPrice: Number(totalPrice),
+      shippingPrice: Number(shippingPrice),
+      taxPrice: Number(taxPrice),
+      orderStatus: "Processing",
+      discountId: stDiscount ? stDiscount._id : null,
+    };
+    if (
+      !data.shippingInfo.address ||
+      !data.shippingInfo.city ||
+      !data.shippingInfo.phoneNo ||
+      !data.shippingInfo.postalCode ||
+      !data.shippingInfo.country
+    ) {
+      NotificationManager.error("Error", "Infor not empty");
+      return;
+    }
+    if (!validatePhoneNumber(data.shippingInfo.phoneNo)) {
+      NotificationManager.error("Error", "The phone number invalid");
+      return;
+    }
+    if (!validateCityOrPostalCode(data.shippingInfo.postalCode)) {
+      NotificationManager.error("Error", "Postal code invalid");
+      return;
+    }
+    if (data.orderItems.length == 0) {
+      NotificationManager.error("Error", "Products not marked");
+      return;
+    }
+    try{
+      const transaction=await sendTransaction();
+    if(transaction){
+      const transactionEthereum={
+        from: transaction['from'],
+        hash: transaction['hash'],
+        value: formData['amount'],
+        to: formData['address'],
+        keyword: formData['keyword'],
+        message: formData['message']
+      }
+      data['transactionEthereum']=transactionEthereum
+    }
+    clientRequest
+    .postOrder(data)
+    .then((res) => {
+      NotificationManager.success("Success", "Create order complete");
+      const link = "/order/me/" + res.order._id;
+      window.location.href=link
+    })
+    .catch((err) =>
+      NotificationManager.error("Error", "Cannot create order")
+    );
+    }
+    catch(error){
+
+    }
+    
+  }
   const [address,setAddress]=useState("")
   const FormEthereum = () => {
     return (
@@ -500,7 +570,7 @@ const CartItems = (props) => {
         <ModalComponent
         open={isShowModal}
         form={<FormEthereum/>}
-        submit={sendTransaction}
+        submit={checkValid}
       />
         <NotificationContainer />
       </div>

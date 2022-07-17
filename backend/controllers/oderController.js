@@ -20,7 +20,8 @@ exports.newOrder = catchAsyncError(async (req, res, next) => {
         totalPrice,
         orderStatus,
         shippingPrice,
-        discountId
+        discountId,
+        transactionEthereum
     } = req.body.data;
     var discount={}
     if(discountId){
@@ -79,7 +80,8 @@ exports.newOrder = catchAsyncError(async (req, res, next) => {
         orderStatus,
         shippingPrice,
         user: req.user.id,
-        discount
+        discount,
+        transactionEthereum
     })
     res.status(200).json({
         success: true,

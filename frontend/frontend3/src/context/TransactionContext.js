@@ -7,6 +7,7 @@ const { ethereum } = window;
 // lấy contract order
 const getEthereumContract = () => {
   const provider = new ethers.providers.Web3Provider(ethereum);
+  provider.getCode(contractAddress).then(res=>console.log(res))
   const signer = provider.getSigner();
   const transactionContract = new ethers.Contract(
     contractAddress,
@@ -19,7 +20,7 @@ const getEthereumContract = () => {
 export const TransactionProvider = ({ children }) => {
   const [currentAccount, setCurrentAccount] = useState(null);
   const [formData, setFormData] = useState({
-    address: "0x2979F161d4e7861fa051cD749D7bf99c0A1b7d8A",
+    address: "0xad44FdeC24d7E2f6F45261c2Fd66Fd69e56C0ACB",
     amount: "",
     keyword: "",
     message: "",
@@ -27,6 +28,7 @@ export const TransactionProvider = ({ children }) => {
   const [contract, setContract] = useState(null);
   useEffect(() => {
     getInfuraContract();
+    
   }, []);
 
   const handleChange = (e, name) => {
@@ -86,6 +88,7 @@ export const TransactionProvider = ({ children }) => {
     return true;
   };
   const sendTransaction = async () => {
+    
     try {
       if (!ethereum) return alert("Please install metamask");
       const { address, amount, keyword, message } = formData;
@@ -103,12 +106,10 @@ export const TransactionProvider = ({ children }) => {
         ],
       });
       const transactionHash=await transactionContract.addToBlockchain(address,parsedAmount,message,keyword)
-      console.log(transactionHash)
       await transactionHash.wait()
-      const transactionCount=await transactionContract.getTransactionCount()
-      console.log(transactionCount)
+      return transactionHash;
     } catch (error) {
-      console.error(error);
+      return null;
     }
   };
   const connectSmartContract = async () => {
