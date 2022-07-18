@@ -156,21 +156,7 @@ const OrderDetail = (props) => {
       
 
       
-        {/* <h4>Shipping Info</h4>
-        { (
-          <div className={"row"}>
-            <div className="col-3">Address:</div>
-            <div className="col-9">{order.shippingInfo.address}</div>
-            <div className="col-3">City:</div>
-            <div className="col-9">{order.shippingInfo.city}</div>
-            <div className="col-3">Phone Num:</div>
-            <div className="col-9">{order.shippingInfo.phoneNo}</div>
-            <div className="col-3">Postal Code:</div>
-            <div className="col-9">{order.shippingInfo.postalCode}</div>
-            <div className="col-3">Country:</div>
-            <div className="col-9">{order.shippingInfo.country}</div>
-          </div>
-        )} */}
+     
       </>
     );
   };
@@ -235,41 +221,51 @@ const OrderDetail = (props) => {
             </label>
             <h4>{formatterMoney.format(order.totalPrice)}</h4>
           </span>
-          <button
-            type="button"
-            class="btn btn-order"
-            style={{ width: "100%", marginLeft: "0", marginTop: "5%" }}
-          >
-            Place Order
-          </button>
+         
+
+          <div className="btn-group">
+        {order.orderStatus == "Processing" &&
+          props.match.path == "/admin/order/:id" && (
+            <button
+              className="btn btn-order "
+              onClick={(status) => updateOrderStatus("Confirmed")}
+            >
+              Confirm Order
+            </button>
+          )}
+        {order.orderStatus == "Confirmed" &&
+          props.match.path == "/admin/order/:id" && (
+            <button
+              className="btn btn-order"
+              onClick={(status) => updateOrderStatus("Delivered")}
+            >
+              Delivered
+            </button>
+          )}
+        {order.orderStatus == "Delivered" &&
+          props.match.path == "/order/me/:id" && (
+            <button
+              className="btn"
+              onClick={(status) => updateOrderStatus("Complete")}
+            >
+              Has Received
+            </button>
+          )}
+        {order.orderStatus == "Processing" &&
+          props.match.path == "/order/me/:id" && (
+            <button
+              className="btn"
+              onClick={(status) => updateOrderStatus("Cancel")}
+            >
+              Cancel Order
+            </button>
+          )}
+ 
+      </div>
+
+         
         </div>
-        {/* <h4>Total</h4>
-        <div className={"row"}>
-          <div className="col-4">Payment method:</div>
-          <div className="col-8">{order.paymentMethod}</div>
-          <div className="col-4">Paid At:</div>
-          <div className="col-8">
-            {order.paidAt ? getFormattedDate(order.paidAt) : ""}
-          </div>
-          <div className="col-4">Items Price:</div>
-          <div className="col-8">{formatterMoney.format(order.itemsPrice)}</div>
-          <div className="col-4">Tax Price:</div>
-          <div className="col-8">{formatterMoney.format(order.taxPrice)}</div>
-          <div className="col-4">Shipping Price:</div>
-          <div className="col-8">
-            {formatterMoney.format(order.shippingPrice)}
-          </div>
-          <div className="col-4">Total Price:</div>
-          <div className="col-8">{formatterMoney.format(order.totalPrice)}</div>
-          <div className="col-4">ETH:</div>
-          <div className="col-8">{changeUSDToETH()}</div>
-          <div className="col-4">Order Status:</div>
-          <div className="col-8">{order.orderStatus}</div>
-          <div className="col-4">Created At:</div>
-          <div className="col-8">{getFormattedDate(order.createAt)}</div>
-          <div className="col-4">Discount code:</div>
-          {discount && <div className="col-8">{discount.name}</div>}
-        </div> */}
+       
       </>
     );
   };

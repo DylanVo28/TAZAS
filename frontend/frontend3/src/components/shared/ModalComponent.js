@@ -17,10 +17,10 @@ const ModalComponent=(props)=>{
         setVisible(false)
     }
     
-    return <Modal  visible={visible} width="400" height="300" effect="fadeInUp"
+    return <Modal  visible={visible} width="600" height="400" effect="fadeInUp"
      onClickAway={() => closeModal()}
      >  <div  className='popup-tazas text-center'>
-         <div style={{margin:'auto'}}>{props.form}
+         <div style={{margin:'auto',paddingRight:"5%",paddingLeft:"5%"}}>{props.form}
 
                    <div className='btn-group btn'>
                    <button className='btn'>

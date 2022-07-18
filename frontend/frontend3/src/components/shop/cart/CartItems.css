@@ -1,0 +1,8 @@
+.input_transaction{
+    border-radius: 3px;
+    height: 40px;
+}
+.form-transaction{
+    display: grid;
+  grid-template-columns: auto auto auto auto;
+}

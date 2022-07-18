@@ -255,8 +255,11 @@ const CartItems = (props) => {
   const FormEthereum = () => {
     return (
       <>
+        <div className="form-transaction ">
+
         <input
           placeholder="Address To"
+          className="input_transaction"
           name="address"
           defaultValue={formData.address}
           disabled
@@ -264,6 +267,8 @@ const CartItems = (props) => {
         <input
           placeholder="Amount (ETH)"
           name="amount"
+          className="input_transaction"
+
           defaultValue={formData.amount}
           onBlur={(e) => handleChange(e, "amount")}
           disabled
@@ -272,15 +277,20 @@ const CartItems = (props) => {
         <input
           placeholder="Keyword (Gif)"
           name="keyword"
+          className="input_transaction"
+
           defaultValue={formData.keyword}
           onBlur={(e) => handleChange(e, "keyword")}
         ></input>
         <input
           placeholder="Enter Message"
           name="message"
+          className="input_transaction"
+
           defaultValue={formData.message}
           onBlur={(e) => handleChange(e, "message")}
         ></input>
+        </div>
       </>
     );
   };
