@@ -37,6 +37,8 @@ const OrderDetail = (props) => {
     EUR: 0,
     USD: 0,
   });
+  const [transactionEthereum, setTransactionEhthereum] = useState();
+
   useEffect(() => {
     if (props.match.path == "/order/me/:id") {
       async function fetchMyAPI() {
@@ -55,6 +57,8 @@ const OrderDetail = (props) => {
     if (props.match.path == "/admin/order/:id") {
       async function fetchMyAPIRoleAdmin() {
         clientRequest.getOrderRoleAdmin(props.match.params.id).then((res) => {
+          setTransactionEhthereum(res.order.transactionEthereum);
+          console.log(res.order.transactionEthereum);
           setOrder(res.order);
           setTableItems(res.orderItems);
           setUser(res.user);
@@ -87,76 +91,94 @@ const OrderDetail = (props) => {
   const FormShippingInfo = () => {
     return (
       <>
-      {
-        
-       ( 
-        order.shippingInfo &&
-        <div className="order-Confirm">
-        <div className="order-Confirm--header d-flex justify-content-between">
-          <h3>Order Confirmation</h3>
-          <div className="d-flex align-items-center">
-            <span>Order Total: </span> <h3> {formatterMoney.format(order.totalPrice)}</h3>{" "}
-            <button type="button" class="btn btn-order">
-              Place Order
-            </button>
+        {order.shippingInfo && (
+          <div className="order-Confirm">
+            <div className="order-Confirm--header d-flex justify-content-between">
+              <h3>Order Confirmation</h3>
+              <div className="d-flex align-items-center">
+                <span>Order Total: </span>{" "}
+                <h3> {formatterMoney.format(order.totalPrice)}</h3>{" "}
+                <div className="btn-group">
+            {order.orderStatus == "Processing" &&
+              props.match.path == "/admin/order/:id" && (
+                <button
+                  className="btn btn-order "
+                  onClick={(status) => updateOrderStatus("Confirmed")}
+                >
+                  Confirm Order
+                </button>
+              )}
+              </div>
+              </div>
+            </div>
+            <div className="order-Confirm--body">
+              <div className="order-Confirm--block row">
+                <div className="col-6">
+                  <h4 className="header-detail">Your information</h4>
+                  <span className="row">
+                    <label className="label--CustomerName">{user.name}</label>
+                    <span>{user.emailUser}</span>
+                  </span>
+                </div>
+                <div className="col-6">
+                  <h4 className="header-detail">Shipping Address</h4>
+                  <span className="row">
+                    <label className="label--CustomerName">{user.name}</label>
+                    <span>{order.shippingInfo.address}</span>
+                    <span>{order.shippingInfo.city}</span>
+                    <span>{order.shippingInfo.country}</span>
+                    <span>{order.shippingInfo.postalCode}</span>
+                    <span>{order.shippingInfo.phoneNo}</span>
+                  </span>
+                </div>
+              </div>
+
+              <div className="order-Confirm--block row">
+                <div className="col-6">
+                  <h4 className="header-detail">Payment</h4>
+                  <span className="row">
+                    <div>
+                      <img
+                        className="img-Payment "
+                        style={{ width: "90px", height: "50px" } }
+                        src="https://icons.iconarchive.com/icons/cjdowner/cryptocurrency-flat/1024/Ethereum-ETH-icon.png"
+                      ></img>
+                      <label style={{fontSize:"20px",marginLeft:"10px"}}>Ethereum</label>
+                    </div>
+                    {
+                      transactionEthereum ? (<>
+                      <span style={{ marginLeft: "2%" }}>
+                      from:{transactionEthereum.from}
+                      </span>
+                      <span style={{ marginLeft: "2%" }}>
+                      keyword:{transactionEthereum.keyword}
+                      </span>
+                      <span style={{ marginLeft: "2%" }}>
+                      message:{transactionEthereum.message}
+                      </span>
+                      <span style={{ marginLeft: "2%" }}>
+                      value:{transactionEthereum.value} ETH
+                      </span></>) :(<></>)
+
+                    
+                    }
+                  </span>
+                </div>
+                <div className="col-6">
+                  <h4 className="header-detail">Billing Address</h4>
+                  <span className="row">
+                    <label className="label--CustomerName">{user.name}</label>
+                    <span>{order.shippingInfo.address}</span>
+                    <span>{order.shippingInfo.city}</span>
+                    <span>{order.shippingInfo.country}</span>
+                    <span>{order.shippingInfo.postalCode}</span>
+                    <span>{order.shippingInfo.phoneNo}</span>
+                  </span>
+                </div>
+              </div>
+            </div>
           </div>
-        </div>
-        <div className="order-Confirm--body">
-          <div className="order-Confirm--block row">
-            <div className="col-6">
-              <h4 className="header-detail">Your information</h4>
-              <span className="row">
-                <label className="label--CustomerName">{user.name}</label>
-                <span>{user.emailUser}</span>
-              </span>
-            </div>
-            <div className="col-6">
-              <h4 className="header-detail">Shipping Address</h4>
-              <span className="row">
-                <label className="label--CustomerName">{user.name}</label>
-                <span>{order.shippingInfo.address}</span>
-                <span>{order.shippingInfo.city}</span>
-                <span>{order.shippingInfo.country}</span>
-                <span>{order.shippingInfo.postalCode}</span>
-                <span>{order.shippingInfo.phoneNo}</span>
-
-
-              </span>
-            </div>
-          </div>
-
-          <div className="order-Confirm--block row">
-            <div className="col-6">
-              <h4 className="header-detail">Payment</h4>
-              <span className="row">
-                <img
-                  className="img-Payment"
-                  style={{ width: "110px", height: "50px" }}
-                  src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Visa_Inc._logo.svg/800px-Visa_Inc._logo.svg.png?20170118154621"
-                ></img>
-                <span style={{ marginLeft: "2%" }}>Visa card ending 1234</span>
-              </span>
-            </div>
-            <div className="col-6">
-              <h4 className="header-detail">Billing Address</h4>
-              <span className="row">
-                <label className="label--CustomerName">{user.name}</label>
-                <span>{order.shippingInfo.address}</span>
-                <span>{order.shippingInfo.city}</span>
-                <span>{order.shippingInfo.country}</span>
-                <span>{order.shippingInfo.postalCode}</span>
-                <span>{order.shippingInfo.phoneNo}</span>
-              </span>
-            </div>
-          </div>
-        </div>
-      </div>
-        )
-      }
-      
-
-      
-     
+        )}
       </>
     );
   };
@@ -180,7 +202,10 @@ const OrderDetail = (props) => {
                     <tr>
                       <td>{item.name}</td>
                       <td>{item.quantity}</td>
-                      <img src={item.image} style={{ width: "60px",height:"50px" }} />
+                      <img
+                        src={item.image}
+                        style={{ width: "60px", height: "50px" }}
+                      />
                       <td>{item.price}</td>
                     </tr>
                   ))}
@@ -191,7 +216,7 @@ const OrderDetail = (props) => {
       </>
     );
   };
- 
+
   const changeUSDToETH = () => {
     // return (order.totalPrice / crypto.USD) * crypto.ETH * 100 / 100;
     return crypto.USD;
@@ -221,51 +246,46 @@ const OrderDetail = (props) => {
             </label>
             <h4>{formatterMoney.format(order.totalPrice)}</h4>
           </span>
-         
 
           <div className="btn-group">
-        {order.orderStatus == "Processing" &&
-          props.match.path == "/admin/order/:id" && (
-            <button
-              className="btn btn-order "
-              onClick={(status) => updateOrderStatus("Confirmed")}
-            >
-              Confirm Order
-            </button>
-          )}
-        {order.orderStatus == "Confirmed" &&
-          props.match.path == "/admin/order/:id" && (
-            <button
-              className="btn btn-order"
-              onClick={(status) => updateOrderStatus("Delivered")}
-            >
-              Delivered
-            </button>
-          )}
-        {order.orderStatus == "Delivered" &&
-          props.match.path == "/order/me/:id" && (
-            <button
-              className="btn"
-              onClick={(status) => updateOrderStatus("Complete")}
-            >
-              Has Received
-            </button>
-          )}
-        {order.orderStatus == "Processing" &&
-          props.match.path == "/order/me/:id" && (
-            <button
-              className="btn"
-              onClick={(status) => updateOrderStatus("Cancel")}
-            >
-              Cancel Order
-            </button>
-          )}
- 
-      </div>
-
-         
+            {order.orderStatus == "Processing" &&
+              props.match.path == "/admin/order/:id" && (
+                <button
+                  className="btn btn-order "
+                  onClick={(status) => updateOrderStatus("Confirmed")}
+                >
+                  Confirm Order
+                </button>
+              )}
+            {order.orderStatus == "Confirmed" &&
+              props.match.path == "/admin/order/:id" && (
+                <button
+                  className="btn btn-order"
+                  onClick={(status) => updateOrderStatus("Delivered")}
+                >
+                  Delivered
+                </button>
+              )}
+            {order.orderStatus == "Delivered" &&
+              props.match.path == "/order/me/:id" && (
+                <button
+                  className="btn"
+                  onClick={(status) => updateOrderStatus("Complete")}
+                >
+                  Has Received
+                </button>
+              )}
+            {order.orderStatus == "Processing" &&
+              props.match.path == "/order/me/:id" && (
+                <button
+                  className="btn"
+                  onClick={(status) => updateOrderStatus("Cancel")}
+                >
+                  Cancel Order
+                </button>
+              )}
+          </div>
         </div>
-       
       </>
     );
   };
@@ -282,14 +302,12 @@ const OrderDetail = (props) => {
 
   return (
     <div className="container py-4 order-detail">
-      
-      <FormShippingInfo/>
+      <FormShippingInfo />
       <div className="order-DetailTable">
         <FormItems />
       </div>
 
       <FormTotal />
-     
     </div>
   );
 };

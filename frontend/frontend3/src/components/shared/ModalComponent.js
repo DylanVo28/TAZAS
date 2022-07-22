@@ -20,7 +20,7 @@ const ModalComponent=(props)=>{
     return <Modal  visible={visible} width="600" height="400" effect="fadeInUp"
      onClickAway={() => closeModal()}
      >  <div  className='popup-tazas text-center'>
-         <div style={{margin:'auto',paddingRight:"5%",paddingLeft:"5%"}}>{props.form}
+         <div style={{margin:'auto',paddingRight:"5%",paddingLeft:"5%" ,display: "grid",gridTemplateColumns:" repeat(2,5fr)"}}>{props.form}
 
                    <div className='btn-group btn'>
                    <button className='btn'>
