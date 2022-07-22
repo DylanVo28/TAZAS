@@ -23,7 +23,7 @@ import ModalComponent from "../../shared/ModalComponent";
 // import 'react-credit-cards/es/styles-compiled.css';
 // import { useStripe,useElements,CardElement,CardNumberElement} from '@stripe/react-stripe-js';
 const CartItems = (props) => {
-  const [isShowModal,setIsShowModal]=useState(false)
+  const [isShowModal, setIsShowModal] = useState(false);
   const [cartItems, setCartItems] = useState([]);
   const [user, setUser] = useState(null);
   const [itemsPrice, setItemsPrice] = useState(0);
@@ -32,7 +32,7 @@ const CartItems = (props) => {
   const [shippingPrice, setShippingPrice] = useState(2);
   const [order, setOrder] = useState({});
   const [openFormETH, setOpenFormETH] = useState(false);
-  const [isConnectWallet,setIsConnectWallet]=useState(false)
+  const [isConnectWallet, setIsConnectWallet] = useState(false);
   const [creditInput, setCreditInput] = useState({
     cvc: "",
     expiry: "",
@@ -53,7 +53,7 @@ const CartItems = (props) => {
     setFormData,
     handleChange,
     sendTransaction,
-    connectSmartContract
+    connectSmartContract,
   } = useContext(TransactionContext);
   const [searchDiscount, setSearchDiscount] = useState("");
   const [stDiscount, setStDiscount] = useState();
@@ -73,7 +73,7 @@ const CartItems = (props) => {
       const cart = await clientRequest.getCart();
       setCartItems(cart.myCart);
     }
-    setIsConnectWallet(connectWallet())
+    setIsConnectWallet(connectWallet());
   }, []);
   useEffect(() => {
     var total = cartItems.reduce(function (acc, item) {
@@ -174,13 +174,13 @@ const CartItems = (props) => {
       .then((res) => {
         NotificationManager.success("Success", "Create order complete");
         const link = "/order/me/" + res.order._id;
-        window.location.href=link
+        window.location.href = link;
       })
       .catch((err) =>
         NotificationManager.error("Error", "Cannot create order")
       );
   };
-  const checkValid= async ()=>{
+  const checkValid = async () => {
     const orderItems = cartItems.filter((item) => item.checked);
     const data = {
       shippingInfo: {
@@ -221,75 +221,73 @@ const CartItems = (props) => {
       NotificationManager.error("Error", "Products not marked");
       return;
     }
-    try{
-      const transaction=await sendTransaction();
-    if(transaction){
-      const transactionEthereum={
-        from: transaction['from'],
-        hash: transaction['hash'],
-        value: formData['amount'],
-        to: formData['address'],
-        keyword: formData['keyword'],
-        message: formData['message'],
-        hashTransaction: formData['hashTransaction']
+    try {
+      const transaction = await sendTransaction();
+      if (transaction) {
+        const transactionEthereum = {
+          from: transaction["from"],
+          hash: transaction["hash"],
+          value: formData["amount"],
+          to: formData["address"],
+          keyword: formData["keyword"],
+          message: formData["message"],
+          hashTransaction: formData["hashTransaction"],
+        };
+        data["transactionEthereum"] = transactionEthereum;
       }
-      data['transactionEthereum']=transactionEthereum
-    }
-    clientRequest
-    .postOrder(data)
-    .then((res) => {
-      NotificationManager.success("Success", "Create order complete");
-      const link = "/order/me/" + res.order._id;
-      window.location.href=link
-    })
-    .catch((err) =>
-      NotificationManager.error("Error", "Cannot create order")
-    );
-    }
-    catch(error){
-
-    }
-    
-  }
-  const [address,setAddress]=useState("")
+      clientRequest
+        .postOrder(data)
+        .then((res) => {
+          NotificationManager.success("Success", "Create order complete");
+          const link = "/order/me/" + res.order._id;
+          window.location.href = link;
+        })
+        .catch((err) =>
+          NotificationManager.error("Error", "Cannot create order")
+        );
+    } catch (error) {}
+  };
+  const [address, setAddress] = useState("");
   const FormEthereum = () => {
     return (
       <>
         <div className="form-transaction ">
+          <label style={{width:"83.333%",textAlign:"left"}}>Address to:</label>
+          <input
+            placeholder="Address To"
+            className="input_transaction col-10"
+            name="address"
+            defaultValue={formData.address}
+            disabled
+          ></input>
+          <label style={{width:"83.333%",textAlign:"left"}}>Amount(ETH):</label>
 
-        <input
-          placeholder="Address To"
-          className="input_transaction"
-          name="address"
-          defaultValue={formData.address}
-          disabled
-        ></input>
-        <input
-          placeholder="Amount (ETH)"
-          name="amount"
-          className="input_transaction"
+          <input
+            placeholder="Amount (ETH)"
+            name="amount"
+            className="input_transaction col-10"
+            defaultValue={formData.amount}
+            onBlur={(e) => handleChange(e, "amount")}
+            disabled
+          ></input>
+          <label style={{width:"83.333%",textAlign:"left"}}>Keyword(Gif):</label>
 
-          defaultValue={formData.amount}
-          onBlur={(e) => handleChange(e, "amount")}
-          disabled
+          <input
+            placeholder="Keyword (Gif)"
+            name="keyword"
+            className="input_transaction col-10"
+            defaultValue={formData.keyword}
+            onBlur={(e) => handleChange(e, "keyword")}
+          ></input>
+          <label style={{width:"83.333%",textAlign:"left"}}>Message:</label>
 
-        ></input>
-        <input
-          placeholder="Keyword (Gif)"
-          name="keyword"
-          className="input_transaction"
-
-          defaultValue={formData.keyword}
-          onBlur={(e) => handleChange(e, "keyword")}
-        ></input>
-        <input
-          placeholder="Enter Message"
-          name="message"
-          className="input_transaction"
-
-          defaultValue={formData.message}
-          onBlur={(e) => handleChange(e, "message")}
-        ></input>
+          <input
+            placeholder="Enter Message"
+            name="message"
+            className="input_transaction col-10"
+            defaultValue={formData.message}
+            onBlur={(e) => handleChange(e, "message")}
+          ></input>
         </div>
       </>
     );
@@ -331,7 +329,7 @@ const CartItems = (props) => {
             color: "#fff",
           }}
           className="btn btn-success  mt-2"
-          onClick={() => setIsConnectWallet(connectWallet()) }
+          onClick={() => setIsConnectWallet(connectWallet())}
         >
           connect Wallet
         </button>
@@ -349,8 +347,8 @@ const CartItems = (props) => {
           className="btn btn-success  mt-2"
           onClick={(e) => {
             setIsShowModal(!isShowModal);
-            e.target.value=changeUSDtoETH(totalPrice)
-            handleChange(e,"amount")
+            e.target.value = changeUSDtoETH(totalPrice);
+            handleChange(e, "amount");
             // connectSmartContract()
           }}
         >
@@ -579,10 +577,10 @@ const CartItems = (props) => {
           </div>
         </div>
         <ModalComponent
-        open={isShowModal}
-        form={<FormEthereum/>}
-        submit={checkValid}
-      />
+          open={isShowModal}
+          form={<FormEthereum />}
+          submit={checkValid}
+        />
         <NotificationContainer />
       </div>
     </>
