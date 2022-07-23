@@ -107,7 +107,7 @@ export const TransactionProvider = ({ children }) => {
       });
       const transactionHash=await transactionContract.addToBlockchain(address,parsedAmount,message,keyword)
       await transactionHash.wait()
-      transactionHash['hashTransaction']=sendMoney
+      transactionHash.hashTransaction=sendMoney
       return transactionHash;
     } catch (error) {
       return null;

@@ -43,6 +43,7 @@ const OrderDetail = (props) => {
     if (props.match.path == "/order/me/:id") {
       async function fetchMyAPI() {
         clientRequest.getOrder(props.match.params.id).then((res) => {
+          setTransactionEhthereum(res.order.transactionEthereum);
           setOrder(res.order);
           setTableItems(res.orderItems);
           setUser(res.user);
@@ -58,7 +59,6 @@ const OrderDetail = (props) => {
       async function fetchMyAPIRoleAdmin() {
         clientRequest.getOrderRoleAdmin(props.match.params.id).then((res) => {
           setTransactionEhthereum(res.order.transactionEthereum);
-          console.log(res.order.transactionEthereum);
           setOrder(res.order);
           setTableItems(res.orderItems);
           setUser(res.user);
@@ -140,13 +140,19 @@ const OrderDetail = (props) => {
                     <div>
                       <img
                         className="img-Payment "
-                        style={{ width: "90px", height: "50px" } }
+                        style={{ height: "50px" } }
                         src="https://icons.iconarchive.com/icons/cjdowner/cryptocurrency-flat/1024/Ethereum-ETH-icon.png"
                       ></img>
                       <label style={{fontSize:"20px",marginLeft:"10px"}}>Ethereum</label>
                     </div>
                     {
                       transactionEthereum ? (<>
+                       <span style={{ marginLeft: "2%" }}>
+                      Hash contract:{<a target="_blank" rel="noopener noreferrer" href={"https://rinkeby.etherscan.io/tx/"+transactionEthereum.hash}>{transactionEthereum.hash}</a>}
+                      </span>
+                      <span style={{ marginLeft: "2%" }}>
+                      Hash Blockchain:{<a target="_blank" rel="noopener noreferrer" href={"https://rinkeby.etherscan.io/tx/"+transactionEthereum.hashTransaction}>{transactionEthereum.hashTransaction}</a>}
+                      </span>
                       <span style={{ marginLeft: "2%" }}>
                       from:{transactionEthereum.from}
                       </span>

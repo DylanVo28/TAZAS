@@ -231,10 +231,11 @@ const CartItems = (props) => {
           to: formData["address"],
           keyword: formData["keyword"],
           message: formData["message"],
-          hashTransaction: formData["hashTransaction"],
+          hashTransaction: transaction["hashTransaction"],
         };
         data["transactionEthereum"] = transactionEthereum;
       }
+      
       clientRequest
         .postOrder(data)
         .then((res) => {
@@ -242,9 +243,9 @@ const CartItems = (props) => {
           const link = "/order/me/" + res.order._id;
           window.location.href = link;
         })
-        .catch((err) =>
-          NotificationManager.error("Error", "Cannot create order")
-        );
+          .catch((err) =>
+            console.log(err)
+          );
     } catch (error) {}
   };
   const [address, setAddress] = useState("");
