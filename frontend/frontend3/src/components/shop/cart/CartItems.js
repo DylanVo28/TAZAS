@@ -231,7 +231,6 @@ const CartItems = (props) => {
           to: formData["address"],
           keyword: formData["keyword"],
           message: formData["message"],
-          hashTransaction: transaction["hashTransaction"],
         };
         data["transactionEthereum"] = transactionEthereum;
       }
@@ -246,7 +245,9 @@ const CartItems = (props) => {
           .catch((err) =>
             console.log(err)
           );
-    } catch (error) {}
+    } catch (error) {
+      console.log(error)
+    }
   };
   const [address, setAddress] = useState("");
   const FormEthereum = () => {

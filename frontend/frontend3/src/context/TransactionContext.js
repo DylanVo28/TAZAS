@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { ethers, utils, Wallet } from "ethers";
 import { contractABI, contractAddress, byteCode } from "../utils/constants";
+import Web3 from 'web3'
 export const TransactionContext = React.createContext();
+
 const { ethereum } = window;
 
 // lấy contract order
@@ -16,7 +18,11 @@ const getEthereumContract = () => {
   );
   return transactionContract;
 };
-
+const web3GetContract=()=>{
+  const web3=new Web3(Web3.givenProvider || 'http://127.0.0.1:9545/')
+  const contract=new web3.eth.Contract(contractABI,contractAddress)
+  return contract;
+}
 export const TransactionProvider = ({ children }) => {
   const [currentAccount, setCurrentAccount] = useState(null);
   const [formData, setFormData] = useState({
@@ -25,9 +31,9 @@ export const TransactionProvider = ({ children }) => {
     keyword: "",
     message: "",
   });
-  const [contract, setContract] = useState(null);
   useEffect(() => {
-    getInfuraContract();
+    console.log(web3GetContract())
+    // getInfuraContract();
     
   }, []);
 
@@ -87,29 +93,58 @@ export const TransactionProvider = ({ children }) => {
 
     return true;
   };
+  const ethEnabled = async () => {
+  if (window.ethereum) {
+    await window.ethereum.send('eth_requestAccounts');
+    window.web3 = new Web3(window.ethereum);
+    return true;
+  }
+  return false;
+}
   const sendTransaction = async () => {
     
     try {
       if (!ethereum) return alert("Please install metamask");
       const { address, amount, keyword, message } = formData;
-      const transactionContract = getEthereumContract();
       const parsedAmount = ethers.utils.parseEther(amount);
-      const sendMoney=await ethereum.request({
-        method: "eth_sendTransaction",
-        params: [
-          {
-            from: currentAccount,
-            to: address,
-            gas: "0x5208",
-            value: parsedAmount._hex,
-          },
-        ],
-      });
-      const transactionHash=await transactionContract.addToBlockchain(address,parsedAmount,message,keyword)
-      await transactionHash.wait()
-      transactionHash.hashTransaction=sendMoney
-      return transactionHash;
+      await web3GetContract().methods.addToBlockchain(address,parsedAmount,message,keyword).send({
+              gas:"0xb002f",
+              from: currentAccount,
+               to: address,
+              value: parsedAmount._hex,
+              data: formData,
+            }, function (err, result) {
+              if (err) {
+                  console.log("Error!", err);
+                  return
+              }
+      
+      return {
+        from: currentAccount,
+        hash:result
+      };
+          
+      })
+
+      // const transactionContract = getEthereumContract();
+      // const parsedAmount = ethers.utils.parseEther(amount);
+      // const sendMoney=await ethereum.request({
+      //   method: "eth_sendTransaction",
+      //   params: [
+      //     {
+      //       from: currentAccount,
+      //       to: address,
+      //       gas: "0x5208",
+      //       value: parsedAmount._hex,
+      //     },
+      //   ],
+      // });
+      // const transactionHash=await transactionContract.addToBlockchain(address,parsedAmount,message,keyword)
+      // await transactionHash.wait()
+      // transactionHash.hashTransaction=sendMoney
+      // return transactionHash;
     } catch (error) {
+      console.log(error)
       return null;
     }
   };

@@ -1,5 +1,5 @@
 import transactions from './Transactions.json'
 
 export const contractABI= transactions.abi
-export const contractAddress= '0x834cf7BbD76762E9E1f2D9DAbD05a540a6FF24C5'
+export const contractAddress= "0x38067794A12353c407C374bD0d0f7E23616bD214"
 export const byteCode= transactions.bytecode
