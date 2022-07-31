@@ -226,7 +226,7 @@ const CartItems = (props) => {
       if (transaction) {
         const transactionEthereum = {
           from: transaction["from"],
-          hash: transaction["hash"],
+          hash: transaction["transaction"]['transactionHash'],
           value: formData["amount"],
           to: formData["address"],
           keyword: formData["keyword"],
@@ -234,7 +234,6 @@ const CartItems = (props) => {
         };
         data["transactionEthereum"] = transactionEthereum;
       }
-      
       clientRequest
         .postOrder(data)
         .then((res) => {

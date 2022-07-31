@@ -107,7 +107,7 @@ export const TransactionProvider = ({ children }) => {
       if (!ethereum) return alert("Please install metamask");
       const { address, amount, keyword, message } = formData;
       const parsedAmount = ethers.utils.parseEther(amount);
-      await web3GetContract().methods.addToBlockchain(address,parsedAmount,message,keyword).send({
+      const transaction=await web3GetContract().methods.addToBlockchain(address,parsedAmount,message,keyword).send({
               gas:"0xb002f",
               from: currentAccount,
                to: address,
@@ -119,13 +119,13 @@ export const TransactionProvider = ({ children }) => {
                   return
               }
       
-      return {
-        from: currentAccount,
-        hash:result
-      };
+      
           
       })
-
+      return {
+        from: currentAccount,
+        transaction:transaction
+      };
       // const transactionContract = getEthereumContract();
       // const parsedAmount = ethers.utils.parseEther(amount);
       // const sendMoney=await ethereum.request({
