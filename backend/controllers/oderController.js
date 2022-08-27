@@ -69,8 +69,9 @@ exports.newOrder = catchAsyncError(async (req, res, next) => {
            
         })
     )
-  
-    const order = await Order.create({
+
+
+    const order=await Order.create({
         orderItems,
         shippingInfo,
         paymentInfo,

@@ -88,7 +88,8 @@ export const TransactionProvider = ({ children }) => {
         setCurrentAccount(accounts[0]);
       }
     } catch (error) {
-      throw new Error(error.message);
+      alert(error.message)
+      // throw new Error(error.message);
     }
 
     return true;
