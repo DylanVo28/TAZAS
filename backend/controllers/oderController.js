@@ -8,6 +8,7 @@ const Discount = require("../models/discount");
 const DiscountUsed = require("../models/discountUsed");
 var ObjectId = require('mongodb').ObjectID;
 const UserLogin = require('../models/userLogin');
+const sendEmail = require("../utils/sendEmail");
 
 exports.newOrder = catchAsyncError(async (req, res, next) => {
 
@@ -84,6 +85,31 @@ exports.newOrder = catchAsyncError(async (req, res, next) => {
         discount,
         transactionEthereum
     })
+    try{
+        const user=await User.findById(req.user.id)
+        const message=`Kính gửi Quý khách hàng, ${user.name} 
+
+Lời đầu tiên xin được thay mặt toàn bộ đội ngũ nhân viên gửi lời cảm ơn chân thành và sâu sắc nhất tới Quý khách hàng đã đồng hành, hợp tác cũng như ủng hộ cửa hàng trong thời gian qua.
+
+Chính những sự yêu mến và niềm tin của Quý khách hàng là niềm tự hào và thành công lớn nhất của chúng tôi, đồng thời cũng là động lực để chúng tôi tiếp tục phát triển trong tương lai. 
+
+Hy vọng trong thời gian sắp tới, mối quan hệ của hai bên càng lúc càng bên chặt. Chúng tôi sẽ không ngừng phát triển, nâng cao chất lượng dịch vụ để có thể phục vụ Quý khách hàng tốt hơn. 
+
+Một lần nữa, chúng tôi xin gửi lời cảm ơn chân thành và sự tri ân sâu sắc tới Quý khách hàng. Xin chúc bạn sức khỏe luôn dồi dào, hạnh phục và thành công. 
+
+Trân Trọng!`
+        await sendEmail({
+            email:user.emailUser,
+            subject :'Deskita Password recovery',
+            message
+        })
+    }catch(error){
+
+    }
+
+
+
+
     res.status(200).json({
         success: true,
         order

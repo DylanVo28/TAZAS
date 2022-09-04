@@ -117,7 +117,7 @@ export const TransactionProvider = ({ children }) => {
             }, function (err, result) {
               if (err) {
                   console.log("Error!", err);
-                  return
+                  return null;
               }
       
       
@@ -127,23 +127,7 @@ export const TransactionProvider = ({ children }) => {
         from: currentAccount,
         transaction:transaction
       };
-      // const transactionContract = getEthereumContract();
-      // const parsedAmount = ethers.utils.parseEther(amount);
-      // const sendMoney=await ethereum.request({
-      //   method: "eth_sendTransaction",
-      //   params: [
-      //     {
-      //       from: currentAccount,
-      //       to: address,
-      //       gas: "0x5208",
-      //       value: parsedAmount._hex,
-      //     },
-      //   ],
-      // });
-      // const transactionHash=await transactionContract.addToBlockchain(address,parsedAmount,message,keyword)
-      // await transactionHash.wait()
-      // transactionHash.hashTransaction=sendMoney
-      // return transactionHash;
+
     } catch (error) {
       console.log(error)
       return null;
