@@ -66,3 +66,11 @@
 .headerTb-Order{
     color: #969393;
 }
+.step {
+    width: 3em;
+    height: 3em;
+  }
+  
+.step.progress {
+    background: #6ab04c;
+}

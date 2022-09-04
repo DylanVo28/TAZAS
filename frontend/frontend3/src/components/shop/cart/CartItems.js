@@ -75,6 +75,16 @@ const CartItems = (props) => {
     }
     setIsConnectWallet(connectWallet());
   }, []);
+  function isPromise(p) {
+    if (typeof p === 'object' && typeof p.then === 'function') {
+      return true;
+    }
+  
+    return false;
+  }
+
+  // console.log("day",isPromise(isConnectWallet))
+
   useEffect(() => {
     var total = cartItems.reduce(function (acc, item) {
       if (item.checked) {
@@ -128,6 +138,7 @@ const CartItems = (props) => {
     newArr[index].checked = e.currentTarget.checked;
     setCartItems(newArr);
   };
+
   const handleSubmit = () => {
     const orderItems = cartItems.filter((item) => item.checked);
     const data = {
@@ -226,7 +237,7 @@ const CartItems = (props) => {
       if (transaction) {
         const transactionEthereum = {
           from: transaction["from"],
-          hash: transaction["transaction"]['transactionHash'],
+          hash: transaction["transaction"]["transactionHash"],
           value: formData["amount"],
           to: formData["address"],
           keyword: formData["keyword"],
@@ -241,11 +252,9 @@ const CartItems = (props) => {
           const link = "/order/me/" + res.order._id;
           window.location.href = link;
         })
-          .catch((err) =>
-            console.log(err)
-          );
+        .catch((err) => console.log(err));
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   };
   const [address, setAddress] = useState("");
@@ -253,7 +262,9 @@ const CartItems = (props) => {
     return (
       <>
         <div className="form-transaction ">
-          <label style={{width:"83.333%",textAlign:"left"}}>Address to:</label>
+          <label style={{ width: "83.333%", textAlign: "left" }}>
+            Address to:
+          </label>
           <input
             placeholder="Address To"
             className="input_transaction col-10"
@@ -261,7 +272,9 @@ const CartItems = (props) => {
             defaultValue={formData.address}
             disabled
           ></input>
-          <label style={{width:"83.333%",textAlign:"left"}}>Amount(ETH):</label>
+          <label style={{ width: "83.333%", textAlign: "left" }}>
+            Amount(ETH):
+          </label>
 
           <input
             placeholder="Amount (ETH)"
@@ -271,7 +284,9 @@ const CartItems = (props) => {
             onBlur={(e) => handleChange(e, "amount")}
             disabled
           ></input>
-          <label style={{width:"83.333%",textAlign:"left"}}>Keyword(Gif):</label>
+          <label style={{ width: "83.333%", textAlign: "left" }}>
+            Keyword(Gif):
+          </label>
 
           <input
             placeholder="Keyword (Gif)"
@@ -280,7 +295,9 @@ const CartItems = (props) => {
             defaultValue={formData.keyword}
             onBlur={(e) => handleChange(e, "keyword")}
           ></input>
-          <label style={{width:"83.333%",textAlign:"left"}}>Message:</label>
+          <label style={{ width: "83.333%", textAlign: "left" }}>
+            Message:
+          </label>
 
           <input
             placeholder="Enter Message"
@@ -319,7 +336,7 @@ const CartItems = (props) => {
   };
 
   function renderButton() {
-    if (!isConnectWallet) {
+    if (isConnectWallet == false ) {
       return (
         <button
           style={{
@@ -330,12 +347,15 @@ const CartItems = (props) => {
             color: "#fff",
           }}
           className="btn btn-success  mt-2"
-          onClick={() => setIsConnectWallet(connectWallet())}
+          onClick={() => {
+            setIsConnectWallet(connectWallet());
+          }}
         >
           connect Wallet
         </button>
       );
-    } else {
+    }
+    if (isConnectWallet ) {
       return (
         <button
           style={{

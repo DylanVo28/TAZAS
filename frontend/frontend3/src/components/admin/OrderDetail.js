@@ -15,6 +15,15 @@ import {
 } from "./../../HandlerCaculate/formatDate";
 import ModalPopup from "./../shared/ModalPopup";
 import "../../css/Detail.css";
+import {
+  Stepper,
+  Step,
+  useStepper,
+  StepNumber,
+  StepTitle,
+  StepStatus,
+  StepDescription,
+} from "react-progress-stepper";
 const OrderDetail = (props) => {
   const {
     connectWallet,
@@ -38,7 +47,107 @@ const OrderDetail = (props) => {
     USD: 0,
   });
   const [transactionEthereum, setTransactionEhthereum] = useState();
-
+  const { step, incrementStep, decrementStep,goToStep } = useStepper(0, 3);
+  const themeStepper={
+    light: {
+      step: {
+        pending: {
+          background: "#ededed",
+          color: "#a1a3a7",
+        },
+        progress: {
+          background: "#3c3fed",
+          color: "#ffffff",
+        },
+        completed: {
+          background: "#23c275",
+          color: "#ffffff",
+        },
+      },
+      content: {
+        pending: {
+          stepNumber: { color: "#a1a3a7" },
+          title: { color: "#a1a3a7" },
+          status: { background: "#f2f2f2", color: "#a1a3a7" },
+          description: { color: "#a1a3a7" },
+        },
+        progress: {
+          stepNumber: { color: "#131b26" },
+          title: { color: "#131b26" },
+          status: { background: "#e7e9fd", color: "#3c3fed" },
+          description: { color: "#131b26" },
+        },
+        completed: {
+          stepNumber: { color: "#131b26" },
+          title: { color: "#131b26" },
+          status: { background: "#e9faf2", color: "#23c275" },
+          description: { color: "#131b26" },
+        },
+      },
+      progressBar: {
+        pending: {
+          background: "#ededed",
+        },
+        progress: {
+          background: "#e7e9fd",
+          fill: "#3c3fed",
+        },
+        completed: {
+          background: "#e9faf2",
+          fill: "#23c275",
+        },
+      },
+    },
+    dark: {
+      step: {
+        pending: {
+          background: "#1a1a1a",
+          color: "#767676",
+        },
+        progress: {
+          background: "#19b6fe",
+          color: "#ffffff",
+        },
+        completed: {
+          background: "#23c275",
+          color: "#ffffff",
+        },
+      },
+      content: {
+        pending: {
+          stepNumber: { color: "#767676" },
+          title: { color: "#767676" },
+          status: { background: "#1a1a1a", color: "#767676" },
+          description: { color: "#767676" },
+        },
+        progress: {
+          stepNumber: { color: "#ece4d9" },
+          title: { color: "#ece4d9" },
+          status: { background: "#08374c", color: "#19b6fe" },
+          description: { color: "#ece4d9" },
+        },
+        completed: {
+          stepNumber: { color: "#ece4d9" },
+          title: { color: "#ece4d9" },
+          status: { background: "#0b3a23", color: "#23c275" },
+          description: { color: "#ece4d9" },
+        },
+      },
+      progressBar: {
+        pending: {
+          background: "#1a1a1a",
+        },
+        progress: {
+          background: "#08374c",
+          fill: "#19b6fe",
+        },
+        completed: {
+          background: "#0b3a23",
+          fill: "#23c275",
+        },
+      },
+    },
+  }
   useEffect(() => {
     if (props.match.path == "/order/me/:id") {
       async function fetchMyAPI() {
@@ -68,6 +177,26 @@ const OrderDetail = (props) => {
       fetchMyAPIRoleAdmin();
     }
   }, []);
+  const StepperComponent=()=>{
+    return (
+      <div >
+        <Stepper step={step}
+                theme={themeStepper}
+               
+        >
+          <Step>
+            <StepTitle>Shipping</StepTitle>
+          </Step>
+          <Step>
+            <StepTitle>Payment</StepTitle>          
+          </Step>
+          <Step >
+            <StepTitle>Confirm Order</StepTitle>
+          </Step>
+        </Stepper>
+      </div>
+    )
+  }
   const FormUser = () => {
     return (
       <>
@@ -92,7 +221,7 @@ const OrderDetail = (props) => {
     return (
       <>
         {order.shippingInfo && (
-          <div className="order-Confirm">
+          <div className="order-Confirm mt-8">
             <div className="order-Confirm--header d-flex justify-content-between">
               <h3>Order Confirmation</h3>
               <div className="d-flex align-items-center">
@@ -258,7 +387,9 @@ const OrderDetail = (props) => {
               props.match.path == "/admin/order/:id" && (
                 <button
                   className="btn btn-order "
-                  onClick={(status) => updateOrderStatus("Confirmed")}
+                  onClick={(status) => updateOrderStatus("Confirmed")
+                                       
+                }
                 >
                   Confirm Order
                 </button>
@@ -301,6 +432,7 @@ const OrderDetail = (props) => {
       .updateOrder(order._id, status)
       .then((res) => {
         setOrder({ ...order, orderStatus: res.order.orderStatus });
+        incrementStep();
         NotificationManager.success("Success", "success");
       })
       .catch((err) => NotificationManager.error("Success", "error"));
@@ -308,6 +440,7 @@ const OrderDetail = (props) => {
 
   return (
     <div className="container py-4 order-detail">
+      <StepperComponent />
       <FormShippingInfo />
       <div className="order-DetailTable">
         <FormItems />

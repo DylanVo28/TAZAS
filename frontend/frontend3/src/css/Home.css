@@ -2225,5 +2225,8 @@ button > .fa-search{
 button > .fa-search:hover{
 	color: #000;
 }
+.form-select-sex{
+	margin: 10px;
+}
 /* ##### The End ##### */
  

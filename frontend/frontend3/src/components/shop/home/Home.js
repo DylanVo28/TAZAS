@@ -91,7 +91,7 @@ const Home =()=>{
           <div style={{display:'inline-block',float:'right'}}>
           <span>Filter Product</span>
           <span>
-          <select className="form-select" aria-label="Default select example" onChange={(e)=>setClassify(e.target.value)}>
+          <select className="form-select form-select-sex" aria-label="Default select example" onChange={(e)=>setClassify(e.target.value)}>
           <option selected value='' >All</option>
           <option  value={'Men'} >Men</option>
           <option  value={'Women'} >Women</option>

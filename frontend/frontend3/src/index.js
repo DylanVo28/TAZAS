@@ -17,13 +17,13 @@ const options = {
 }
 ReactDOM.render(
   <TransactionProvider>
-  <React.StrictMode>
+  
      <Provider store={store}>
     <AlertProvider template={AlertTemplate} {...options}>
     <App />
     </AlertProvider>
     </Provider>
-  </React.StrictMode>
+  
   </TransactionProvider>,
   document.getElementById("root")
 );

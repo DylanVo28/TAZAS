@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { ethers, utils, Wallet } from "ethers";
 import { contractABI, contractAddress, byteCode } from "../utils/constants";
-import Web3 from 'web3'
+import Web3 from "web3";
 export const TransactionContext = React.createContext();
 
 const { ethereum } = window;
@@ -9,7 +9,7 @@ const { ethereum } = window;
 // lấy contract order
 const getEthereumContract = () => {
   const provider = new ethers.providers.Web3Provider(ethereum);
-  provider.getCode(contractAddress).then(res=>console.log(res))
+  provider.getCode(contractAddress).then((res) => console.log(res));
   const signer = provider.getSigner();
   const transactionContract = new ethers.Contract(
     contractAddress,
@@ -18,11 +18,11 @@ const getEthereumContract = () => {
   );
   return transactionContract;
 };
-const web3GetContract=()=>{
-  const web3=new Web3(Web3.givenProvider || 'http://127.0.0.1:9545/')
-  const contract=new web3.eth.Contract(contractABI,contractAddress)
+const web3GetContract = () => {
+  const web3 = new Web3(Web3.givenProvider || "http://127.0.0.1:9545/");
+  const contract = new web3.eth.Contract(contractABI, contractAddress);
   return contract;
-}
+};
 export const TransactionProvider = ({ children }) => {
   const [currentAccount, setCurrentAccount] = useState(null);
   const [formData, setFormData] = useState({
@@ -32,13 +32,12 @@ export const TransactionProvider = ({ children }) => {
     message: "",
   });
   useEffect(() => {
-    console.log(web3GetContract())
+    console.log(web3GetContract());
     // getInfuraContract();
-    
   }, []);
 
   const handleChange = (e, name) => {
-    setFormData({...formData,[name]:e.target.value});
+    setFormData({ ...formData, [name]: e.target.value });
   };
   // lấy contract infura
   const getInfuraContract = () => {
@@ -64,6 +63,7 @@ export const TransactionProvider = ({ children }) => {
     });
   };
 
+ 
   const checkIfWalletIsConnected = async () => {
     try {
       if (!ethereum) return alert("Please install metamask");
@@ -77,6 +77,10 @@ export const TransactionProvider = ({ children }) => {
     }
     return false;
   };
+
+
+
+
   const connectWallet = async () => {
     try {
       if (checkIfWalletIsConnected()) {
@@ -93,38 +97,57 @@ export const TransactionProvider = ({ children }) => {
 
     return true;
   };
+  // const connectWallet = async () => {
+  //   const checkWalletConnect=await checkIfWalletIsConnected()
+  //   try {
+  //     if (!checkWalletConnect) {
+  //       return false;
+  //     }
+  
+  //       const accounts = await ethereum.request({
+  //         method: "eth_requestAccounts",
+  //       });
+  //       setCurrentAccount(accounts[0]);
+  //       return true;
+      
+  //   } catch (error) {
+  //     throw new Error(error.message);
+  //   }
+  
+  // };
   const ethEnabled = async () => {
-  if (window.ethereum) {
-    await window.ethereum.send('eth_requestAccounts');
-    window.web3 = new Web3(window.ethereum);
-    return true;
-  }
-  return false;
-}
+    if (window.ethereum) {
+      await window.ethereum.send("eth_requestAccounts");
+      window.web3 = new Web3(window.ethereum);
+      return true;
+    }
+    return false;
+  };
   const sendTransaction = async () => {
-    
     try {
       if (!ethereum) return alert("Please install metamask");
       const { address, amount, keyword, message } = formData;
       const parsedAmount = ethers.utils.parseEther(amount);
-      const transaction=await web3GetContract().methods.addToBlockchain(address,parsedAmount,message,keyword).send({
-              gas:"0xb002f",
-              from: currentAccount,
-               to: address,
-              value: parsedAmount._hex,
-              data: formData,
-            }, function (err, result) {
-              if (err) {
-                  console.log("Error!", err);
-                  return
-              }
-      
-      
-          
-      })
+      const transaction = await web3GetContract()
+        .methods.addToBlockchain(address, parsedAmount, message, keyword)
+        .send(
+          {
+            gas: "0xb002f",
+            from: currentAccount,
+            to: address,
+            value: parsedAmount._hex,
+            data: formData,
+          },
+          function (err, result) {
+            if (err) {
+              console.log("Error!", err);
+              return;
+            }
+          }
+        );
       return {
         from: currentAccount,
-        transaction:transaction
+        transaction: transaction,
       };
       // const transactionContract = getEthereumContract();
       // const parsedAmount = ethers.utils.parseEther(amount);
@@ -144,7 +167,7 @@ export const TransactionProvider = ({ children }) => {
       // transactionHash.hashTransaction=sendMoney
       // return transactionHash;
     } catch (error) {
-      console.log(error)
+      console.log(error);
       return null;
     }
   };

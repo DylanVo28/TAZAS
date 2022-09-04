@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 import Pagination from "react-js-pagination";
 import clientRequest from '../../APIFeatures/clientRequest';
 import {getFormattedDate} from './../../HandlerCaculate/formatDate';
-// require("bootstrap/less/bootstrap.less");
 
 const ProductsList=()=>{
     const [listProduct,setListProduct]=useState([])
@@ -36,7 +35,6 @@ const ProductsList=()=>{
     
     const ProductRow=(product)=>{
         return <tr>
-            
                   <td>
                     <div className="d-flex px-2 py-1">
                       <div>
@@ -89,7 +87,7 @@ const ProductsList=()=>{
           <h6>Product List</h6>
           <div style={{display:'flex',justifyContent:'space-between'}}>
           <input className='search-product' onChange={e=>onChangeSearchProduct(e)} placeholder="Search product"/>
-          <Link name="" id="" class="btn create-button" to="/admin/create-product" role="button">Create Product</Link>
+          <Link name="" id="" class="btn create-button" to="/admin/create-product" role="button" style={{background:"#29e625"}}>Create Product</Link>
           </div>
           <br/>
 
