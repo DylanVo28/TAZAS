@@ -184,8 +184,8 @@ const CartItems = (props) => {
       .postOrder(data)
       .then((res) => {
         NotificationManager.success("Success", "Create order complete");
-        const link = "/order/me/" + res.order._id;
-        window.location.href = link;
+        // const link = "/order/me/" + res.order._id;
+        // window.location.href = link;
       })
       .catch((err) =>
         NotificationManager.error("Error", "Cannot create order")
@@ -234,6 +234,7 @@ const CartItems = (props) => {
     }
     try {
       const transaction = await sendTransaction();
+      console.log(transaction)
       if (transaction) {
         const transactionEthereum = {
           from: transaction["from"],
@@ -244,15 +245,18 @@ const CartItems = (props) => {
           message: formData["message"],
         };
         data["transactionEthereum"] = transactionEthereum;
+        clientRequest
+            .postOrder(data)
+            .then((res) => {
+              NotificationManager.success("Success", "Create order complete");
+              const link = "/order/me/" + res.order._id;
+              window.location.href = link;
+            })
+            .catch((err) =>
+                console.log(err)
+            );
       }
-      clientRequest
-        .postOrder(data)
-        .then((res) => {
-          NotificationManager.success("Success", "Create order complete");
-          const link = "/order/me/" + res.order._id;
-          window.location.href = link;
-        })
-        .catch((err) => console.log(err));
+
     } catch (error) {
       console.log(error);
     }

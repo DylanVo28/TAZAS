@@ -279,9 +279,7 @@ const OrderDetail = (props) => {
                        <span style={{ marginLeft: "2%" }}>
                       Hash contract:{<a target="_blank" rel="noopener noreferrer" href={"https://rinkeby.etherscan.io/tx/"+transactionEthereum.hash}>{transactionEthereum.hash}</a>}
                       </span>
-                      <span style={{ marginLeft: "2%" }}>
-                      Hash Blockchain:{<a target="_blank" rel="noopener noreferrer" href={"https://rinkeby.etherscan.io/tx/"+transactionEthereum.hashTransaction}>{transactionEthereum.hashTransaction}</a>}
-                      </span>
+
                       <span style={{ marginLeft: "2%" }}>
                       from:{transactionEthereum.from}
                       </span>

@@ -7,7 +7,7 @@ const sendEmail=async options=>{
         host: 'smtp.gmail.com',
         auth: {
           user: 'dinhdeptrainhatvutruso7@gmail.com',
-          pass: 'dinhdeptraiquata'
+          pass: 'bpsfpwzfkneyghlc'
         }
       }));
     const message={

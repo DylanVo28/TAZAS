@@ -92,7 +92,8 @@ export const TransactionProvider = ({ children }) => {
         setCurrentAccount(accounts[0]);
       }
     } catch (error) {
-      throw new Error(error.message);
+      alert(error.message)
+      // throw new Error(error.message);
     }
 
     return true;
@@ -128,44 +129,26 @@ export const TransactionProvider = ({ children }) => {
       if (!ethereum) return alert("Please install metamask");
       const { address, amount, keyword, message } = formData;
       const parsedAmount = ethers.utils.parseEther(amount);
-      const transaction = await web3GetContract()
-        .methods.addToBlockchain(address, parsedAmount, message, keyword)
-        .send(
-          {
-            gas: "0xb002f",
-            from: currentAccount,
-            to: address,
-            value: parsedAmount._hex,
-            data: formData,
-          },
-          function (err, result) {
-            if (err) {
-              console.log("Error!", err);
-              return;
-            }
-          }
-        );
+      const transaction=await web3GetContract().methods.addToBlockchain(address,parsedAmount,message,keyword).send({
+              gas:"0xb002f",
+              from: currentAccount,
+               to: address,
+              value: parsedAmount._hex,
+              data: formData,
+            }, function (err, result) {
+              if (err) {
+                  console.log("Error!", err);
+                  return null;
+              }
+      
+      
+          
+      })
       return {
         from: currentAccount,
         transaction: transaction,
       };
-      // const transactionContract = getEthereumContract();
-      // const parsedAmount = ethers.utils.parseEther(amount);
-      // const sendMoney=await ethereum.request({
-      //   method: "eth_sendTransaction",
-      //   params: [
-      //     {
-      //       from: currentAccount,
-      //       to: address,
-      //       gas: "0x5208",
-      //       value: parsedAmount._hex,
-      //     },
-      //   ],
-      // });
-      // const transactionHash=await transactionContract.addToBlockchain(address,parsedAmount,message,keyword)
-      // await transactionHash.wait()
-      // transactionHash.hashTransaction=sendMoney
-      // return transactionHash;
+
     } catch (error) {
       console.log(error);
       return null;

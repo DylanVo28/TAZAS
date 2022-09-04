@@ -42,30 +42,23 @@ const orderSchema=mongoose.Schema({
     transactionEthereum:{
         from: {
             type:String,
-            required:true
         },
         hash:{
             type: String,
-            required:true
         },
         value:{
             type:String,
-            required:true
         },
         to: {
             type:String,
-            required:true
         },
 
         keyword: {
             type:String,
-            required:true
         },
         message:{
             type:String,
-            required:true
         },
-    
     },
     user:{
         type:mongoose.Schema.Types.ObjectId,
