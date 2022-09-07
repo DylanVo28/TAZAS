@@ -816,74 +816,103 @@ exports.analyticsByDate=catchAsyncError(async(req,res,next)=>{
     const dateEndToDate=new Date(dateEnd)
     let models=[]
     const dateArray=getDates(dateStartToDate,dateEndToDate)
-   
-    var resultArray=[]
+    if(type=='product'){
+        models=await Product.find(
+                    {
+                    createdAt:{
+                        $gte:dateStartToDate,
+                        $lt:dateEndToDate
+                    }
+                })
+    }
+    else if(type=='order'){
 
-    for (const date of dateArray) {
-        var startDate=new Date(date)
-        var endDate=new Date(startDate)
-        endDate.setHours(23,59,59,999)
-        if(type=='product'){
-            models=await Product.find(
-                {
-                createdAt:{
-                    $gte:startDate,
-                    $lt:endDate
-                    
-                }
-            })
-        }
-        else if(type=='order'){
-           
-            models=await Order.find(
-                {
+                models=await Order.find(
+                    {
+                    createAt:{
+                        $gte:dateStartToDate,
+                        $lt:dateEndToDate
+
+                    }
+                })
+            }
+    else if(type=='customer'){
+                models=await User.find(
+                    {
+                    createAt:{
+                        $gte:dateStartToDate,
+                        $lt:dateEndToDate
+
+                    }
+                })
+            }
+    else if(type=='total'){
+        models=await Order.find(
+            {
                 createAt:{
-                    $gte:startDate,
-                    $lt:endDate
-                    
-                }
-            })
-        }
-        else if(type=='customer'){
-            models=await User.find(
-                {
-                createAt:{
-                    $gte:startDate,
-                    $lt:endDate
-                    
-                }
-            })
-        }
-        else if(type=='total'){
-            models=await Order.find(
-                {
-                createAt:{
-                    $gte:startDate,
-                    $lt:endDate
-                    
+                    $gte:dateStartToDate,
+                    $lt:dateEndToDate
+
                 },
                 orderStatus:"Complete"
             })
-        }
-        var res2
-        if(type=='total'){
-            res2=models.reduce((n,{totalPrice})=>n+totalPrice,0)
-        }
-        else{
-            res2=models.length
-        }
-       
+    }
+    var resultArray=[]
 
-        resultArray.push(
-             res2
-         )
-      }
-      var total=resultArray.reduce((a,b)=>a+b,0)
+    // for (const date of dateArray) {
+    //     var startDate=new Date(date)
+    //     var endDate=new Date(startDate)
+    //     endDate.setHours(23,59,59,999)
+    //     if(type=='product'){
+    //         models=await Product.find(
+    //             {
+    //             createdAt:{
+    //                 $gte:startDate,
+    //                 $lt:endDate
+    //
+    //             }
+    //         })
+    //     }
+    //     else if(type=='order'){
+    //
+    //         models=await Order.find(
+    //             {
+    //             createAt:{
+    //                 $gte:startDate,
+    //                 $lt:endDate
+    //
+    //             }
+    //         })
+    //     }
+    //     else if(type=='customer'){
+    //         models=await User.find(
+    //             {
+    //             createAt:{
+    //                 $gte:startDate,
+    //                 $lt:endDate
+    //
+    //             }
+    //         })
+    //     }
+
+    //     // var res2
+    //     // if(type=='total'){
+    //     //     res2=models.reduce((n,{totalPrice})=>n+totalPrice,0)
+    //     // }
+    //     // else{
+    //     //     res2=models.length
+    //     // }
+    //     //
+    //     //
+    //     // resultArray.push(
+    //     //      res2
+    //     //  )
+    //     console.log(models)
+    //   }
+    //   // var total=resultArray.reduce((a,b)=>a+b,0)
 
     
     res.status(201).json({
-        type,
-        resultArray,
-        total
+        models
     })
 })
