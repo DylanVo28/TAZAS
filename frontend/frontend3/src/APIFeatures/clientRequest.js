@@ -617,6 +617,18 @@ class ClientRequest{
         })  
     }
 
+
+    analyticsByDate(data){
+        return new Promise((resolve,reject)=>{
+            axios.get(`${DOMAIN}/api/v1/analytics-by-date?`,{
+                params:{userToken,dateStart:data.dateStart,dateEnd:data.dateEnd,type:data.type}
+            }).then(result => {
+                    resolve(result.data)
+                }, reject)
+        })  
+    }
+
+        
     getCryptoCompare(){
         return new Promise((resolve,reject)=>{
             axios.get(`https://min-api.cryptocompare.com/data/price?fsym=ETH&tsyms=BTC,USD,EUR,ETH`).then(result => {

@@ -177,26 +177,26 @@ const OrderDetail = (props) => {
       fetchMyAPIRoleAdmin();
     }
   }, []);
-  const StepperComponent=()=>{
-    return (
-      <div >
-        <Stepper step={step}
-                theme={themeStepper}
+  // const StepperComponent=()=>{
+  //   return (
+  //     <div >
+  //       <Stepper step={step}
+  //               theme={themeStepper}
                
-        >
-          <Step>
-            <StepTitle>Shipping</StepTitle>
-          </Step>
-          <Step>
-            <StepTitle>Payment</StepTitle>          
-          </Step>
-          <Step >
-            <StepTitle>Confirm Order</StepTitle>
-          </Step>
-        </Stepper>
-      </div>
-    )
-  }
+  //       >
+  //         <Step>
+  //           <StepTitle>Shipping</StepTitle>
+  //         </Step>
+  //         <Step>
+  //           <StepTitle>Payment</StepTitle>          
+  //         </Step>
+  //         <Step >
+  //           <StepTitle>Confirm Order</StepTitle>
+  //         </Step>
+  //       </Stepper>
+  //     </div>
+  //   )
+  // }
   const FormUser = () => {
     return (
       <>
@@ -267,12 +267,28 @@ const OrderDetail = (props) => {
                   <h4 className="header-detail">Payment</h4>
                   <span className="row">
                     <div>
-                      <img
+                     {
+                      transactionEthereum ? (
+                        <>
+                         <img
                         className="img-Payment "
                         style={{ height: "50px" } }
                         src="https://icons.iconarchive.com/icons/cjdowner/cryptocurrency-flat/1024/Ethereum-ETH-icon.png"
                       ></img>
                       <label style={{fontSize:"20px",marginLeft:"10px"}}>Ethereum</label>
+                        </>
+                        
+                      ) :(
+                        <>
+                         <img
+                        className="img-Payment "
+                        style={{ height: "50px" } }
+                        src="https://cdn1.iconfinder.com/data/icons/marketplace-and-shipping-filled-outline/64/COD_cash_on_delivery_shipping_payment_delivery-512.png"
+                      ></img>
+                      <label style={{fontSize:"20px",marginLeft:"10px"}}>COD</label>
+                        </>
+                      )
+                     }
                     </div>
                     {
                       transactionEthereum ? (<>
@@ -438,7 +454,7 @@ const OrderDetail = (props) => {
 
   return (
     <div className="container py-4 order-detail">
-      <StepperComponent />
+ 
       <FormShippingInfo />
       <div className="order-DetailTable">
         <FormItems />
