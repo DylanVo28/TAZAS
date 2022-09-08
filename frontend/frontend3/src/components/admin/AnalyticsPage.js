@@ -4,6 +4,8 @@ import { useEffect } from "react";
 import clientRequest from "../../APIFeatures/clientRequest";
 import { useState } from "react";
 import CardItem from "./CardItem";
+import Swal from "sweetalert2";
+var XLSX = require("xlsx");
 const data = {
   labels: ["Ngày 6", "Ngày 5", "Ngày 4", "Ngày 3", "Ngày 2", "Ngày 1"],
   datasets: [
@@ -31,6 +33,13 @@ const options = {
 
 const AnalyticsPage = () => {
   const [analyticProduct, setAnalyticProduct] = useState();
+  const [openDateRP, setOpenDateRP] = useState(false);
+  const [dataRP, SetDataRP] = useState({
+    dateStart: "",
+    dateEnd: "",
+    type: "",
+  });
+  const [dataToRP, SetDataToRP] = useState();
   const [analyticUser, setAnalyticUser] = useState();
   const [analyticOrder, setAnalyticOrder] = useState();
   const [topSellingProduct, setTopSellingProduct] = useState();
@@ -42,6 +51,126 @@ const AnalyticsPage = () => {
   const [stUser, setStUser] = useState(0);
   const [stOrder, setStOrder] = useState(0);
   const [payment, setPayment] = useState(0);
+
+  const handleExportRP = () => {
+    openDateRP == true ? setOpenDateRP(false) : setOpenDateRP(true);
+  };
+
+
+  useEffect(() => {
+    async function ExportReport() {
+      if (openDateRP) {
+        const { value: formValues } = await Swal.fire({
+          title: "Export Report",
+          confirmButtonText: "CONTINUE",
+          html:
+            '<label class="label_date">from:</label>' +
+            '<input id="swal-input1" type="date" class="swal2-input">' +
+            "<br>" +
+            '<label class="label_date">To:</label>' +
+            '<input id="swal-input2" type="date" class="swal2-input">',
+          focusConfirm: false,
+          showCloseButton: true,
+          willClose: () => {
+            SetDataRP({
+              dateStart: "",
+              dateEnd: "",
+              type: "",
+            });
+            setOpenDateRP(false);
+          },
+          preConfirm: () => {
+            if (!document.getElementById("swal-input1").value) {
+              Swal.showValidationMessage("Date from is required");
+            }
+
+            if (!document.getElementById("swal-input2").value) {
+              Swal.showValidationMessage("Date To is required");
+            }
+            return [
+              document.getElementById("swal-input1").value,
+              document.getElementById("swal-input2").value,
+            ];
+          },
+        });
+
+        async function GetType() {
+          const { value: typex } = await Swal.fire({
+            confirmButtonText: "EXPORT",
+            title: "TYPE",
+            input: "select",
+            inputOptions: {
+              product: "product",
+              order: "order",
+              customer: "customer",
+              total: "total",
+            },
+            inputPlaceholder: "Select Type",
+            showCancelButton: true,
+            willClose: () => {
+              SetDataRP({
+                dateStart: "",
+                dateEnd: "",
+                type: "",
+              });
+            },
+          });
+
+          if (typex) {
+            console.log("type", typex);
+            SetDataRP({
+              dateStart: formValues[0],
+              dateEnd: formValues[1],
+              type: typex,
+            });
+          }
+        }
+
+        if (formValues) {
+          GetType();
+        }
+      }
+    }
+
+    ExportReport();
+  }, [openDateRP]);
+
+  const handleOnExport = (dataToRP) => {
+    
+      let wb = XLSX.utils.book_new(),
+      ws = XLSX.utils.json_to_sheet(dataToRP);
+      XLSX.utils.book_append_sheet(wb, ws, "MySheet2");
+      XLSX.writeFile(wb, "MyExcel1.xlsx");
+    
+  };
+
+
+  useEffect(() => {
+    if (dataRP.dateEnd != "") {
+      const getDataRP = async () => {
+        const res = await clientRequest.analyticsByDate(dataRP);
+        if (res) {
+          SetDataToRP(res.models);
+        }
+      };
+      getDataRP();
+    }
+  }, [dataRP]);
+
+
+  useEffect(()=>{
+    async function PrintRP()
+    {
+      let data=await dataToRP;
+      if(dataToRP)
+      {
+        handleOnExport(dataToRP)
+      }
+    }
+    PrintRP();
+  }
+  ,[dataToRP])
+
   useEffect(async () => {
     Promise.all([
       await clientRequest.analyticsByProduct(filter),
@@ -80,6 +209,7 @@ const AnalyticsPage = () => {
     <>
       <div className="header">
         <select
+          style={{ paddingRight: "30px" }}
           className="form-select"
           aria-label="Default select example"
           onChange={(e) => setFilter(e.target.value)}
@@ -90,6 +220,21 @@ const AnalyticsPage = () => {
           <option value={"month"}>Filter By Month</option>
           <option value={"year"}>Filter By Year</option>
         </select>
+        <button
+          onClick={() => {
+            handleExportRP();
+          }}
+          className=" btn btn-primary"
+          style={{
+            color: "#fff",
+            textTransform: "uppercase",
+            padding: "none",
+            marginTop: "15px",
+            marginLeft: "10px",
+          }}
+        >
+          Export Report
+        </button>
         <br />
         <br />
         <div className="row">

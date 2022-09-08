@@ -42,7 +42,7 @@ const MenuHome = () => {
                         <div className="classynav">
                             <ul className="menu-list">
                                 <li className="megamenu-item">
-                                    <Link to="/home">Shop</Link>
+                                    <Link to="/home"><img src="/static/media/tazas.98794f90.png" style={{width: "65px"}}></img></Link>
                                 </li>
                             </ul>
                         </div>

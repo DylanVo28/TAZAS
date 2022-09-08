@@ -21260,3 +21260,13 @@ p {
 .avatar-preview{
   width: 40px;
 }
+
+
+.label_date{
+  font-size: inherit !important;
+}
+#swal-input1{
+  
+  margin-left: 21px;
+
+}

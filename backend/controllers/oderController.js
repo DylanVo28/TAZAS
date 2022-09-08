@@ -100,7 +100,7 @@ Một lần nữa, chúng tôi xin gửi lời cảm ơn chân thành và sự t
 Trân Trọng!`
         await sendEmail({
             email:user.emailUser,
-            subject :'Deskita Password recovery',
+            subject :'Đặt hàng thành công!',
             message
         })
     }catch(error){
