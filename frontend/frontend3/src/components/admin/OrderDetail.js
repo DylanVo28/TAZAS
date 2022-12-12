@@ -47,7 +47,7 @@ const OrderDetail = (props) => {
     USD: 0,
   });
   const [transactionEthereum, setTransactionEhthereum] = useState();
-  const { step, incrementStep, decrementStep,goToStep } = useStepper(0, 3);
+  // const { step, incrementStep, decrementStep,goToStep } = useStepper(0, 3);
   const themeStepper={
     light: {
       step: {
@@ -446,7 +446,7 @@ const OrderDetail = (props) => {
       .updateOrder(order._id, status)
       .then((res) => {
         setOrder({ ...order, orderStatus: res.order.orderStatus });
-        incrementStep();
+        // incrementStep();
         NotificationManager.success("Success", "success");
       })
       .catch((err) => NotificationManager.error("Success", "error"));

@@ -29,6 +29,7 @@
     "node-localstorage": "^2.1.6",
     "nodemailer": "^6.5.0",
     "nodemailer-smtp-transport": "^2.7.4",
+    "react-progress-stepper": "^0.2.2",
     "redis": "^2.8.0",
     "stripe": "^8.149.0",
     "swagger-jsdoc": "^6.1.0",
@@ -37,7 +38,9 @@
     "swagger-ui": "^4.5.2",
     "swagger-ui-dist": "^4.5.2",
     "swagger-ui-express": "^4.3.0",
-    "validator": "^13.5.2"
+    "sweetalert2": "^11.4.32",
+    "validator": "^13.5.2",
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
     "@nomiclabs/hardhat-waffle": "^2.0.3",

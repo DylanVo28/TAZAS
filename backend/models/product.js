@@ -46,20 +46,16 @@ const productSchema=new mongoose.Schema({
         required:[true,'Please enter category'],
         enum:{
             values:[
-                'jacketsCoats',
-                'hoodiesSweatshirts',
-                'cardiganJumpers',
-                'tshirtTanks',
-                'shoes',
-                'shirts',
-                'basics',
-                'blazersSuits',
-                'shorts',
-                'trousers',
-                'jeans',
-                'swimwear',
-                'underwear',
-                'socks',
+                'T_SHIRT',
+                'SHIRT',
+                'COAT',
+                'SHORT',
+                'TROUSER',
+                'SUIT',
+                'SHOES',
+                'HAT',
+                'BAG',
+
                 
             ],
             message:'Please enter select category'
