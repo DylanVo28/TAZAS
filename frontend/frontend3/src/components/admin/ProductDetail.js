@@ -171,22 +171,15 @@ const ProductDetail=(props)=>{
           <div className="form-group col-md-4">
             <label>Category</label>
             <select className="form-control" name='category' defaultValue={stProduct.category}>
-            <option value={'jacketsCoats'}>Jackets & Coats</option>
-              <option  value={'hoodiesSweatshirts'}>Hoodies & Sweatshirts</option>
-              <option value={'cardiganJumpers'}>Cardigan & Jumpers</option>
-              <option value={'tshirtTanks'}>T-shirt & Tanks</option>
-              <option value={'shoes'}>Shoes</option>
-              <option value={'shirts'}>Shirts</option>
-              <option value={'basics'}>Basics</option>
-              <option value={'blazersSuits'}>Blazers & Suits</option>
-              <option value={'shorts'}>Shorts</option>
-              <option value={'trousers'}>Trousers</option>
-              <option value={'jeans'}>Jeans</option>
-              <option value={'swimwear'}>Swimwear</option>
-              <option value={'underwear'}>Underwear</option>
-              <option value={'socks'}>Socks</option>
-
-              
+              <option value={'T_SHIRT'}>Áo thun</option>
+              <option value={'SHIRT'}>Áo sơ mi</option>
+              <option value={'COAT'}>Áo khoác</option>
+              <option value={'SHORT'}>Quần lửng</option>
+              <option value={'TROUSER'}>Quần dài</option>
+              <option value={'SUIT'}>Vét</option>
+              <option value={'SHOES'}>Giày</option>
+              <option value={'HAT'}>Mũ</option>
+              <option value={'BAG'}>Túi xách</option>
             </select>
           </div>
           <div className="form-group col-md-4">

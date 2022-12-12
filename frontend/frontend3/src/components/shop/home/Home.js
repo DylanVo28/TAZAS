@@ -93,9 +93,9 @@ const Home =()=>{
           <span>
           <select className="form-select form-select-sex" aria-label="Default select example" onChange={(e)=>setClassify(e.target.value)}>
           <option selected value='' >All</option>
-          <option  value={'Men'} >Men</option>
-          <option  value={'Women'} >Women</option>
-          <option  value={'Kid'} >Kid</option>
+          <option  value={'Men'} >Nam</option>
+          <option  value={'Women'} >Nữ</option>
+          <option  value={'Kid'} >Trẻ em</option>
 
 </select>
           </span>
@@ -104,21 +104,15 @@ const Home =()=>{
           <select className="form-select" aria-label="Default select example" onChange={(e)=>setCategory(e.target.value)}>
         
         <option selected value='' >All</option>
-
-        <option value={'jacketsCoats'}>Jackets & Coats</option>
-              <option  value={'hoodiesSweatshirts'}>Hoodies & Sweatshirts</option>
-              <option value={'cardiganJumpers'}>Cardigan & Jumpers</option>
-              <option value={'tshirtTanks'}>T-shirt & Tanks</option>
-              <option value={'shoes'}>Shoes</option>
-              <option value={'shirts'}>Shirts</option>
-              <option value={'basics'}>Basics</option>
-              <option value={'blazersSuits'}>Blazers & Suits</option>
-              <option value={'shorts'}>Shorts</option>
-              <option value={'trousers'}>Trousers</option>
-              <option value={'jeans'}>Jeans</option>
-              <option value={'swimwear'}>Swimwear</option>
-              <option value={'underwear'}>Underwear</option>
-              <option value={'socks'}>Socks</option>
+              <option value={'T_SHIRT'}>Áo thun</option>
+              <option value={'SHIRT'}>Áo sơ mi</option>
+              <option value={'COAT'}>Áo khoác</option>
+              <option value={'SHORT'}>Quần lửng</option>
+              <option value={'TROUSER'}>Quần dài</option>
+              <option value={'SUIT'}>Vét</option>
+              <option value={'SHOES'}>Giày</option>
+              <option value={'HAT'}>Mũ</option>
+              <option value={'BAG'}>Túi xách</option>
       </select>
           </span>
           </div>
